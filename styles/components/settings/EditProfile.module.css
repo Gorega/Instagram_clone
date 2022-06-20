@@ -1,0 +1,193 @@
+.main{
+    width:75%;
+    margin-left:70px;
+    margin-top:30px;
+    margin-bottom:30px;
+}
+
+.main .head{
+    display: flex;
+    align-items: center;
+    margin-bottom:20px
+}
+
+.main .head img{
+    position: relative;
+    top:-10px;
+    width:44px;
+    height:44px;
+    border-radius: 50%;
+}
+
+.main .head .imageSpinner{
+    width:44px;
+    height:44px;
+    position:relative;
+    border-radius: 50%;
+}
+
+.main .head .imageSpinner svg{
+    position: absolute;
+    font-size:16px;
+    margin-left:13px;
+    margin-top:5px;
+    z-index:2;
+    color:black;
+}
+
+.main .head .imageSpinner img{
+    position:absolute;
+    width:100%;
+    height:100%;
+    border-radius: 50%;
+    z-index: 1;
+    opacity: .3;
+}
+
+.main .head .user{
+    position: relative;
+    left:11%;
+}
+
+.main .head .user h3{
+    font-size:16px;
+    color:#4d4d4d;
+    font-weight:500;
+}
+
+.main .head .user p{
+    color:#0295F6;
+    margin-top:5px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size:13px;
+    width: max-content;
+}
+
+.main form{
+    width: 100%;
+}
+
+.main form .field{
+    margin-bottom:25px;
+    width: 100%;
+}
+
+.main form .field .inputField{
+    display: inline-flex;
+    width: 80%;
+}
+
+.main form .field label{
+    margin-top:8px;
+    font-size:15px;
+    font-weight: 500;
+    color:black;
+    cursor: default;
+    width: 20%;
+    list-style: 1.4;
+}
+
+.main form .field input{
+    width:100%;
+    height:40px;
+    padding-left:5px;
+    border-radius: 5px;
+    border:1px solid #d9d9d9;
+}
+
+.main form .field p{
+    margin-top:10px;
+    font-size:12px;
+    color:#4d4d4d;
+    line-height: 1.4;
+}
+
+.main form .field textarea{
+    width:100%;
+    height:160px;
+    max-height: 200px;
+    max-width: 100%;
+    padding:7px;
+    border:1px solid #d9d9d9;
+}
+
+.main form h4{
+    font-size:14px;
+    color:#4d4d4d;
+}
+
+.main .fieldSeparate{
+    position: relative;
+    left:13.5%;
+}
+
+.main form p{
+    font-size:12px;
+    color:#4d4d4d;
+    font-weight: 300;
+    line-height:1.4;
+    margin-bottom:25px;
+    width: 50%;
+    margin-top:7px;
+}
+
+.main form .disable{
+    color:#0295F6;
+    font-size:14px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top:10px;
+    width: fit-content;
+}
+
+.main form button{
+    background-color: #0295F6;
+    color:white;
+    border:none;
+    padding:7px 15px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top:25px;
+}
+
+.changePhotoModal{
+    text-align: center;
+}
+
+.changePhotoModal h2{
+    font-size:16px;
+    font-weight: bold;
+    padding-top:30px;
+}
+
+.changePhotoModal ul{
+    margin-top:25px;
+    list-style: none;
+    border-top: 1px solid #d9d9d9;
+}
+
+.changePhotoModal ul li{
+    padding:15px;
+    cursor: pointer;
+    border-bottom: 1px solid #d9d9d9;
+    font-weight: 500;
+    font-size:14px;
+}
+
+.changePhotoModal ul li label{
+    cursor: pointer;
+}
+
+.changePhotoModal ul li:first-of-type{
+    color:#0295F6;
+}
+
+.changePhotoModal ul li:nth-of-type(2){
+    color:red;
+}
+
+.changePhotoModal ul li:last-of-type{
+    border-bottom: none;
+    color:black
+}

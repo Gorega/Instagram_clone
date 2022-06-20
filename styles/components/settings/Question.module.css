@@ -1,0 +1,30 @@
+.question{
+    width: 90%;
+    margin-bottom:12px; 
+}
+
+.question .head{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+.question .head h3,.question .head span{
+    font-size:14px;
+    color:black;
+    font-weight: 500;
+}
+
+.question .body{
+    padding-top:15px;
+    padding-bottom:10px;
+}
+
+.question .body ul li{
+    display: block;
+    margin-bottom:10px;
+    color:#4d4d4d;
+    font-size:13px;
+    cursor: pointer;
+}

@@ -1,0 +1,141 @@
+.messageSec{
+    width:100%;
+    height:100%;
+}
+
+.messageSec .placeholder{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    top:50%;
+    transform: translateY(-50%);
+}
+
+.messageSec .placeholder h1{
+    font-size:17px;
+    font-weight: 500;
+    color: #4d4d4d;
+    margin-top:7px;
+    margin-bottom:7px;
+}
+
+.messageSec .placeholder p{
+    font-size:14px;
+    font-weight: 400;
+}
+
+.messageSec .placeholder button{
+    color:white;
+    border:none;
+    padding:8px 10px;
+    cursor: pointer;
+    background-color: #0295F6;
+    margin-top:25px;
+}
+
+.messageSec .messageHolder{
+    padding:10px;
+    height:100%;
+    position: relative;
+}
+
+.messageSec .messageHolder .head{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding:15px;
+    border-bottom:1px solid #d9d9d9;
+    max-height: 50px;
+}
+
+.messageSec .messageHolder .head .sender{
+    display: inline-flex;
+    align-items: center;
+}
+
+.messageSec .messageHolder .head .sender img{
+    width:22px;
+    height:22px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.messageSec .messageHolder .head .sender h2{
+    margin-left:10px;
+    font-size:14px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.messageSec .messageHolder .head .info{
+    cursor: pointer;
+}
+
+.messageSec .messageHolder .body{
+    position: relative;
+    top:30px;
+    height:80%;
+    width: 100%;
+    overflow: auto;
+}
+
+
+.messageSec .messageHolder .sendBox{
+    position: absolute;
+    bottom:25px;
+    left:50%;
+    transform: translateX(-50%);
+    border:1px solid #d9d9d9;
+    border-radius: 15px;
+    width: 90%;
+    height:25px;
+    display: inline-flex;
+    align-items: center;
+    padding:20px 10px;
+    z-index: 10;
+    background-color: white;
+}
+
+/* .messageSec .messageHolder .disabledBox{
+    bottom:-40px;
+    position: relative;
+    background-color: #eaeaea;
+    cursor:none;
+    pointer-events: none;
+} */
+
+.messageSec .messageHolder .disabledBox::before{
+    content:"(: You can't send messages for this user anymore.";
+    position: absolute;
+    top:-40px;
+    left:50%;
+    transform: translateX(-50%);
+    color:red;
+    font-size:14px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.messageSec .messageHolder .sendBox .face{
+    cursor: pointer;
+}
+
+.messageSec .messageHolder .sendBox input{
+    margin-left:25px;
+    padding-left:7px;
+    font-size:13px;
+    font-weight: 300;
+    width: 90%;
+    border:none;
+}
+
+.messageSec .messageHolder .sendBox input:focus{
+    outline: none;
+}
+
+.messageSec .messageHolder .sendBox .upload,.messageSec .messageHolder .sendBox .heart{
+    margin-left:10px;
+    cursor: pointer;
+}

@@ -1,0 +1,374 @@
+@keyframes spinner{
+    from{background-color: #e5e4e4;}
+    to{background-color: white;}
+}
+
+.spinner{
+    display: flex;
+    width: 100%;
+    height:100%;
+}
+
+.spinner .poster{
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    animation: spinner 4s linear infinite alternate;
+}
+
+.spinner .content{
+    margin-left:25px;
+}
+
+.spinner .content .head{
+    width: 100%;
+    position: relative;
+    top:20px;
+    display: inline-flex;
+    align-items: center;
+}
+
+.spinner .content .head .profileImg{
+    width:37px;
+    height:37px;
+    border-radius: 50%;
+    animation: spinner 5s linear infinite alternate;
+}
+
+.spinner .content .head h2{
+    margin-left:15px;
+    width:50%;
+    height:37px;
+    animation: spinner 5s linear infinite alternate;
+    border-radius: 10px;
+}
+
+.grid{
+    max-width: inherit;
+    width: 100%;
+    height:100%;
+    display: inline-flex;
+}
+
+.grid .poster,.spinner .poster{
+    position:relative;
+    height:100%;
+    width:100%;
+}
+
+.grid .poster img{
+    width:100%;
+    height:100%;
+}
+
+.grid .poster .paginations{
+    position: absolute;
+    bottom:5px;
+    left:50%;
+    transform: translateX(-50%);
+}
+
+.grid .poster .paginations ul li{
+    width:7px;
+    height:7px;
+    border-radius: 50%;
+    display: inline-flex;
+    margin-right:7px;
+    background-color: #d9d9d9;
+}
+
+.grid .poster .paginations ul li.active{
+    background-color: #0295F6;
+}
+
+.grid .content,.spinner .content{
+    width: 70%;
+    padding:25px;
+}
+
+.grid .head{
+    width:100%;
+    display: inline-flex;
+    align-items:center;
+    position: relative;
+    padding-bottom:15px;
+}
+
+.grid .head::after{
+    position: absolute;
+    content:"";
+    bottom:0;
+    width:100%;
+    height:1px;
+    background-color:#d9d9d9;
+}
+
+.head img,.grid .body .caption img{
+    width:33px;
+    height:33px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.head h2,.grid .body .caption h2{
+    font-size:14px;
+    font-weight: 500;
+    cursor: pointer;
+    margin-left:10px;
+}
+
+.head .options{
+    position:absolute;
+    right:0;
+    font-weight: bold;
+    font-size:20px;
+    cursor: pointer;
+}
+
+.grid .body{
+    margin-top:7px;
+}
+
+.grid .body .in{
+    height:400px;
+    position: relative;
+    overflow-y: auto;
+}
+
+.grid .body .in::-webkit-scrollbar{
+    display: none;
+}
+
+.grid .body .caption{
+    position: relative;
+    top:15px;
+    display: inline-flex;
+    margin-bottom:70px;
+}
+
+.grid .body .caption .info{
+    margin-left:10px;
+    display: inline-flex;
+}
+
+.grid .body .caption .info h2{
+    display: inline-block;
+    align-self: flex-start;
+}
+
+.grid .body .caption .info p{
+    display: inline-block;
+    margin-left:10px;
+    font-size:13px;
+    font-weight: 400;
+    width: 80%;
+    line-height: 1.3;
+}
+
+.grid .body .caption .date{
+    position: absolute;
+    bottom:-40px;
+    left:0;
+    font-size:11px;
+    font-weight: 300;
+    left:55px;
+    width: max-content;
+}
+
+.grid .body .comments{
+    position:relative;
+    top:15px;
+    z-index: 5;
+    margin-bottom:50px;
+}
+
+.grid .body .in .comments .comment{
+    margin-bottom:30px;
+}
+
+.grid .body .in .comments .box{
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+    left:25px;
+}
+
+.grid .body .in .comments img{
+    width:16px;
+    height:16px;
+    border-radius: 50%;
+}
+
+.grid .body .in .comments p > h3{
+    font-size:13px;
+    font-weight: 500;
+    display: inline-flex;
+}
+
+.grid .body .in .comments p{
+    margin-left:7px;
+    font-size:12px;
+    line-height: 1.3;
+    display: inline;
+    padding-right:25px;
+}
+
+.grid .body .in .comments .more{
+   position: relative;
+   top:7px;
+   left:50px;
+}
+
+.grid .body .in .comments .more ul li{
+    display: inline-flex;
+    align-items: center;
+    margin-right:12px;
+    color:#4d4d4d;
+    cursor: pointer;
+    font-size:12px;
+}
+
+.grid .body .in .comments span{
+    position: absolute;
+    right:10px;
+    font-size:11px;
+    color:#4d4d4d;
+    cursor: pointer;
+    opacity: 0;
+    pointer-events: none;
+    transition: .3s all ease-in-out;
+}
+
+.grid .body .in .comments span.active{
+    color:#ED4956;
+}
+
+.grid .body .in .comments .more ul li:last-of-type{
+    opacity: 0;
+    pointer-events: none;
+    transition: .3s all ease-in-out;
+}
+
+.grid .body .in .comments .comment:hover span,.grid .body .in .comments .comment:hover .more ul li:last-of-type{
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.grid .body .share{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 10;
+    padding-top:10px;
+    background-color: white;
+}
+
+.grid .body .share::before{
+    position: absolute;
+    content:"";
+    top:0px;
+    left:0;
+    width:100%;
+    height:1px;
+    background-color: #d9d9d9;
+}
+
+.grid .body .share ul li{
+    display: inline-flex;
+    margin-right: 10px;
+    font-size:20px;
+    cursor: pointer;
+}
+
+.grid .body .share ul li svg{
+    color:black
+}
+
+.grid .body .share .right{
+    position: absolute;
+    right: 0;
+}
+
+.grid .body .info{
+    margin-top:10px;
+}
+
+.grid .body .info h4{
+    font-size:14px;
+    font-weight: 500;
+    cursor: pointer;
+    width: fit-content;
+}
+
+.grid .body .info .date{
+    margin-top:10px;
+    text-transform: capitalize;
+    font-size:12px;
+    font-weight:13px;
+    cursor: default;
+}
+
+.grid .content .footer{
+    padding:15px 0;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    width: 100%;
+}
+
+.grid .content .footer form{
+    display: inline-flex;
+    align-items: center;
+    width: 100%;
+}
+
+.grid .content .footer .face{
+    font-size:20px;
+    cursor: pointer;
+}
+
+.grid .content .footer form input{
+    width:90%;
+    height:25px;
+    border:none;
+    background-color: transparent;
+    padding-left:15px;
+}
+
+.grid .content .footer form input:focus{
+    outline:none;
+}
+
+.grid .content .footer form button{
+    justify-self: flex-end;
+    background-color: transparent;
+    cursor: pointer;
+    color:#0295F6;
+    font-weight: bold;
+    border:none;
+    position: absolute;
+    right: 0;
+}
+
+.grid .content .footer form button.disabled{
+    pointer-events: none;
+    opacity: .3;
+}
+
+
+@media(max-width:992px){
+    .grid,.spinner{
+        flex-direction: column;
+        height: 100%;
+    }
+    .grid .content{
+        width: 100%;
+    }
+
+    .grid .body .in{
+        height:140px;
+    }
+
+    .grid .poster,.spinner .poster{
+        height:50%;
+    }
+}

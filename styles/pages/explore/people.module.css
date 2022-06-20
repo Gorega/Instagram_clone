@@ -1,0 +1,79 @@
+.people .users{
+    position:relative;
+    top:180px;
+    margin:auto;
+    display: flex;
+    justify-content: center;
+}
+
+.people .users .card::before{
+    position: absolute;
+    top:-35px;
+    content:"Suggested";
+    left:0;
+    font-size:20px;
+    font-weight: 500;
+    color:#4d4d4d;
+    cursor: text;
+}
+
+.people .users .card{
+    width: 700px;
+    position: relative;
+    margin-top:15px;
+    background-color: white;
+    height:auto;
+    margin:auto;
+    padding:15px;
+}
+
+.users .card .spinner{
+    margin-bottom:15px;
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+    width: 100%;
+}
+
+.people .users .card .spinner .info{
+    margin-left:10px;
+}
+
+.people .users .card .spinner .info h2{
+    font-size:15px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.people .users .card .spinner .info p{
+    margin-top:5px;
+    font-size:13px;
+    color:#4d4d4d;
+    font-weight: 300;
+}
+
+
+.people .users .card .spinner .image{
+    width:26px;
+    height:26px;
+    border-radius:50%;
+    cursor: pointer;
+    background-color: #e5e4e4;
+}
+
+.people .users .card .spinner .info h2{
+    background-color: #e5e4e4;
+    width:150px;
+    height:20px
+}
+
+.people .users .card .spinner .info p{
+    background-color: #e5e4e4;
+    width: 120px;
+    height:20px;
+}
+
+.people .footer{
+    position: relative;
+    bottom:-170px;;
+}

@@ -1,0 +1,26 @@
+.list{
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    width:25%;
+}
+
+.list ul li{
+    display: block;
+    padding:25px;
+    font-size:15px;
+    color:#4d4d4d;
+    font-weight: 400;
+    cursor: pointer;
+}
+
+.list ul li:last-of-type{
+    display: none;
+}
+
+.list ul li:hover{
+    background-color:#FAFAFA;
+    border-left:1px solid #d9d9d9;
+}
+
+.list ul li.active{
+    border-left:1px solid #4d4d4d;
+}

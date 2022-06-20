@@ -1,0 +1,46 @@
+.search{
+    position: absolute;
+    top:60px;
+    left:50%;
+    transform: translateX(-50%);
+    background-color: white;
+    padding:15px;
+    border-radius: 7px;
+    width: 140%;
+    height:300px;
+    overflow: auto;
+}
+
+.search .sec{
+    display: inline-flex;
+    margin-bottom:0px;
+    cursor: pointer;
+    color:black;
+    width: 100%;
+    padding:15px;
+}
+
+.search .sec:hover{
+    background-color: #FAFAFA;
+}
+
+.search .sec img{
+    width:22px;
+    height:22px;
+    border-radius: 50%;
+}
+
+.search .sec .info{
+    margin-left:15px;
+}
+
+.search .sec .info h4{
+    font-size: 13px;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+.search .sec .info p{
+    margin-top:5px;
+    font-size: 11px;
+}
