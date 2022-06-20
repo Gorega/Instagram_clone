@@ -25,6 +25,7 @@ export default NextAuth({
     ],
     callbacks:{
         async session({session}){
+            await connect();
             const user = await User.findOne({email:session.user.email})
             session.userId = user._id;
             session.username = user.username;
