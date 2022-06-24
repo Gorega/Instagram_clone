@@ -62,13 +62,13 @@ export default function PostCard(props){
         fetchPostComments(100);
     },[addCommentStatus])
 
-    return <CardHolder style={{padding:"0 15px"}}>
+    return <CardHolder style={{padding:0,width:500}}>
         <div className={styles.head}>
             <img onClick={()=> router.push(`/${props.createdBy}`)} src={props.image} alt="" />
             <h2 onClick={()=> router.push(`/${props.createdBy}`)}>{props.name}</h2>
             <div className={styles.options} onClick={()=> {
                 dispatch(setShowPostOptionsModal(true))
-                dispatch(setCustomPostOptions({type:"postList",content:<PostOptionsModal postCreatorId={props.createdBy} creator={props.creator} post_id={props._id} followed={followed} />}))
+                dispatch(setCustomPostOptions({type:"postList",content:<PostOptionsModal postCreatorId={props.createdBy} creator={props.creator} post_id={props._id} followed={followed} profile_id={user.userId} />}))
             }}>
                 <FontAwesomeIcon icon={faEllipsis} />
             </div>

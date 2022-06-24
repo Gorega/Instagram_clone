@@ -11,8 +11,6 @@ export default function Accounts(){
 
 export const getServerSideProps = auth(async()=>{
     return{
-        props:{
-            
-        }
+        props:{}
     }
 });

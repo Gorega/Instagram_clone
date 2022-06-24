@@ -33,7 +33,9 @@ export default function SignleMessage({message,chat}){
     },[chat])
 
     useEffect(()=>{
-        fetchSharedPostData();
+        if(message.hasOwnProperty("postId")){
+            fetchSharedPostData();
+        }
         fetchMessageSenderData();
     },[message])
 

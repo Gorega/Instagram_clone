@@ -3,16 +3,7 @@
     display: inline-flex;
     align-items:center;
     position: relative;
-    padding:15px 0;
-}
-
-.head::after{
-    position: absolute;
-    content:"";
-    bottom:0;
-    width:100%;
-    height:1px;
-    background-color:#d9d9d9;
+    padding:15px 10px 10px 10px;   
 }
 
 .head img{
@@ -31,7 +22,7 @@
 
 .head .options{
     position:absolute;
-    right:0;
+    right:15px;
     font-weight: bold;
     font-size:20px;
     cursor: pointer;
@@ -39,8 +30,15 @@
 
 .body{
     display: block;
-    padding:15px 0;
     position: relative;
+}
+
+.body .share,.body .info,.body .footer{
+    padding:0 10px;
+}
+
+.body .info{
+    padding-bottom:12px;
 }
 
 .body::after{
@@ -54,19 +52,23 @@
 }
 
 .body .posters{
+    position:relative;
+    height:100%;
     width:100%;
-    height:600px;
-    cursor: default;
+    background-color:transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .body img{
-    width:100%;
-    height:100%;
+    max-width: 100%;
+    max-height: 100%;
 }
 
 .body video{
-    width:100%;
-    height:100%;
+    max-width: 100%;
+    max-height: 100%;
 }
 
 .body .paginations{
@@ -166,7 +168,7 @@
 }
 
 .footer{
-    padding:15px 0;
+    padding:15px 10px;
     display: inline-flex;
     align-items: center;
     position: relative;
@@ -204,7 +206,7 @@
     font-weight: bold;
     border:none;
     position: absolute;
-    right: 0;
+    right: 15px;
 }
 
 .footer button.disabled{

@@ -59,10 +59,8 @@ export default function People(){
 }
 
 
-export const getServerSideProps = auth(()=>{
+export const getServerSideProps = auth(async()=>{
     return{
-        props:{
-
-        }
+        props:{}
     }
-})
+});

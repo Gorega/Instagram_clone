@@ -5,6 +5,9 @@ import Message from "../../../../../lib/models/messengerModel/message";
 export default async function handler(req,res){
     if(req.method === "PATCH"){
         const session = await getSession({req});
+        if(!session){
+            return res.status(401).json({msg:"Unauthorized"});
+        }
         const {conversation_id} = req.query;
         const {senderId} = req.body;
         await Conversation.findOneAndUpdate({_id:conversation_id},{$pull:{seenBy:{$in:[senderId]}}});

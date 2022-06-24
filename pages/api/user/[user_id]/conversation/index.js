@@ -8,12 +8,12 @@ export default async function handler(req,res){
         if(!session){
             return res.status(401).json({msg:"Unauthorized"});
         }
-        const conversations = await Conversation.find({members:{$in:[user_id]}})
+        const conversations = await Conversation.find({members:{$in:[user_id]}}).sort({"updatedAt":-1})
         return res.status(200).json(conversations);
     }
     
     if(req.method === "POST"){
-        const {userId,senderId} = req.body;
+        const {userId,senderId,updatedAt} = req.body;
         const session = await getSession({req});
         if(!session){
             return res.status(401).json({msg:"Unauthorized"});
@@ -27,7 +27,7 @@ export default async function handler(req,res){
         
         const newConversation = await Conversation.create({
             members:[userId,senderId],
-            seenBy:[userId,senderId]
+            seenBy:[userId,senderId],
         })
         return res.status(201).json(newConversation);
     }

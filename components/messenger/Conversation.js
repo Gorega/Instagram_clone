@@ -1,16 +1,21 @@
 import styles from "../../styles/components/messenger/PeopleSec.module.css";
-import { useEffect, useState } from "react";
-import { setConversation, members, setShowConversationChat } from "../../features/messengerSlice";
-import { useDispatch } from "react-redux";
+import { useContext, useEffect, useState } from "react";
+import { setConversation, members, setShowConversationChat, setSocketConversation, setNewMessageNotification } from "../../features/messengerSlice";
+import { useDispatch, useSelector } from "react-redux";
 import {format} from "timeago.js";
 import axios from "axios";
 import { server } from "../../lib/server";
+import { AppContext } from "../../contextApi";
+import { useSession } from "next-auth/react";
 
 export default function Conversation({conversation,senderId}){
 
         const dispatch = useDispatch();
+        const {data:user,status} = useSession();
         const [person,setPerson] = useState([]); 
         const [chat,setChat] = useState([]);
+        const {socket} = useContext(AppContext);
+        const {socketConversation} = useSelector((state)=> state.messenger);
 
         const fetchUserData = async ()=>{
             dispatch(members({senderId})).then(res => setPerson(res.payload[0]));
@@ -24,11 +29,26 @@ export default function Conversation({conversation,senderId}){
 
         useEffect(()=>{
             fetchUserData();
-        },[])
+        },[conversation])
 
         useEffect(()=>{
             fetchConversationMessages();
+        },[conversation])
+
+        useEffect(()=>{
+            socket.current.on("getConversation",(data)=>{
+                dispatch(setSocketConversation({
+                    sender:data.sender,
+                    receiverId:data.receiverId
+                }))
+            })
         },[])
+
+        useEffect(()=>{
+            if(socketConversation && conversation.members.includes(socketConversation.receiverId)){
+                setChat(prev=> [...prev,socketConversation])
+            }
+        },[socketConversation])
 
     return <div className={styles.person}
                 onClick={()=> {

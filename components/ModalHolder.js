@@ -9,13 +9,13 @@ import { setPeopleModal } from "../features/messengerSlice";
 export default function ModalHolder(props){
     const dispatch = useDispatch();
     const modalRef = useRef();
-    const {showPostModal,showPostOptionsModal,showAddPostModal} = useSelector((state)=> state.modal)
+    const {showPostModal,showAddPostModal} = useSelector((state)=> state.modal)
 
     const closeModalHanlder = ()=>{
         if(showPostModal){
             dispatch(setShowPostModal(false))
             dispatch(setPeopleModal(false));
-            history.replaceState(null,null,"/")
+            history.replaceState(null,null,props.onClose)
         }
         if(showAddPostModal){
             dispatch(setShowAddPostModal(false))

@@ -4,7 +4,7 @@ import axios from "axios";
 import { server } from "../lib/server";
 import Post from "./Post";
 
-export default function PostModal(){
+export default function PostModal(props){
     const [post,setPost] = useState([]);
 
     const fetchPostData = async ()=>{
@@ -17,7 +17,7 @@ export default function PostModal(){
         fetchPostData();
     },[])
 
-    return <ModalHolder style={{padding:"0"}} showCloseButton={true}>
+    return <ModalHolder style={{padding:0}} showCloseButton={true} onClose={props.onClose}>
         <Post post={post} /> 
     </ModalHolder>
 }

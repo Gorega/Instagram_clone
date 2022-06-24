@@ -1,17 +1,20 @@
 import styles from "../../styles/components/messenger/PeopleModal.module.css";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { server } from "../../lib/server";
 import { useSession } from "next-auth/react";
 import {setPending,setPeopleModal} from "../../features/messengerSlice";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import ModalHolder from "../ModalHolder";
+import { AppContext } from "../../contextApi";
 
 export default function PeopleModal({type,postId}){
     const dispatch = useDispatch();
     const {data:user} = useSession();
+    const {socket} = useContext(AppContext);
+    const {pending} = useSelector((state)=> state.messenger)
     const [username,setUsername] = useState(null);
     const [suggestedUsers,setSuggestedUsers] = useState([]);
     const [foundUsers,setFoundUsers] = useState([]);
@@ -38,7 +41,7 @@ export default function PeopleModal({type,postId}){
     const addConversationHandler = async (senderId)=>{
         try{
             dispatch(setPending(true))
-            const response = await axios.post(`${server}/api/user/${user.userId}/conversation`,{userId:user.userId,senderId},{withCredentials:true});
+            await axios.post(`${server}/api/user/${user.userId}/conversation`,{userId:user.userId,senderId},{withCredentials:true});
             dispatch(setPending(false))
             dispatch(setPeopleModal(false))
         }catch(err){
@@ -49,7 +52,7 @@ export default function PeopleModal({type,postId}){
     }
 
     const share = async (conversationId,personId)=>{
-        const response = await axios.post(`${server}/api/messenger/${conversationId}`,{sender:personId,text:shareText,members:[user.userId,personId],postId},{withCredentials:true});
+        await axios.post(`${server}/api/messenger/${conversationId}`,{sender:personId,text:shareText,members:[user.userId,personId],postId},{withCredentials:true});
         dispatch(setPeopleModal(false))
     }
 
@@ -74,7 +77,7 @@ export default function PeopleModal({type,postId}){
         return()=>{
             controller.abort();
         }
-    },[username])
+    },[username,pending])
 
     return <ModalHolder style={{width:"400px",height:"650px",borderRadius:"15px",padding:0}}>
     <div className={styles.peopleModal}>

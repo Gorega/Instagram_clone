@@ -12,16 +12,18 @@ import logo from "../../public/logo.png";
 import { AppContext } from "../../contextApi";
 import { useRouter } from "next/router";
 import AddPostModal from "../../components/post/Index";
+import { setNewMessageNotification } from "../../features/messengerSlice";
 
 export default function Main(){
     const dispatch = useDispatch();
-    const {data:user} = useSession();
+    const {data:user,status} = useSession();
     const router = useRouter();
     const {searchBarSpinner} = useContext(AppContext);
     const [showSearchSugg,setShowSearchSugg] = useState(false);
     const [showUserMenu,setShowUserMenu] = useState(false);
     const {showAddPostModal} = useSelector((state)=> state.modal)
     const [searchValue,setSearchValue] = useState(null);
+    const {socket} = useContext(AppContext);
     const {newMessageNotification} = useSelector((state)=> state.messenger);
     const userRef = useRef();
     const navbarRef = useRef();
@@ -73,6 +75,16 @@ export default function Main(){
         }
     },[showSearchSugg,showUserMenu])
 
+    useEffect(()=>{
+       if(status === "authenticated"){
+        socket?.current.on("getMessageNotification",(data)=>{
+            if(data.receiverId === user.userId){
+                dispatch(setNewMessageNotification(true))
+            }
+        })
+       } 
+    },[user])
+
     return <>
         <div className={styles.main} ref={navbarRef}>
         <div className="container">
@@ -89,7 +101,7 @@ export default function Main(){
                 <div className={styles.list}>
                     <ul>
                         <Link href="/"><li>{homeIcon}</li></Link>
-                        <Link href="/direct/inbox"><li>{messengerIcon}</li></Link>
+                        <Link href="/direct/inbox"><li className={newMessageNotification && styles.patch}>{messengerIcon}</li></Link>
                         <li onClick={()=> dispatch(setShowAddPostModal(true))}>
                             {newPostIcon}
                         </li>

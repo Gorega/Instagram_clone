@@ -1,3 +1,8 @@
+.post{
+    width: 100%;
+    height:100%;
+}
+
 @keyframes spinner{
     from{background-color: #e5e4e4;}
     to{background-color: white;}
@@ -12,6 +17,8 @@
 .spinner .poster{
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     animation: spinner 4s linear infinite alternate;
+    height:100%;
+    width: 100%;
 }
 
 .spinner .content{
@@ -21,9 +28,9 @@
 .spinner .content .head{
     width: 100%;
     position: relative;
-    top:20px;
     display: inline-flex;
     align-items: center;
+    height:10%;
 }
 
 .spinner .content .head .profileImg{
@@ -41,32 +48,37 @@
     border-radius: 10px;
 }
 
-.grid{
-    max-width: inherit;
+.post .grid{
     width: 100%;
     height:100%;
     display: inline-flex;
 }
 
-.grid .poster,.spinner .poster{
+.post .grid .poster{
     position:relative;
-    height:100%;
     width:100%;
+    max-height: 100%;
+    height:auto;
+    background-color:transparent;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.grid .poster img{
-    width:100%;
-    height:100%;
+.post .grid .poster img{
+    max-width: 100%;
+    max-height: 100%;
 }
 
-.grid .poster .paginations{
+.post .grid .poster .paginations{
     position: absolute;
     bottom:5px;
     left:50%;
     transform: translateX(-50%);
 }
 
-.grid .poster .paginations ul li{
+.post .grid .poster .paginations ul li{
     width:7px;
     height:7px;
     border-radius: 50%;
@@ -75,24 +87,33 @@
     background-color: #d9d9d9;
 }
 
-.grid .poster .paginations ul li.active{
+.post .grid .poster .paginations ul li.active{
     background-color: #0295F6;
 }
 
-.grid .content,.spinner .content{
+
+.post .grid .content,.spinner .content{
     width: 70%;
-    padding:25px;
+    padding:15px;
 }
 
-.grid .head{
+.post .grid .content{
+    display: flex;
+    flex-direction: column;
+    height:100%;
+}
+
+.post .grid .head{
     width:100%;
+    height:7%;
     display: inline-flex;
     align-items:center;
     position: relative;
     padding-bottom:15px;
+    justify-self: flex-start;
 }
 
-.grid .head::after{
+.post .grid .head::after{
     position: absolute;
     content:"";
     bottom:0;
@@ -101,21 +122,21 @@
     background-color:#d9d9d9;
 }
 
-.head img,.grid .body .caption img{
+.post .grid .head img,.post .grid .body .caption img{
     width:33px;
     height:33px;
     border-radius: 50%;
     cursor: pointer;
 }
 
-.head h2,.grid .body .caption h2{
+.post .grid .head h2,.post .grid .body .caption h2{
     font-size:14px;
     font-weight: 500;
     cursor: pointer;
     margin-left:10px;
 }
 
-.head .options{
+.post .grid .head .options{
     position:absolute;
     right:0;
     font-weight: bold;
@@ -123,38 +144,53 @@
     cursor: pointer;
 }
 
-.grid .body{
+.post .grid .body{
     margin-top:7px;
+    display: flex;
+    flex-direction: column;
+    height: 93%;
+    justify-self: flex-end;
 }
 
-.grid .body .in{
-    height:400px;
+.post .grid .body .in{
+    height:90%;
+}
+.post .grid .body .share{
+    height:10%
+}
+
+.post .grid .body .footer{
+    height: max-content;
+}
+
+.post .grid .body .in{
+    min-height:50vh;
     position: relative;
     overflow-y: auto;
 }
 
-.grid .body .in::-webkit-scrollbar{
+.post .grid .body .in::-webkit-scrollbar{
     display: none;
 }
 
-.grid .body .caption{
+.post .grid .body .caption{
     position: relative;
     top:15px;
     display: inline-flex;
     margin-bottom:70px;
 }
 
-.grid .body .caption .info{
+.post .grid .body .caption .info{
     margin-left:10px;
     display: inline-flex;
 }
 
-.grid .body .caption .info h2{
+.post .grid .body .caption .info h2{
     display: inline-block;
     align-self: flex-start;
 }
 
-.grid .body .caption .info p{
+.post .grid .body .caption .info p{
     display: inline-block;
     margin-left:10px;
     font-size:13px;
@@ -163,7 +199,7 @@
     line-height: 1.3;
 }
 
-.grid .body .caption .date{
+.post .grid .body .caption .date{
     position: absolute;
     bottom:-40px;
     left:0;
@@ -173,37 +209,37 @@
     width: max-content;
 }
 
-.grid .body .comments{
+
+.post .grid .body .comments{
     position:relative;
     top:15px;
-    z-index: 5;
     margin-bottom:50px;
 }
 
-.grid .body .in .comments .comment{
+.post .grid .body .in .comments .comment{
     margin-bottom:30px;
 }
 
-.grid .body .in .comments .box{
+.post .grid .body .in .comments .box{
     display: inline-flex;
     align-items: center;
     position: relative;
     left:25px;
 }
 
-.grid .body .in .comments img{
-    width:16px;
-    height:16px;
+.post .grid .body .in .comments img{
+    width:20px;
+    height:20px;
     border-radius: 50%;
 }
 
-.grid .body .in .comments p > h3{
+.post .grid .body .in .comments p > h3{
     font-size:13px;
     font-weight: 500;
     display: inline-flex;
 }
 
-.grid .body .in .comments p{
+.post .grid .body .in .comments p{
     margin-left:7px;
     font-size:12px;
     line-height: 1.3;
@@ -211,13 +247,13 @@
     padding-right:25px;
 }
 
-.grid .body .in .comments .more{
+.post .grid .body .in .comments .more{
    position: relative;
    top:7px;
    left:50px;
 }
 
-.grid .body .in .comments .more ul li{
+.post .grid .body .in .comments .more ul li{
     display: inline-flex;
     align-items: center;
     margin-right:12px;
@@ -226,7 +262,7 @@
     font-size:12px;
 }
 
-.grid .body .in .comments span{
+.post .grid .body .in .comments span{
     position: absolute;
     right:10px;
     font-size:11px;
@@ -237,32 +273,56 @@
     transition: .3s all ease-in-out;
 }
 
-.grid .body .in .comments span.active{
+.post .grid .body .in .comments span.active{
     color:#ED4956;
 }
 
-.grid .body .in .comments .more ul li:last-of-type{
+.post .grid .body .in .comments .more ul li:last-of-type{
     opacity: 0;
     pointer-events: none;
     transition: .3s all ease-in-out;
 }
 
-.grid .body .in .comments .comment:hover span,.grid .body .in .comments .comment:hover .more ul li:last-of-type{
+.post .grid .body .in .comments .comment:hover span,.post .grid .body .in .comments .comment:hover .more ul li:last-of-type{
     opacity: 1;
     pointer-events: auto;
 }
 
-.grid .body .share{
+.post .grid .body .comments .emptyComments{
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    height:100%;
+}
+
+.post .grid .body .comments .emptyComments h2{
+    font-size:20px;
+    font-weight: 500;
+    color:black;
+    text-align: center;
+    width: max-content;
+}
+
+.post .grid .body .comments .emptyComments h2 pre{
+    margin-top:10px;
+    font-size:12px;
+    font-family:sans-serif;
+    font-weight: 300;
+    color:#d4d4d4;
+    text-align: center;
+}
+
+.post .grid .body .share{
     display: flex;
     justify-content: space-between;
     align-items: center;
     position: relative;
-    z-index: 10;
     padding-top:10px;
     background-color: white;
 }
 
-.grid .body .share::before{
+.post .grid .body .share::before{
     position: absolute;
     content:"";
     top:0px;
@@ -272,34 +332,34 @@
     background-color: #d9d9d9;
 }
 
-.grid .body .share ul li{
+.post .grid .body .share ul li{
     display: inline-flex;
     margin-right: 10px;
     font-size:20px;
     cursor: pointer;
 }
 
-.grid .body .share ul li svg{
+.post .grid .body .share ul li svg{
     color:black
 }
 
-.grid .body .share .right{
+.post .grid .body .share .right{
     position: absolute;
     right: 0;
 }
 
-.grid .body .info{
+.post .grid .body .info{
     margin-top:10px;
 }
 
-.grid .body .info h4{
+.post .grid .body .info h4{
     font-size:14px;
     font-weight: 500;
     cursor: pointer;
     width: fit-content;
 }
 
-.grid .body .info .date{
+.post .grid .body .info .date{
     margin-top:10px;
     text-transform: capitalize;
     font-size:12px;
@@ -307,12 +367,13 @@
     cursor: default;
 }
 
-.grid .content .footer{
-    padding:15px 0;
+.post .grid .content .footer{
+    padding:15px 0 0 0;
     position: relative;
     display: inline-flex;
     align-items: center;
     width: 100%;
+    align-self: flex-end;
 }
 
 .grid .content .footer form{
@@ -321,12 +382,12 @@
     width: 100%;
 }
 
-.grid .content .footer .face{
+.post .grid .content .footer .face{
     font-size:20px;
     cursor: pointer;
 }
 
-.grid .content .footer form input{
+.post .grid .content .footer form input{
     width:90%;
     height:25px;
     border:none;
@@ -334,11 +395,11 @@
     padding-left:15px;
 }
 
-.grid .content .footer form input:focus{
+.post .grid .content .footer form input:focus{
     outline:none;
 }
 
-.grid .content .footer form button{
+.post .grid .content .footer form button{
     justify-self: flex-end;
     background-color: transparent;
     cursor: pointer;
@@ -349,7 +410,7 @@
     right: 0;
 }
 
-.grid .content .footer form button.disabled{
+.post .grid .content .footer form button.disabled{
     pointer-events: none;
     opacity: .3;
 }
@@ -360,15 +421,35 @@
         flex-direction: column;
         height: 100%;
     }
-    .grid .content{
+
+    .post .grid .content,.spinner .content{
+        padding:25px;
+    }
+
+    .post .grid .content{
         width: 100%;
+        overflow-y: auto;
+        padding:40px 25px;
     }
 
-    .grid .body .in{
-        height:140px;
+    .spinner .content .head{
+        top:25px;
+        width:100%
     }
 
-    .grid .poster,.spinner .poster{
+    .post .grid .head{
+        padding-bottom:25px;
+    }
+
+    .spinner .content .head h2{
+        width:80%;
+    }
+
+    .post .grid .content .footer{
+        padding:20px 0;
+    }
+
+    .post .grid .poster,.spinner .poster{
         height:50%;
     }
 }

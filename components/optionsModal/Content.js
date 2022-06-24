@@ -13,10 +13,11 @@ import {setUpdatePosts} from "../../features/post/index";
 import {useRouter} from "next/router";
 import {server} from "../../lib/server";
 import axios from "axios";
+import LikesPeople from "./LikesPeople";
 
 export default function Content(props){
     const dispatch = useDispatch();
-    const {FollowerHandler,setPostId} = useContext(AppContext);
+    const {setPostId} = useContext(AppContext);
     const router = useRouter();
     const {data:user,status} = useSession();
     const [followersPeople,setFollowersPeople] = useState([]);
@@ -84,15 +85,8 @@ export default function Content(props){
                 <FontAwesomeIcon icon={faTimes} onClick={()=> dispatch(setShowPostOptionsModal(false))} />
             </div>
             <div className={styles.content}>
-                {props.likesPeople?.map((person,index)=>{
-                    const follower = followingPeople.find((follower)=> follower.user_id === person.createdBy)
-                    return  <div key={index} className={styles.person}>
-                                <img src={person.creator[0].image} alt="" />
-                                <h3>{person.creator[0].username}</h3>
-                                <button style={{backgroundColor:follower && "#B2DFFB"}} onClick={()=> FollowerHandler(follower,person.createdBy)}>
-                                    {follower ? "Unfollow" : "Follow"}
-                                </button>
-                            </div>
+                {props.likesPeople.map((person,index)=>{
+                    return <LikesPeople key={index} person={person} />
                 })}
             </div>   
         </div>
@@ -107,7 +101,6 @@ export default function Content(props){
                             dispatch(setCustomPostOptions({type:null}))
                             dispatch(setUpdatePosts("update"))
                         })
-                        .catch(err => console.log(err));
                     }}>Delete</li>}
                     {user.userId === props.postCreatorId && <li style={{color:"red"}}>Edit</li>}
                     {user.userId === props.postCreatorId || <li style={{color:"red"}}>Report</li>}

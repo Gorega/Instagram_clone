@@ -5,6 +5,7 @@ import { server } from '../lib/server'
 
 const initialState = {
   pending:false,
+  socketConversation:null,
   showConversationChat:false,
   conversation:null,
   peopleModal:false,
@@ -39,11 +40,14 @@ export const messengerSlice = createSlice({
     },
     setNewMessageNotification:(state,action)=>{
       state.newMessageNotification = action.payload;
-    }
+    },
+    setSocketConversation:(state,action)=>{
+      state.socketConversation = action.payload;
+    },
   }
 })
 
 // Action creators are generated for each case reducer function
-export const { setShowConversationChat,setConversation,setPeopleModal,setPending,setNewMessageNotification } = messengerSlice.actions
+export const { setSocketConversation,setShowConversationChat,setConversation,setPeopleModal,setPending,setNewMessageNotification } = messengerSlice.actions
 
 export default messengerSlice.reducer

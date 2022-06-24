@@ -20,10 +20,8 @@ export default function Help(){
 }
 
 
-export const getServerSideProps = auth(()=>{
+export const getServerSideProps = auth(async()=>{
     return{
-        props:{
-
-        }
+        props:{}
     }
-})
+});

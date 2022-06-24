@@ -11,9 +11,9 @@ import PeopleModal from "./PeopleModal";
 export default function People(){
     const {data:user,status} = useSession();
     const dispatch = useDispatch();
-    const {peopleModal,pending} = useSelector((state)=> state.messenger)
+    const {socketConversation,peopleModal,pending} = useSelector((state)=> state.messenger)
     const [conversations,setConversations] = useState([]);
-    const peopleSpinner = [...new Array(10)]
+    const peopleSpinner = [...new Array(8)]
 
     const fetchConversations = async ()=>{
             const response = await axios.get(`${server}/api/user/${user.userId}/conversation`,{withCredentials:true});
@@ -25,7 +25,7 @@ export default function People(){
         if(status === "authenticated"){
             fetchConversations();
         }
-    },[pending,user])
+    },[user,socketConversation,pending])
 
     return <>
         <div className={styles.peopleSec}>

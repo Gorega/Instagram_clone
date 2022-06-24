@@ -10,10 +10,8 @@ export default function Edit(){
     </>
 }
 
-export const getServerSideProps = auth(()=>{
+export const getServerSideProps = auth(async()=>{
     return{
-        props:{
-
-        }
+        props:{}
     }
-})
+});

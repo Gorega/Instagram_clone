@@ -1,9 +1,9 @@
 .main{
     position: fixed;
-    right:240px;
+    right:25%;
     top:120px;
     height:100%;
-    width: 25%;
+    width: 340px;
     z-index: 4;
 }
 
@@ -215,7 +215,7 @@
     padding:15px 0 0px 0;
 }
 
-@media(max-width:1400px){
+@media(max-width:1520px){
     .main{
         display: none;
     }

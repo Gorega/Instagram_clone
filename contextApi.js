@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { savedList} from "./features/savedSlice";
 import { useSession } from "next-auth/react";
@@ -6,6 +6,7 @@ import { getTotalFollowers, getTotalFollowing } from "./features/user/follower";
 import {follow,unfollow} from "./features/user/follower";
 import axios from "axios";
 import { server } from "./lib/server";
+import io from 'socket.io-client';
 
 export const AppContext = React.createContext();
 
@@ -23,6 +24,7 @@ const AppProvider = (props)=>{
     const {updatePosts} = useSelector((state)=> state.post)
     const [searchBarSpinner,setSearchBarSpinner] = useState(false);
     const [postId,setPostId] = useState(null);
+    const socket = useRef();
 
     const fetchPosts = async ()=>{
         const response = await axios.get(`${server}/api/post`,{withCredentials:true});
@@ -57,6 +59,16 @@ const AppProvider = (props)=>{
         }
     },[user,updatePosts])
 
+    // socket connection
+    const initSocket = async ()=>{
+        await axios.get(`${server}/api/socket`,{withCredentials:true});
+        socket.current = io();
+    }
+
+    useEffect(()=>{
+        initSocket();
+    },[])
+
     return <AppContext.Provider value={{
         saved,
         followersTotal,activeUserFollowersTotal,
@@ -64,7 +76,8 @@ const AppProvider = (props)=>{
         posts,setPosts,
         userPosts,setUserPosts,
         searchBarSpinner,setSearchBarSpinner,
-        postId,setPostId
+        postId,setPostId,
+        socket
     }}>
         {props.children}
     </AppContext.Provider>

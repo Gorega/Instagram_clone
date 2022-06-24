@@ -3,7 +3,7 @@ import CardHolder from "../components/CardHolder";
 
 export default function PeopleCard(){
     const spinnerArray = [...Array(10)]
-    return <CardHolder>
+    return <CardHolder style={{width:500}}>
         <div className={styles.list}>
             {spinnerArray.map((_,index)=>{
                 return <div key={index} className={styles.person}>

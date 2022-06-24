@@ -1,5 +1,4 @@
 import styles from "../styles/components/Post.module.css";
-import { useSession } from "next-auth/react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Comment from "./Comment";
@@ -11,18 +10,26 @@ import {faEllipsis } from "@fortawesome/free-solid-svg-icons";
 import {format} from "timeago.js";
 import { setPeopleModal } from "../features/messengerSlice";
 import PeopleModal from "./messenger/PeopleModal";
+import { useSession } from "next-auth/react";
+import UnfollowModal from "../components/sideInterface/UnfollowModal";
+import axios from "axios";
+import { server } from "../lib/server";
 
 export default function Post({post}){
     const dispatch = useDispatch();
     const likeButtonRef = useRef();
+    const {data:user,status} = useSession();
     const {fetchPostLikes,fetchPostComments,postComments,postLikes,spinner,liked,likesHandler,bookmarkHandler,addComment,removeComment,savedPosts} = usePostData(post);
     const observer = useRef();
     const {addLike,removeLike} = useSelector((state)=> state.postLikes)
     const {peopleModal} = useSelector((state)=> state.messenger)
+    const {unfollow:unfollowStatus,follow:followStatus} = useSelector((state)=> state.userFollowers);
     const {addComment:addCommentStatus,removeComment:removeCommentStatus} = useSelector((state)=> state.postComments);
     const [commentsLimit,setCommentsLimit] = useState(4);
+    const {unfollowModal} = useSelector((state)=>state.modal);
     const [commentValue,setCommentValue] = useState("");
     const commentInput = useRef()
+    const [followed,setFollowed] = useState(null);
     const {showPostOptionsModal,customPostOptions} = useSelector((state)=> state.modal);
 
     // post controls button icons
@@ -52,6 +59,22 @@ export default function Post({post}){
         dispatch(setCustomPostOptions({type:"likesPeople",content:<PostOptionsModal likesPeople={postLikes && postLikes} />}))
     }
 
+    const getFollowing = async ()=>{
+        const FollowedResponse = await axios.get(`${server}/api/user/${user.userId}/following/${post.createdBy}`,{withCredentials:true});
+        const followedData = await FollowedResponse.data;
+        if(followedData !== ""){
+            setFollowed(true);
+        }else{
+            setFollowed(false)
+        }
+    }
+
+    useEffect(()=>{
+        if(status === "authenticated"){
+            getFollowing();
+        }
+    },[user,followStatus,unfollowStatus,followed])
+
     useEffect(()=>{
         fetchPostComments(commentsLimit);
     },[post._id,addCommentStatus,removeCommentStatus,commentsLimit])
@@ -60,19 +83,19 @@ export default function Post({post}){
         fetchPostLikes();
     },[post._id,removeLike,addLike])
 
-    return <>
-           {spinner ?
-                <div className={styles.spinner}>
-                    <div className={styles.poster}>
-                            
-                    </div>
-                    <div className={styles.content}>
-                        <div className={styles.head}>
-                            <div className={styles.profileImg}></div>
-                            <h2></h2>
+    return <div className={styles.post}>
+            {spinner ?
+                    <div className={styles.spinner}>
+                        <div className={styles.poster}>
+                                
                         </div>
-                    </div>
-            </div>
+                        <div className={styles.content}>
+                            <div className={styles.head}>
+                                <div className={styles.profileImg}></div>
+                                <h2></h2>
+                            </div>
+                        </div>
+                </div>
                 :
                 <div className={styles.grid}>
                     <div className={styles.poster}>
@@ -90,7 +113,7 @@ export default function Post({post}){
                             <img src={post.creator && post.creator[0].image} alt="" />
                             <h2>{post.creator && post.creator[0].name}</h2>
                             <div className={styles.options} onClick={()=> {
-                                dispatch(setCustomPostOptions({type:"postList",content:<PostOptionsModal postCreatorId={post.createdBy} />}))
+                                dispatch(setCustomPostOptions({type:"postList",content:<PostOptionsModal postCreatorId={post.createdBy} creator={post.creator} post_id={post._id} followed={followed} profile_id={user.userId} />}))
                                 dispatch(setShowPostOptionsModal(true))
                             }}>
                                 <FontAwesomeIcon icon={faEllipsis} />
@@ -109,14 +132,18 @@ export default function Post({post}){
                                     </div>}
                                 
                                     <div className={styles.comments}>
-                                        {postComments?.map((comment,index)=>{
+                                        {postComments.length > 0 ? postComments.map((comment,index)=>{
                                             if(postComments.length === index + 1){
                                                 return <div key={index} ref={lastCommentElement}>
                                                     <Comment key={index} comment={comment} post={post} />
                                                 </div>
                                             }
                                             return <Comment key={index} comment={comment} post={post} />
-                                        })}
+                                        }) : <div className={styles.emptyComments}>
+                                                <h2>No comments yet. <br/>
+                                                <pre>Start the conversation.</pre>
+                                                </h2>
+                                            </div>}
                                     </div>
                                 </div>
             
@@ -166,5 +193,6 @@ export default function Post({post}){
             </div>}
         {peopleModal && <PeopleModal type="share" postId={post._id} />}
         {showPostOptionsModal && customPostOptions.content}
-    </>
+        {unfollowModal.status && <UnfollowModal person={unfollowModal.payload} /> }
+        </div>
 }

@@ -1,8 +1,6 @@
 import {Server} from "socket.io";
 
 export default function handler(req,res){
-   
-            console.log('Socket is initializing')
             const io = new Server(res.socket.server)
             res.socket.server.io = io
 
@@ -29,6 +27,13 @@ export default function handler(req,res){
                 io.emit("getUsers",users);
                 })
 
+                // send and get conversations
+                socket.on("addConversation",({sender,receiverId})=>{
+                    io.emit("getConversation",{
+                        sender,
+                        receiverId
+                    })
+                })
 
                 //send and get message
                 socket.on("sendMessage",({sender,receiverId,text})=>{
@@ -37,6 +42,13 @@ export default function handler(req,res){
                     sender,
                     text
                 })
+                })
+
+                // send and get message notifcation
+                socket.on("addMessageNotification",({receiverId})=>{
+                    io.emit("getMessageNotification",{
+                        receiverId
+                    })
                 })
                 
                 // on io disconnection

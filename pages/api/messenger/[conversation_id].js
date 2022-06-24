@@ -1,6 +1,5 @@
 import Message from "../../../lib/models/messengerModel/message";
 import {getSession} from "next-auth/react";
-import Conversation from "../../../lib/models/messengerModel/conversation";
 
 export default async function handler(req,res){
     if(req.method === "GET"){

@@ -18,10 +18,8 @@ export default function Saved(){
     </>
 }
 
-export const getServerSideProps = auth(()=>{
+export const getServerSideProps = auth(async()=>{
     return{
-        props:{
-
-        }
+        props:{}
     }
-})
+});

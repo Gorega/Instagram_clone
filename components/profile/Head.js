@@ -74,7 +74,8 @@ export default function Head({}){
         }
     },[user,router])
 
-    return <>
+    if(profile_id){
+        return <>
         <div className={styles.head}>
             <img src={profile.image} alt="" />
             <div className={styles.info}>
@@ -100,5 +101,6 @@ export default function Head({}){
         </div>
         {showPostOptionsModal && customPostOptions.content}
         </>
+    }
 
 }

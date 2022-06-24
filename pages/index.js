@@ -11,12 +11,14 @@ import { useSelector } from 'react-redux';
 import { AppContext } from '../contextApi';
 import PostModal from '../components/PostModal';
 import PeopleModal from '../components/messenger/PeopleModal';
+import UnfollowModal from '../components/sideInterface/UnfollowModal';
 
 export default function Home() {
   const [page,setPage] = useState(1);
   const [firstRender,setFirstRender] = useState(true);
   const {posts,setPosts,postId} = useContext(AppContext);
   const {peopleModal} = useSelector((state)=> state.messenger);
+  const {unfollowModal} = useSelector((state)=>state.modal);
   const {showPostOptionsModal,customPostOptions,showPostModal} = useSelector((state)=>state.modal);
   const observer = useRef();
 
@@ -67,16 +69,15 @@ export default function Home() {
         <UserSide />
       </div>
     </div>
-    {showPostModal && <PostModal />}
+    {showPostModal && <PostModal onClose={"/"} />}
     {peopleModal && <PeopleModal type="share" postId={postId} />}
     {showPostOptionsModal && customPostOptions.content}
+    {unfollowModal.status && <UnfollowModal person={unfollowModal.payload} /> }
   </>
 }
 
-export const getServerSideProps = auth(()=>{
-      return{
-        props:{         
-        }
-      }
-    }
-)
+export const getServerSideProps = auth(async()=>{
+  return{
+      props:{}
+  }
+});
