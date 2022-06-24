@@ -15,7 +15,7 @@ import UnfollowModal from "../components/sideInterface/UnfollowModal";
 import axios from "axios";
 import { server } from "../lib/server";
 
-export default function Post({post}){
+export default function Post({post,customStyle}){
     const dispatch = useDispatch();
     const likeButtonRef = useRef();
     const {data:user,status} = useSession();
@@ -99,7 +99,7 @@ export default function Post({post}){
                 :
                 <div className={styles.grid}>
                     <div className={styles.poster}>
-                        <img src={post.posters && post.posters[0]} alt="" />
+                        <img style={customStyle} src={post.posters && post.posters[0]} alt="" />
                         <div className={styles.paginations}>
                             <ul>
                                 <li></li>

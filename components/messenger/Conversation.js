@@ -36,7 +36,7 @@ export default function Conversation({conversation,senderId}){
         },[conversation])
 
         useEffect(()=>{
-            socket.current.on("getConversation",(data)=>{
+            socket?.current.on("getConversation",(data)=>{
                 dispatch(setSocketConversation({
                     sender:data.sender,
                     receiverId:data.receiverId
@@ -45,10 +45,10 @@ export default function Conversation({conversation,senderId}){
         },[])
 
         useEffect(()=>{
-            if(socketConversation && conversation.members.includes(socketConversation.receiverId)){
+            if(socketConversation && conversation.members.every((member)=> member.includes(members))){
                 setChat(prev=> [...prev,socketConversation])
             }
-        },[socketConversation])
+        },[socketConversation,conversation])
 
     return <div className={styles.person}
                 onClick={()=> {

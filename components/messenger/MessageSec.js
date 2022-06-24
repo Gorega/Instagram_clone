@@ -30,7 +30,6 @@ export default function MessageSec(){
             receiverId:receiverId,
             text:messageText
         })
-
         // show conversation to next_user when sending message for the first time
         socket?.current.emit("addConversation",{
             sender:user.userId,

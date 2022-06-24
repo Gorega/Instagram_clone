@@ -83,7 +83,7 @@ export default function Main(){
             }
         })
        } 
-    },[user])
+    },[status])
 
     return <>
         <div className={styles.main} ref={navbarRef}>
