@@ -72,10 +72,12 @@
     width: 100%;
     padding:15px 0;
     cursor: pointer;
+    transition: .1s all ease-in-out;
 }
 
 .details .body .members .person:hover{
     background-color: #d9d9d9;
+    padding:15px 5px
 }
 
 .details .body .members .person img{

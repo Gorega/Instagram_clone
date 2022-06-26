@@ -19,7 +19,6 @@
     animation: spinner 4s linear infinite alternate;
     height:100%;
     width: 100%;
-    min-height:660px
 }
 
 .spinner .content{
@@ -344,6 +343,10 @@
 
 .post .grid .body .share ul li svg{
     color:black
+}
+
+.post .grid .body .share ul li svg:hover{
+    color:rgb(142, 142, 142);
 }
 
 .post .grid .body .share .right{

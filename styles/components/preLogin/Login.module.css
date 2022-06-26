@@ -13,6 +13,7 @@
 .logo img{
     width:50%;
     height:50%;
+    object-fit: cover;
 }
 
 .login form{
@@ -36,14 +37,21 @@
 }
 
 .login form button{
-    background-color: blue;
+    background-color: #0295F6;
     border:none;
     color:white;
+    opacity: .3;
+    pointer-events: none;
     width:100%;
     padding:7px 20px;
     font-size:14px;
     font-weight:500;
     cursor: pointer;
+}
+
+.login form button.active{
+    opacity: 1;
+    pointer-events:auto;
 }
 
 .other{
@@ -95,9 +103,18 @@
 .other h3{
     margin-top:25px;
     font-size:13px;
-    color:blue;
-    font-weight: 300;
+    color:#0295F6;
+    font-weight: bold;
     cursor: pointer;
+}
+
+.other .errorMsg{
+    color:red;
+    font-size:14px;
+    font-weight:500;
+    position: relative;
+    top:10px;
+    line-height: 1.4;
 }
 
 .login h4{
@@ -107,7 +124,17 @@
 }
 
 .login h4 span{
-    color:blue;
+    color:#0295F6;
     font-weight: 500;
     cursor: pointer;
+}
+
+@media(max-width:992px){
+    .formCard{
+        width:70% !important;
+    }
+    .logo img{
+        width:35%;
+        height:35%;
+    }
 }

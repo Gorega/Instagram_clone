@@ -94,7 +94,7 @@
 }
 
 .body .paginations ul li.active{
-    background-color: blue;
+    background-color: #0295F6;
 }
 
 .body .share{
@@ -113,7 +113,11 @@
 }
 
 .body .share ul li svg{
-    color:black;
+    color:black
+}
+
+.body .share ul li svg:hover{
+    color:rgb(142, 142, 142);
 }
 
 .body .share .right{

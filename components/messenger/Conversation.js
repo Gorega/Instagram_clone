@@ -1,6 +1,6 @@
 import styles from "../../styles/components/messenger/PeopleSec.module.css";
 import { useContext, useEffect, useState } from "react";
-import { setConversation, members, setShowConversationChat, setSocketConversation, setNewMessageNotification } from "../../features/messengerSlice";
+import { setConversation, members, setShowConversationChat, setSocketConversation, setNewMessageNotification, setShowConversationDetails } from "../../features/messengerSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {format} from "timeago.js";
 import axios from "axios";
@@ -29,7 +29,7 @@ export default function Conversation({conversation,senderId}){
 
         useEffect(()=>{
             fetchUserData();
-        },[conversation])
+        },[])
 
         useEffect(()=>{
             fetchConversationMessages();
@@ -53,6 +53,7 @@ export default function Conversation({conversation,senderId}){
     return <div className={styles.person}
                 onClick={()=> {
                 history.pushState(`${conversation.members[0]}${senderId}`,null,`/direct/${conversation.members[0]}${senderId}`)
+                dispatch(setShowConversationDetails(false));
                 dispatch(setShowConversationChat(true))
                 dispatch(setConversation({
                     id:`${conversation.members[0]}${senderId}`,

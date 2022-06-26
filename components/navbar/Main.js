@@ -77,13 +77,13 @@ export default function Main(){
 
     useEffect(()=>{
        if(status === "authenticated"){
-        socket?.current.on("getMessageNotification",(data)=>{
-            if(data.receiverId === user.userId){
-                dispatch(setNewMessageNotification(true))
-            }
-        })
+            socket?.current.on("getMessageNotification",(data)=>{
+                if(data.receiverId === user.userId){
+                    dispatch(setNewMessageNotification(true))
+                }
+            })
        } 
-    },[status])
+    },[user])
 
     return <>
         <div className={styles.main} ref={navbarRef}>

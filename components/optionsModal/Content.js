@@ -1,8 +1,8 @@
 import styles from "../../styles/components/PostOptionsModal.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSpinner, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
-import { setCustomPostOptions, setShowPostOptionsModal, setUnfollowModal } from "../../features/modalSlice";
+import { setCustomPostOptions, setShowPostModal, setShowPostOptionsModal, setUnfollowModal } from "../../features/modalSlice";
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../contextApi";
 import { getFollowers, getFollowing, unfollow } from "../../features/user/follower";
@@ -108,10 +108,13 @@ export default function Content(props){
                         dispatch(setCustomPostOptions({type:null}))
                         dispatch(setUnfollowModal({status:true,payload:props.creator[0]}));
                     }}>Unfollow</li>}
-                    <li onClick={()=> router.push(`/p/${props.post_id}`)}>Go to post</li>
+                    <li onClick={()=> {
+                        router.push(`/p/${props.post_id}`);
+                        dispatch(setShowPostModal(false))
+                        dispatch(setCustomPostOptions({type:null}))
+                    }}>Go to post</li>
                     <li onClick={()=> {
                         setPostId(props.post_id)
-                        dispatch(setCustomPostOptions({type:null}))
                         dispatch(setPeopleModal(true))
                     }}>Share to...</li>
                     <li onClick={()=>{

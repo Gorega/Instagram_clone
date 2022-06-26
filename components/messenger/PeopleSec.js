@@ -25,7 +25,7 @@ export default function People(){
         if(status === "authenticated"){
             fetchConversations();
         }
-    },[status,socketConversation])
+    },[status,socketConversation,conversations])
 
     return <>
         <div className={styles.peopleSec}>

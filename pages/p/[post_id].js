@@ -35,7 +35,7 @@ export default function PostPage({post,userPosts}){
         <div className="container">
             <div className={styles.card}>
                 <CardHolder style={{padding:0,margin:"auto"}}>
-                    <Post post={post} customStyle={{maxHeight:660}} />
+                    <Post post={post} customStyle={{maxHeight:660,minHeight:660}} />
                 </CardHolder>
             </div>
             <div className={styles.posts}>

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { server } from "../../lib/server";
 import { useSession } from "next-auth/react";
-import {setNewMessageNotification, setPending, setPeopleModal, setShowConversationChat} from "../../features/messengerSlice";
+import {setPending, setPeopleModal, setShowConversationChat, setShowConversationDetails} from "../../features/messengerSlice";
 import ConversationDetails from "./ConversationDetails";
 import SignleMessage from "./SingleMessage";
 import { AppContext } from "../../contextApi";
@@ -12,9 +12,8 @@ import { AppContext } from "../../contextApi";
 export default function MessageSec(){
     const dispatch = useDispatch();
     const {data:user,status} = useSession();
-    const {showConversationChat,conversation} = useSelector((state)=> state.messenger);
+    const {showConversationDetails,showConversationChat,conversation} = useSelector((state)=> state.messenger);
     const {socket} = useContext(AppContext);
-    const [showConversationDetails,setShowConversationDetails] = useState(false);
     const [socketMessage,setSocketMessage] = useState(null);
     const [messageText,setMessageText] = useState(null);
     const [blockedAlert,setBlockedAlert] = useState(false);
@@ -48,11 +47,12 @@ export default function MessageSec(){
         try{
             const response = await axios.post(`${server}/api/messenger/${conversation.data._id}`,{sender:user.userId,text:messageText,members:conversation.data.members},{withCredentials:true});
             const data = await response.data;
+            console.log(data)
             setChat([...chat,data])
             setMessageText("");
             dispatch(setPending(false))
-            // update conversation date after sending a message
-            await axios.patch(`${server}/api/user/${user.userId}/conversation/updateTime/${conversation.data._id}`,{updatedAt:data.createdAt},{withCredentials:true});
+            // // update conversation date after sending a message
+            // await axios.patch(`${server}/api/user/${user.userId}/conversation/updateTime/${conversation.data._id}`,{updatedAt:Date.now()},{withCredentials:true});
         }catch(err){
             // if(err.response.data.msg === "Blocked"){
             //     setBlockedAlert(true);
@@ -74,9 +74,9 @@ export default function MessageSec(){
     useEffect(()=>{
         if(conversation){
             fetchConversationMessages();
-            setShowConversationDetails(false);
+            dispatch(setShowConversationDetails(false))
             setBlockedAlert(false)
-            messageBoxInputRef.current.focus();
+            messageBoxInputRef?.current.focus();
         }
     },[conversation])
 
@@ -92,11 +92,11 @@ export default function MessageSec(){
         }
     },[user])
 
-        useEffect(()=>{
-            if(socketMessage && conversation?.data.members.includes(socketMessage.sender)){
-                setChat(prev=> [...prev,socketMessage])
-            }
-        },[socketMessage])
+    useEffect(()=>{
+        if(socketMessage && conversation?.data.members.includes(socketMessage.sender)){
+            setChat(prev=> [...prev,socketMessage])
+        }
+    },[socketMessage])
 
     return <>
         <div className={styles.messageSec}>
@@ -106,7 +106,6 @@ export default function MessageSec(){
         ? <ConversationDetails
                 conversation={conversation}
                 member={conversation.sender}
-                closeConversationDetails={()=> setShowConversationDetails(false)}
                 />
         :
         <div className={styles.messageHolder}>
@@ -116,7 +115,7 @@ export default function MessageSec(){
                         <img src={conversation.sender.image} alt="" />
                         <h2>{conversation.sender.name}</h2>
                     </div>
-                    <div className={styles.info} onClick={()=> setShowConversationDetails(true)}>
+                    <div className={styles.info} onClick={()=> dispatch(setShowConversationDetails(true))}>
                         <svg ariaLabel="View Thread Details" color="#262626" fill="#262626" height="24" role="img" viewBox="0 0 24 24" width="24"><circle cx="12.001" cy="12.005" fill="none" r="10.5" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"></circle><circle cx="11.819" cy="7.709" r="1.25"></circle><line fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" x1="10.569" x2="13.432" y1="16.777" y2="16.777"></line><polyline fill="none" points="10.569 11.05 12 11.05 12 16.777" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"></polyline></svg>
                     </div>
                 </div>

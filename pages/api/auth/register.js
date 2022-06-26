@@ -1,4 +1,3 @@
-import mongoose from "mongoose"
 import { connect } from "../../../lib/db";
 import {hash} from "bcrypt"
 import User from "../../../lib/models/userModel/user";

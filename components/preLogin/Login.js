@@ -6,14 +6,18 @@ import Foot from "../profile/Foot";
 import Link from "next/link";
 import { useState } from "react";
 import {signIn} from "next-auth/react"
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 export default function Login(){
     const [username,setUsername] = useState(null)
     const [email,setEmail] = useState(null)
     const [password,setPassword] = useState(null);
+    const [error,setError] = useState({status:null,msg:""});
+    const [success,setSuccess] = useState({status:false,msg:""});
 
     const loginHandler = async (e)=>{
         e.preventDefault();
+        setError({status:"pending"});
         const result = await signIn("credentials",{
             redirect:false,
             email:email,
@@ -22,6 +26,7 @@ export default function Login(){
         })
         if(result.error){
             console.log(result.error)
+            setError({status:"fulfilled",msg:result.error});
         }
         if(!result.error){
             window.location.replace("/")
@@ -30,7 +35,7 @@ export default function Login(){
 
     return <div className={styles.login}>
         <div className={styles.body}>
-            <CardHolder style={{width:"50%",left:"50%",transform:"translateX(-50%)"}}>
+            <CardHolder preLoginFormClassName={styles.formCard} style={{width:"50%",left:"50%",transform:"translateX(-50%)"}}>
                 <div className={styles.logo}>
                     <img src="https://www.instagram.com/static/images/web/logged_out_wordmark.png/7a252de00b20.png" alt="" />
                 </div>
@@ -40,17 +45,20 @@ export default function Login(){
                         setUsername(e.target.value)
                     }} />
                     <input type="password" placeholder="Password" value={password} onChange={(e)=> setPassword(e.target.value)} />
-                    <button type="submit">Log In</button>
+                    <button className={(email && password) && styles.active} type="submit">{error.status === "pending" ? <FontAwesomeIcon className="fa-spin" icon={faSpinner} /> : "Log In"}</button>
                 </form>
                 <div className={styles.other}>
                     <div className={styles.facebookLogin}>
                         <FontAwesomeIcon icon={faFacebook} />
                         <h4>Log in with facebook</h4>
                     </div>
+                    {error.status && <div className={styles.errorMsg}>
+                        {error.msg}    
+                    </div>}
                     <h3>Forget password?</h3>
                 </div>
             </CardHolder>
-            <CardHolder style={{width:"50%",left:"50%",transform:"translateX(-50%)"}}>
+            <CardHolder preLoginFormClassName={styles.formCard} style={{width:"50%",left:"50%",transform:"translateX(-50%)"}}>
                 <Link href="/register"><h4>Dont have an account? <span>Sign up</span></h4></Link>
             </CardHolder>
             <Foot />

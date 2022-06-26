@@ -37,11 +37,11 @@
     display: grid;
     grid-template-columns: repeat(3,30.333333%);
     gap:30px;
-    cursor: pointer;
 }
 
 .posts .grid .post{
     position: relative;
+    cursor:pointer;
 }
 
 .posts .grid .post::after{
@@ -62,6 +62,7 @@
 .posts .grid .post img{
     width:100%;
     height:300px;
+    object-fit: cover;
 }
 
 .posts .grid .post .patch{

@@ -11,7 +11,7 @@
 }
 
 .register p{
-    font-size:15px;
+    font-size:13px;
     color:#4d4d4d;
     margin-top:7px;
     font-weight: 500;
@@ -19,11 +19,12 @@
 
 .register .facebookRegister{
     margin:15px 0;
-    background-color: blue;
+    background-color: #0295F6;
     color:White;
     padding:7px 20px;
     font-size:13px;
     font-weight: 500;
+    cursor: pointer;
 }
 
 
@@ -57,7 +58,7 @@
 }
 
 .register form button{
-    background-color: blue;
+    background-color: #0295F6;
     border:none;
     color:white;
     width:100%;
@@ -65,7 +66,14 @@
     font-size:14px;
     font-weight:500;
     cursor: pointer;
-    margin-bottom:25px; 
+    margin-top:20px;
+    opacity: .3;
+    pointer-events: none;
+}
+
+.register form button.active{
+    opacity: 1;
+    pointer-events: auto;
 }
 
 .register form span{
@@ -80,7 +88,26 @@
 }
 
 .register h3 span{
-    color:blue;
+    color:#0295F6;
     font-weight: 500;
     cursor: pointer;
+}
+
+.register .errorMsg{
+    color:red;
+    font-size:14px;
+    font-weight:500;
+    position: relative;
+    top:15px;
+    line-height: 1.4;
+}
+
+@media(max-width:992px){
+    .formCard{
+        width:70% !important;
+    }
+    .logo img{
+        width:35%;
+        height:35%;
+    }
 }

@@ -50,6 +50,14 @@ export default function handler(req,res){
                         receiverId
                     })
                 })
+
+                // like and unlike posts
+                socket.on("addLike",({postId,userId})=>{
+                    io.emit("getLike",{
+                        postId,
+                        userId
+                    })
+                })
                 
                 // on io disconnection
                 socket.on("disconnect",(socket)=>{

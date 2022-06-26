@@ -8,7 +8,7 @@ import { AppContext } from "../contextApi";
 
 export default function usePostData(props){
     const dispatch = useDispatch();
-    const {saved} = useContext(AppContext);
+    const {saved,socket} = useContext(AppContext);
     const {data:user} = useSession();
     const [postLikes,setPostLikes] = useState([]);
     const [postComments,setPostComments] = useState([]);
@@ -21,6 +21,10 @@ export default function usePostData(props){
             dispatch(removeLike({post_id:props._id,like_id:liked._id}))
             
         }else{
+            socket?.current.emit("addLike",{
+                postId:props._id,
+                userId:user.userId,
+            })
             dispatch(addLike({post_id:props._id}))
         }
     }

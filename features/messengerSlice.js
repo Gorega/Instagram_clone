@@ -7,6 +7,7 @@ const initialState = {
   pending:false,
   socketConversation:null,
   showConversationChat:false,
+  showConversationDetails:false,
   conversation:null,
   peopleModal:false,
   newMessageNotification:false,
@@ -44,10 +45,13 @@ export const messengerSlice = createSlice({
     setSocketConversation:(state,action)=>{
       state.socketConversation = action.payload;
     },
+    setShowConversationDetails:(state,action)=>{
+      state.showConversationDetails = action.payload
+    }
   }
 })
 
 // Action creators are generated for each case reducer function
-export const { setSocketConversation,setShowConversationChat,setConversation,setPeopleModal,setPending,setNewMessageNotification } = messengerSlice.actions
+export const { setShowConversationDetails,setSocketConversation,setShowConversationChat,setConversation,setPeopleModal,setPending,setNewMessageNotification } = messengerSlice.actions
 
 export default messengerSlice.reducer

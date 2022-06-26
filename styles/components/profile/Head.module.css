@@ -11,6 +11,7 @@
     width:120px;
     height:120px;
     border-radius: 50%;
+    object-fit: cover;
 }
 
 .head .info{
@@ -40,9 +41,14 @@
 }
 
 .head .info .user svg{
-    font-size:20px;
+    font-size:22px;
     color:black;
     cursor: pointer;
+    transition: .3s all ease-in-out;
+}
+
+.head .info .user svg:hover{
+    transform: rotate(180deg);
 }
 
 .head .more{
