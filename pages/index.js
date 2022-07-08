@@ -9,6 +9,7 @@ import auth from './api/auth/auth';
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { AppContext } from '../contextApi';
+import EditPostModal from "../components/post/Index";
 import PostModal from '../components/PostModal';
 import PeopleModal from '../components/messenger/PeopleModal';
 import UnfollowModal from '../components/sideInterface/UnfollowModal';
@@ -19,7 +20,7 @@ export default function Home() {
   const {posts,setPosts,postId} = useContext(AppContext);
   const {peopleModal} = useSelector((state)=> state.messenger);
   const {unfollowModal} = useSelector((state)=>state.modal);
-  const {showPostOptionsModal,customPostOptions,showPostModal} = useSelector((state)=>state.modal);
+  const {showPostOptionsModal,editPostModal,customPostOptions,showPostModal} = useSelector((state)=>state.modal);
   const observer = useRef();
 
   const lastPostElementRef = useCallback(node =>{
@@ -42,7 +43,7 @@ export default function Home() {
   useEffect(()=>{
     const fetchMorePosts = async ()=>{
         const response = await axios.get(`${server}/api/post?page=${page}`,{withCredentials:true});
-        let data = await response.data;
+        const data = await response.data;
         setPosts(data.results)
     }
     if(!firstRender){
@@ -69,6 +70,7 @@ export default function Home() {
         <UserSide />
       </div>
     </div>
+    {editPostModal.status && <EditPostModal editPost={true} backdrop={editPostModal.content?.poster.backdrop} caption={editPostModal.content?.caption} />}
     {showPostModal && <PostModal onClose={"/"} />}
     {peopleModal && <PeopleModal type="share" postId={postId} />}
     {showPostOptionsModal && customPostOptions.content}

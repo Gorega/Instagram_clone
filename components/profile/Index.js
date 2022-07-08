@@ -33,6 +33,6 @@ export default function Index(){
             {list[activeProfileList].content}
         </div>
         <Foot />
-        {showPostModal && <PostModal />}
+        {showPostModal && <PostModal onClose={`/${profile_id}`} />}
     </div>
 }

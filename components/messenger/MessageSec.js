@@ -14,8 +14,8 @@ export default function MessageSec(){
     const {data:user,status} = useSession();
     const {showConversationDetails,showConversationChat,conversation} = useSelector((state)=> state.messenger);
     const {socket} = useContext(AppContext);
-    const [socketMessage,setSocketMessage] = useState(null);
-    const [messageText,setMessageText] = useState(null);
+    const [socketMessage,setSocketMessage] = useState("");
+    const [messageText,setMessageText] = useState("");
     const [blockedAlert,setBlockedAlert] = useState(false);
     const [chat,setChat] = useState([]);
     const messageBoxInputRef = useRef();
@@ -47,17 +47,15 @@ export default function MessageSec(){
         try{
             const response = await axios.post(`${server}/api/messenger/${conversation.data._id}`,{sender:user.userId,text:messageText,members:conversation.data.members},{withCredentials:true});
             const data = await response.data;
-            console.log(data)
             setChat([...chat,data])
-            setMessageText("");
-            dispatch(setPending(false))
-            // // update conversation date after sending a message
-            // await axios.patch(`${server}/api/user/${user.userId}/conversation/updateTime/${conversation.data._id}`,{updatedAt:Date.now()},{withCredentials:true});
+            // update conversation date after sending a message
+            axios.patch(`${server}/api/user/${user.userId}/conversation/updateTime/${conversation.data._id}`,{updatedAt:Date.now()},{withCredentials:true})
+            .then(res => {
+                setMessageText("");
+                dispatch(setPending(false))
+            })
         }catch(err){
-            // if(err.response.data.msg === "Blocked"){
-            //     setBlockedAlert(true);
-            //     setMessageText(""); 
-            // }
+
         }
     }
 
@@ -74,6 +72,7 @@ export default function MessageSec(){
     useEffect(()=>{
         if(conversation){
             fetchConversationMessages();
+            setMessageText("");
             dispatch(setShowConversationDetails(false))
             setBlockedAlert(false)
             messageBoxInputRef?.current.focus();

@@ -1,10 +1,10 @@
+import {initFirebase} from "../../lib/initFirebase";
 import styles from "../../styles/components/settings/EditProfile.module.css";
 import {useSession} from "next-auth/react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import {server} from "../../lib/server";
-import {initFirebase} from "../../lib/initFirebase";
-import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { getStorage, ref, uploadBytesResumable,deleteObject, getDownloadURL } from "firebase/storage";
 import ModalHolder from "../ModalHolder";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
@@ -22,6 +22,7 @@ export default function EditProfile(){
     const [phone,setPhone] = useState(user?.phone);
     const [gender,setGender] = useState(user?.gender);
     const [image,setImage] = useState(user?.image);
+    const [imageName,setImageName] = useState(null);
     const [imageSpinner,setImageSpinner] = useState(false);
     const [showChangeProfilePhotoModal,setShowChangeProfilePhotoModal] = useState(false);
     const defaultProfileImage = "https://firebasestorage.googleapis.com/v0/b/instagram-clone-a6598.appspot.com/o/profile%2Fdefault.jpeg?alt=media&token=58a03f2d-ebc8-4194-b036-3329eaa12d0e"
@@ -76,8 +77,8 @@ export default function EditProfile(){
                     getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
                         setImageSpinner(false)
                         setImage(downloadURL);
+                        setImageName(file.name)
                         axios.patch(`${server}/api/settings/edit`,{image:downloadURL},{withCredentials:true});
-                        console.log(downloadURL)
                     });
                 }
                 );
@@ -87,6 +88,14 @@ export default function EditProfile(){
         setImage(defaultProfileImage);
         setShowChangeProfilePhotoModal(false);
         const response = await axios.patch(`${server}/api/settings/edit`,{image:defaultProfileImage},{withCredentials:true});
+        // remove image from firebase
+        const storage = getStorage();
+        const desertRef = ref(storage, `profile/${imageName}`);
+        deleteObject(desertRef).then(() => {
+            console.log("deleted")
+        }).catch((error) => {
+            console.log(error)
+        });
     }
 
     const UpdateUserInfo = async (e)=>{

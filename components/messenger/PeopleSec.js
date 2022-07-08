@@ -11,7 +11,7 @@ import PeopleModal from "./PeopleModal";
 export default function People(){
     const {data:user,status} = useSession();
     const dispatch = useDispatch();
-    const {socketConversation,peopleModal} = useSelector((state)=> state.messenger)
+    const {socketConversation,peopleModal,pending} = useSelector((state)=> state.messenger)
     const [conversations,setConversations] = useState([]);
     const peopleSpinner = [...new Array(8)]
 
@@ -25,7 +25,7 @@ export default function People(){
         if(status === "authenticated"){
             fetchConversations();
         }
-    },[status,socketConversation,conversations])
+    },[user,socketConversation,pending])
 
     return <>
         <div className={styles.peopleSec}>
@@ -38,11 +38,9 @@ export default function People(){
             <div className={styles.people}>
                 {conversations.length > 0
                 ? 
-                conversations.map((conversation,index)=>{
-                    const senderId = conversation.seenBy.find((member)=> member !== user.userId);
-                    if(senderId){
-                        return <Conversation key={index} conversation={conversation} senderId={senderId} />
-                    }
+                conversations?.map((conversation,index)=>{
+                    const senderId = conversation.members?.find((member)=> member !== user.userId);
+                    return <Conversation key={index} conversation={conversation} senderId={senderId && senderId} />
                 })
                 :
                 peopleSpinner.map((_,index)=>{

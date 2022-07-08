@@ -1,27 +1,31 @@
 import {initFirebase} from "../../lib/initFirebase";
-import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { getStorage, ref, uploadBytesResumable, getDownloadURL, getMetadata } from "firebase/storage";
 import styles from "../../styles/components/post/Upload.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import { setDoneUpload,setUploadedFile } from "../../features/addPostSlice";
-import { useState } from "react";
+import { setDoneUpload } from "../../features/addPostSlice";
+import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { AppContext } from "../../contextApi";
+import { useContext } from "react";
 
-export default function Upload(){
-
+export default function Upload(props){
         const dispatch = useDispatch();
-        const {doneUpload,uploadedFile} = useSelector((state)=> state.addPost);
+        const {uploadedFiles,setUploadedFiles} = useContext(AppContext);
+        const {currentFile,doneUpload} = useSelector((state)=> state.addPost);
+        const {editPostModal} = useSelector((state)=>state.modal);
         const [loading,setLoading] = useState(false);
+        const [fileType,setFileType] = useState(null);
 
         const uploadFile = (e)=>{
             const storage = getStorage();
             const file = e.target.files[0];
             // Create the file metadata
             const metadata = {
-                contentType: 'image/jpeg'
+                contentType: file?.type.includes("image") ? 'image/jpeg' : "video/mb4"
                 };
                 // Upload file and metadata to the object 'images/mountains.jpg'
-                const storageRef = ref(storage, 'posts/' + file.name);
+                const storageRef = ref(storage, 'posts/' + file?.name);
                 const uploadTask = uploadBytesResumable(storageRef, file, metadata);
                 // Listen for state changes, errors, and completion of the upload.
                 uploadTask.on('state_changed',
@@ -62,11 +66,18 @@ export default function Upload(){
                     getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
                     setLoading(false);
                     dispatch(setDoneUpload(true))
-                    dispatch(setUploadedFile([downloadURL]))
+                        // get file contentType
+                        getMetadata(storageRef).then((metadata)=>{
+                            setUploadedFiles(prevState => [...prevState,{backdrop:downloadURL,contentType:metadata.contentType,name:metadata.name}])
+                        })
                     });
                 }
                 );
         }
+
+    useEffect(()=>{
+        setFileType(editPostModal.content?.poster.type)
+    },[editPostModal])
 
     return <div className={styles.upload}>
         <div className={styles.uploadHolder}>
@@ -83,7 +94,10 @@ export default function Upload(){
                 </> 
                 :
                 <div className={styles.data}>
-                    <img src={uploadedFile[0]} alt="" />
+                    {props.createPost && uploadedFiles[currentFile]?.contentType.includes("image") && <img src={props.backdrop} alt="" />}
+                    {props.createPost && uploadedFiles[currentFile]?.contentType.includes("video") && <video controls src={props.backdrop} alt="" />}
+                    {props.editPost && fileType?.includes("image") && <img src={props.backdrop} alt="" />} 
+                    {props.editPost && fileType?.includes("video") && <video controls src={props.backdrop} alt="" />}
                 </div>
                 }
         </div>

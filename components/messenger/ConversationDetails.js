@@ -14,7 +14,7 @@ export default function ConversationDetails({conversation,member}){
     
     const deleteConversationHandler = async ()=>{
         dispatch(setPending(true))
-        const response = await axios.patch(`${server}/api/user/${user.userId}/conversation/${conversation.data._id}`,{senderId:conversation.sender._id});
+        const response = await axios.patch(`${server}/api/user/${user.userId}/conversation/${conversation.data._id}`);
         dispatch(setShowConversationChat(false));
         dispatch(setPending(false))
         setShowAlert({status:false})

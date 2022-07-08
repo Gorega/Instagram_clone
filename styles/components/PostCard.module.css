@@ -60,6 +60,41 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    margin:12px auto;
+}
+
+.body .posters .controls{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: absolute;
+    width: 100%;
+}
+
+.body .posters .controls div{
+    background-color: white;
+    border-radius: 50%;
+    width:33px;
+    height:33px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.body .posters .controls div.disabled{
+    opacity: 0;
+    pointer-events: none;
+}
+
+.body .posters .controls .right{
+    position: relative;
+    right:10px;
+}
+
+.body .posters .controls .left{
+    position: relative;
+    left:10px;
 }
 
 .body .posters img{
@@ -80,7 +115,6 @@
     display: flex;
     justify-content: center;
     width: 100%;
-    margin:10px auto;
 }
 
 .body .paginations ul li{
@@ -220,4 +254,10 @@
 .footer button.disabled{
     pointer-events: none;
     opacity: .3;
+}
+
+.emojiPickerBox{
+    position: absolute;
+    bottom:60px;
+    left:0;
 }

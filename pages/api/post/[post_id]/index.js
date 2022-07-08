@@ -5,12 +5,13 @@ import {getSession} from "next-auth/react";
 import mongoose from "mongoose"
 
 export default async function handler(req,res){
-    if(req.method === "GET"){
         await connect();
-        const session = await getSession({req})
+        const session = await getSession({req});
         // if(!session){
-        //     return res.status(401).json({msg:"Unauthorized"});
+        //     return res.status(401).json({msg:"Unathorized"});
         // }
+
+    if(req.method === "GET"){
         let {post_id} = req.query;
         post_id = mongoose.Types.ObjectId(post_id)
         const post = await Post.aggregate([
@@ -27,14 +28,15 @@ export default async function handler(req,res){
         ]);
         return res.status(200).json(post);
     }
-    if(req.method === "DELETE"){
-        await connect();
-        const session = await getSession({req});
-        if(!session){
-            return res.status(401).json({msg:"Unathorized"});
-        }
+    if(req.method === "PATCH"){
         const {post_id} = req.query;
-        await Post.findOneAndDelete({createdBy:session.userId},{_id:post_id});
+        const {poster,caption,location} = req.body;
+        await Post.findOneAndUpdate({_id:mongoose.Types.ObjectId(post_id)},{posters:[...poster],caption,location});
+        return res.status(200).json({msg:"Post updated successfuly"});
+    }
+    if(req.method === "DELETE"){
+        const {post_id} = req.query;
+        await Post.findOneAndDelete({_id:mongoose.Types.ObjectId(post_id)});
         await Saved.findOneAndDelete({post_id});
         return res.status(200).json({msg:"Post deleted successfuly"});
     }

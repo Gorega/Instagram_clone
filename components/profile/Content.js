@@ -10,10 +10,10 @@ export default function Content(props){
             </div>}
         
            <div className={styles.posts}>
-                <div className={styles.grid}>
-                        {props.content?.map((post,index)=>{
+                <div className={`${props.content.length <= 0 ? styles.block : styles.grid}`}>
+                        {props.content.length > 0 ? props.content.map((post,index)=>{
                                 return <Data key={index} {...post} />
-                            })}    
+                            }) : <div className={styles.empty}>No Content</div>}    
                 </div>
            </div>
     </div>

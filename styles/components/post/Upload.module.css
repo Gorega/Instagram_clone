@@ -4,6 +4,12 @@
     align-items: center;
     margin:auto;
     text-align: center;
+    position: absolute;
+    width: fit-content;
+    height:fit-content;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
 }
 
 .upload .uploadHolder h2{
@@ -31,7 +37,6 @@
 .upload .uploadHolder .data{
     width: 100%;
     height:100%;
-    position: relative;
 }
 
 .upload .uploadHolder svg{
@@ -41,4 +46,11 @@
 .upload .uploadHolder img{
     width:100%;
     height: 100%;
+    object-fit:cover;
+}
+
+.upload .uploadHolder .data video{
+    width:100%;
+    height:100%;
+    object-fit: cover;
 }

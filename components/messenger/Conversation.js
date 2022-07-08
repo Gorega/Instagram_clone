@@ -6,34 +6,36 @@ import {format} from "timeago.js";
 import axios from "axios";
 import { server } from "../../lib/server";
 import { AppContext } from "../../contextApi";
-import { useSession } from "next-auth/react";
 
 export default function Conversation({conversation,senderId}){
 
         const dispatch = useDispatch();
-        const {data:user,status} = useSession();
         const [person,setPerson] = useState([]); 
         const [chat,setChat] = useState([]);
         const {socket} = useContext(AppContext);
+        const [activeConversation,setActiveConversation] = useState(false);
         const {socketConversation} = useSelector((state)=> state.messenger);
-
-        const fetchUserData = async ()=>{
-            dispatch(members({senderId})).then(res => setPerson(res.payload[0]));
-        }
-
+        
         const fetchConversationMessages = async ()=>{
             const response = await axios.get(`${server}/api/messenger/${conversation._id}`,{withCredentials:true});
             const data = await response.data;
             setChat(data)
         }
-
-        useEffect(()=>{
-            fetchUserData();
-        },[])
+        
+        const fetchUserData = async ()=>{
+            dispatch(members({senderId})).then(res => {
+                setPerson(res.payload[0])
+            });
+        }
 
         useEffect(()=>{
             fetchConversationMessages();
         },[conversation])
+        
+        useEffect(()=>{
+            fetchUserData();
+        },[conversation])
+
 
         useEffect(()=>{
             socket?.current.on("getConversation",(data)=>{
@@ -48,15 +50,15 @@ export default function Conversation({conversation,senderId}){
             if(socketConversation && conversation.members.every((member)=> member.includes(members))){
                 setChat(prev=> [...prev,socketConversation])
             }
-        },[socketConversation,conversation])
+        },[socketConversation])
 
-    return <div className={styles.person}
+    return <div className={`${styles.person} ${activeConversation && styles.active}`}
                 onClick={()=> {
-                history.pushState(`${conversation.members[0]}${senderId}`,null,`/direct/${conversation.members[0]}${senderId}`)
+                history.pushState(`${[...conversation.members].join("")}`,null,`/direct/${[...conversation.members].join("")}`)
                 dispatch(setShowConversationDetails(false));
-                dispatch(setShowConversationChat(true))
+                dispatch(setShowConversationChat(true));
                 dispatch(setConversation({
-                    id:`${conversation.members[0]}${senderId}`,
+                    id:[...conversation.members].join(""),
                     data:conversation,
                     sender:person
                 }))

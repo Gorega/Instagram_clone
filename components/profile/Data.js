@@ -5,10 +5,12 @@ import { useEffect, useState } from "react"
 import { getTotalLikes } from "../../features/post/likeSlice";
 import { useDispatch } from "react-redux";
 import {setShowPostModal} from "../../features/modalSlice";
+import { getPostComments } from "../../features/post/commentSlice";
 
 export default function Data(props){
     const dispatch = useDispatch();
-    const [postLikes,setPostLikes] = useState([]);
+    const [postLikes,setPostLikes] = useState(null);
+    const [postComments,setPostComments] = useState(null)
 
     const openPostModalHnadler = (post_id)=>{
         history.pushState(post_id,null,`/p/${post_id}`)
@@ -17,16 +19,17 @@ export default function Data(props){
 
     useEffect(()=>{
         dispatch(getTotalLikes({post_id:props.post_id || props._id})).then(res => setPostLikes(res.payload))
+        dispatch(getPostComments({post_id:props.post_id || props._id,limit:1000})).then(res=> setPostComments(res.payload.length))
     },[])
 
     return <>
         <div className={styles.post} onClick={()=> openPostModalHnadler(props.post_id || props._id)}>
-            <img src={(props.post && props.post[0].posters[0]) || props.posters[0]} alt="" />
+            <img src={(props.post && props.post[0].posters[0].backdrop) || props.posters[0].backdrop} alt="" />
             <div className={styles.patch}>
                 <ul>
                     {props.video && <li><FontAwesomeIcon icon={faPlay} /> 22</li>}
                     <li><FontAwesomeIcon icon={faHeart} /> {postLikes}</li>
-                    <li><FontAwesomeIcon icon={faComment} /> 0</li>
+                    <li><FontAwesomeIcon icon={faComment} /> {postComments}</li>
                 </ul>
             </div>
         </div>

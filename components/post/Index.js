@@ -8,30 +8,53 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { setDoneUpload } from "../../features/addPostSlice";
-import {setShowAddPostModal} from "../../features/modalSlice";
+import {setAddPostModal, setEditPostModal} from "../../features/modalSlice";
 import { useState } from "react";
 import { setUpdatePosts } from "../../features/post";
+import { useContext } from "react";
+import { AppContext } from "../../contextApi";
 
-export default function Index(){
+export default function Index(props){
     const dispatch = useDispatch();
+    const {uploadedFiles,setUploadedFiles} = useContext(AppContext);
     const [loading,setLoading] = useState(false);
+    const [location,setLocation] = useState("");
     const [captionValue,setCaptionValue] = useState("");
-    const [location,setLocation] = useState(null);
-    const {doneUpload,uploadedFile} = useSelector((state)=> state.addPost)
+    const {editPostModal} = useSelector((state)=> state.modal);
+    const {doneUpload} = useSelector((state)=> state.addPost)
 
-    const sharePost = ()=>{
+    const sharePostHandler = ()=>{
         setLoading(true)
         dispatch(setUpdatePosts("pending"));
-        axios.post(`${server}/api/post/add`,{posters:[uploadedFile[0]],caption:captionValue,location:location},{withCredentials:true})
+        axios.post(`${server}/api/post/add`,{poster:[...uploadedFiles],caption:captionValue,location:location},{withCredentials:true})
         .then(res => {
-            dispatch(setShowAddPostModal(false))
+            dispatch(setAddPostModal({status:false}))
+            dispatch(setDoneUpload(false));
             dispatch(setUpdatePosts("done"));
-            setLoading(false)
+            setUploadedFiles([]);
+            setLoading(false);
         })
         .catch(err => {
             setLoading(false)
         });
     }
+
+    const editPostHandler = ()=>{
+        setLoading(true)
+        dispatch(setUpdatePosts("pending"));
+        axios.patch(`${server}/api/post/${editPostModal.postId}`,{poster:[...uploadedFiles],caption:captionValue,location:location},{withCredentials:true})
+        .then(res => {
+            dispatch(setEditPostModal({status:false}))
+            dispatch(setDoneUpload(false));
+            dispatch(setUpdatePosts("done"));
+            setUploadedFiles([]);
+            setLoading(false);
+        })
+        .catch(err => {
+            setLoading(false)
+        });
+    }
+
     return <>
         {loading && <div className={styles.spinner}> <FontAwesomeIcon className="fa-spin" icon={faSpinner} /> </div>}
         <ModalHolder showCloseButton={true}>
@@ -40,20 +63,21 @@ export default function Index(){
                         <FontAwesomeIcon icon={faArrowLeft} />
                     </div>}
                     <h2>Create new post</h2>
-                    {doneUpload && <span onClick={sharePost}>Share</span>}
+                    {(doneUpload && props.createPost && <span onClick={sharePostHandler}>Share</span>)}
+                    {(doneUpload && props.editPost && <span onClick={editPostHandler}>Edit</span>)}
                 </div>
                 {!doneUpload && <div className={styles.content}>
                     <Upload />
                 </div>}
                 {doneUpload && <div className={styles.content}>
                     <div className={styles.sec}>
-                        <Upload />
+                        <Upload editPost={props.editPost} createPost={props.createPost} backdrop={props.backdrop} />
                     </div>
                     <div className={styles.sec}>
-                        <Caption caption={captionValue}
+                        <Caption caption={props.caption}
                                 setCaption={(e)=>setCaptionValue(e.target.value)}
                                 location={location}
-                                setLocation={(e)=>setLocation(e.target.value)}
+                                setLocation={(e)=>setLocation(e.target.value)}   
                                 />
                     </div>
                 </div>}

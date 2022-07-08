@@ -39,6 +39,12 @@
     gap:30px;
 }
 
+.posts .block{
+    display: block;
+    text-align: center;
+    margin-top:70px;
+}
+
 .posts .grid .post{
     position: relative;
     cursor:pointer;
@@ -87,4 +93,11 @@
 
 .posts .grid ul li svg{
     margin-right:2px;
+}
+
+.posts .block .empty{
+    text-align: center;
+    font-size:24px;
+    font-weight: 300;
+    margin:auto;
 }

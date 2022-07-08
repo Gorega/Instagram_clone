@@ -1,13 +1,16 @@
 import Message from "../../../lib/models/messengerModel/message";
 import {getSession} from "next-auth/react";
+import { connect } from "../../../lib/db";
 
 export default async function handler(req,res){
+    await connect();
+    const session = await getSession({req});
+    if(!session){
+        return res.status(401).json({msg:"Unathorized"});
+    }
+
     if(req.method === "GET"){
         const {conversation_id} = req.query;
-        const session = await getSession({req});
-        if(!session){
-            return res.status(401).json({msg:"Unathorized"});
-        }
         const messages = await Message.find({conversationId:conversation_id,seenBy:{$in:[session.userId]}});
         return res.status(200).json(messages);
     }
@@ -15,10 +18,6 @@ export default async function handler(req,res){
     if(req.method === "POST"){
         const {conversation_id} = req.query;
         const {sender,text,members,postId} = req.body;
-        const session = await getSession({req});
-        if(!session){
-            return res.status(401).json({msg:"Unathorized"});
-        }
 
         // const conversation = await Conversation.findOne({conversationId:conversation_id});
         // if(!conversation.blockedBy.includes(sender)){

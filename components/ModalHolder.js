@@ -2,14 +2,14 @@ import styles from "../styles/components/ModalHolder.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
-import { setShowPostModal, setShowPostOptionsModal,setShowAddPostModal } from "../features/modalSlice";
+import { setAddPostModal, setEditPostModal, setShowPostModal } from "../features/modalSlice";
 import { useEffect, useRef } from "react";
 import { setPeopleModal } from "../features/messengerSlice";
 
 export default function ModalHolder(props){
     const dispatch = useDispatch();
     const modalRef = useRef();
-    const {showPostModal,showAddPostModal} = useSelector((state)=> state.modal)
+    const {showPostModal,addPostModal,editPostModal} = useSelector((state)=> state.modal)
 
     const closeModalHanlder = ()=>{
         if(showPostModal){
@@ -17,8 +17,13 @@ export default function ModalHolder(props){
             dispatch(setPeopleModal(false));
             history.replaceState(null,null,props.onClose)
         }
-        if(showAddPostModal){
-            dispatch(setShowAddPostModal(false))
+        if(addPostModal.status || editPostModal.status){
+            dispatch(setShowPostModal(false));
+            const confirm = window.confirm("Changes you made will not be saved.");
+            if(confirm){
+                dispatch(setAddPostModal({status:false}))
+                dispatch(setEditPostModal({status:false}))
+            }
         }
     }
     

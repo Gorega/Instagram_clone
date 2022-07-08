@@ -2,7 +2,7 @@ import styles from "../../styles/components/PostOptionsModal.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
-import { setCustomPostOptions, setShowPostModal, setShowPostOptionsModal, setUnfollowModal } from "../../features/modalSlice";
+import { setCustomPostOptions, setEditPostModal, setShowPostModal, setShowPostOptionsModal, setUnfollowModal } from "../../features/modalSlice";
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../contextApi";
 import { getFollowers, getFollowing, unfollow } from "../../features/user/follower";
@@ -14,14 +14,16 @@ import {useRouter} from "next/router";
 import {server} from "../../lib/server";
 import axios from "axios";
 import LikesPeople from "./LikesPeople";
+import { setDoneUpload } from "../../features/addPostSlice";
 
 export default function Content(props){
     const dispatch = useDispatch();
-    const {setPostId} = useContext(AppContext);
+    const {setPostId,setUploadedFiles} = useContext(AppContext);
     const router = useRouter();
     const {data:user,status} = useSession();
     const [followersPeople,setFollowersPeople] = useState([]);
     const [followingPeople,setFollowingPeople] = useState([]);
+    const [posters,setPosters] = useState([]);
     const {follow:followStatus,unfollow:unfollowStatus} = useSelector((state)=> state.userFollowers);
     const {customPostOptions} = useSelector((state)=> state.modal);
 
@@ -96,13 +98,25 @@ export default function Content(props){
         return <div className={styles.list}>
             <ul>
                     {user.userId === props.postCreatorId && <li style={{color:"red"}} onClick={()=>{
+                        dispatch(setUpdatePosts("pending"))
                         axios.delete(`${server}/api/post/${props.post_id}`)
                         .then(res => {
                             dispatch(setCustomPostOptions({type:null}))
-                            dispatch(setUpdatePosts("update"))
+                            dispatch(setUpdatePosts("done"))
                         })
                     }}>Delete</li>}
-                    {user.userId === props.postCreatorId && <li style={{color:"red"}}>Edit</li>}
+                    {user.userId === props.postCreatorId && <li onClick={()=>{
+                        axios.get(`${server}/api/post/${props.post_id}`)
+                        .then(res=>{
+                            setUploadedFiles([])
+                            res.data[0].posters?.map((poster)=>{
+                                setUploadedFiles(prevState => [...prevState,{backdrop:poster.backdrop,contentType:poster.contentType,name:poster.name}])
+                            })
+                            dispatch(setEditPostModal({status:true,postId:props.post_id,content:{poster:{backdrop:res.data[0].posters[0]?.backdrop,type:res.data[0].posters[0]?.contentType},caption:res.data[0]?.caption}}));
+                        })
+                        dispatch(setCustomPostOptions({type:null}))
+                        dispatch(setDoneUpload(true))
+                    }}>Edit</li>}
                     {user.userId === props.postCreatorId || <li style={{color:"red"}}>Report</li>}
                     {props.followed && <li style={{color:"red"}} onClick={()=>{
                         dispatch(setCustomPostOptions({type:null}))

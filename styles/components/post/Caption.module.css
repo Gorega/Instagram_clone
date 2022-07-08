@@ -38,6 +38,7 @@
     width:100%;
     color:#4d4d4d;
     border:none;
+    font-family: 'Times New Roman', Times, serif;
     border-bottom:1px solid #d9d9d9;
 }
 
@@ -56,6 +57,7 @@
     bottom:10px;
     font-size:15px;
     color:#4d4d4d;
+    cursor: pointer;
 }
 
 .main .options{
@@ -78,7 +80,7 @@
     border:none;
     background-color: transparent;
     color: #4d4d4d;
-    font-size:14px;
+    font-size:13px;
     width: 100%;
     height:100%;
 }
@@ -90,4 +92,16 @@
 .main ul li svg{
     font-size:13px;
     color:#4d4d4d;
+}
+
+.main ul li:last-of-type{
+    background-color:rgba(0,0,0,.6);
+    border-radius: 50%;
+    width:28px;
+    height:28px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    margin-top:15px;
 }

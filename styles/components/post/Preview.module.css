@@ -1,0 +1,71 @@
+.postersPreview{
+    position: relative;
+    top:62px;
+    padding:8px 10px;
+    background-color:rgba(0,0,0,.6);
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    overflow-X: auto;
+    min-height: 160px;
+}
+
+.posters{
+    position: relative;
+    align-items: center;
+    height:100%;
+    display: flex;
+    align-items: center;
+}
+
+.postersPreview .posters .poster{
+    position:relative;
+    width:160px;
+    min-width: 160px;
+    height:160px;
+    margin-right:7px;
+    cursor: pointer;
+}
+
+.postersPreview .posters .poster img{
+    width:100%;
+    height:100%;
+    object-fit: cover;
+}
+
+.postersPreview .posters .poster .delete{
+    position: absolute;
+    top:7px;
+    right:7px;
+    background-color: rgba(0,0,0,.9);
+    border-radius: 50%;
+    width:17px;
+    height:17px;
+    color:white;
+    font-weight:bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size:13px;
+}
+
+.postersPreview .add label{
+    border-radius: 50%;
+    width:70px;
+    height:70px;
+    border:1px solid white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 10;
+    margin:0 10px;
+    color:white;
+}
+
+.postersPreview .add label span{
+    font-size:17px;
+    font-weight: bold;
+    color:white;
+}

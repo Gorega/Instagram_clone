@@ -17,7 +17,7 @@ export default function Lists(){
     },{
         title:"Videos",
         icon:faCirclePlay,
-        content:null,
+        content:<Content content={[]} />,
         url:`/${profile_id}/channel`
     
     },{
@@ -28,7 +28,7 @@ export default function Lists(){
     },{
         title:"Tagged",
         icon:faHashtag,
-        content:null,
+        content:<Content content={[]} />,
         url:`/${profile_id}/tagged`
     }]
 

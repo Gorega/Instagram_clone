@@ -6,7 +6,6 @@ import mongoose from "mongoose";
 export default async function handler(req,res){
     if(req.method === "GET"){
         await connect();
-        let size;
         let {limit} = req.query;
         const session = await getSession({req})
         // if(!session){
@@ -25,7 +24,7 @@ export default async function handler(req,res){
             {$project:{
                 "creator.password":0,"creator.email":0
             }},
-            {$limit:Number(limit)}
+            {$limit:limit ? Number(limit) : 1000}
         ]);
         return res.status(200).json({results:results,limit:limit})
     }

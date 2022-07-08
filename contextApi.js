@@ -21,9 +21,10 @@ const AppProvider = (props)=>{
     const [userPosts,setUserPosts] = useState([]);
     const [followersTotal,setFollowersTotal] = useState([]);
     const [activeUserFollowersTotal,setActiveUserFollowersTotal] = useState([]);
-    const {updatePosts} = useSelector((state)=> state.post)
+    const {updatePosts} = useSelector((state)=> state.post);
     const [searchBarSpinner,setSearchBarSpinner] = useState(false);
     const [postId,setPostId] = useState(null);
+    const [uploadedFiles,setUploadedFiles] = useState([]);
     const socket = useRef();
 
     const fetchPosts = async ()=>{
@@ -77,7 +78,8 @@ const AppProvider = (props)=>{
         userPosts,setUserPosts,
         searchBarSpinner,setSearchBarSpinner,
         postId,setPostId,
-        socket
+        socket,
+        uploadedFiles,setUploadedFiles
     }}>
         {props.children}
     </AppContext.Provider>
