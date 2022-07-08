@@ -54,7 +54,7 @@ export default function SignleMessage({message,chat}){
                 <img onClick={()=> {
                     history.pushState(message.postId,null,`/p/${message.postId}`);
                     dispatch(setShowPostModal(true))
-                }} src={sahredPost?.posters[0]}  alt="" />
+                }} src={sahredPost?.posters[0].backdrop}  alt="" />
                 <div className={styles.info}>
                     <span>{sahredPost?.creator[0].name}</span>
                     {`${sahredPost?.caption.substring(0,150)} ...`}

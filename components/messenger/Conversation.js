@@ -36,7 +36,6 @@ export default function Conversation({conversation,senderId}){
             fetchUserData();
         },[conversation])
 
-
         useEffect(()=>{
             socket?.current.on("getConversation",(data)=>{
                 dispatch(setSocketConversation({
