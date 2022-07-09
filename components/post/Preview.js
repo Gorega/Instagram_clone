@@ -17,7 +17,7 @@ export default function Preview(){
         const metadata = {
             contentType: file?.type.includes("image") ? 'image/jpeg' : file?.type.includes("videos") ? `video/mb4` : null};
             // Upload file and metadata to the object 'images/mountains.jpg'
-            const storageRef = ref(storage, 'posts/' + file?.name);
+            const storageRef = ref(storage, 'posts/' + file?.name + Date.now());
             const uploadTask = uploadBytesResumable(storageRef, file, metadata);
             // Listen for state changes, errors, and completion of the upload.
             uploadTask.on('state_changed',

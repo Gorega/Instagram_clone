@@ -3,12 +3,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { setAddPostModal, setEditPostModal, setShowPostModal } from "../features/modalSlice";
-import { useEffect, useRef } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { setPeopleModal } from "../features/messengerSlice";
+import { setCaptionValue, setShowPostersPreview } from "../features/addPostSlice";
+import { AppContext } from "../contextApi";
 
 export default function ModalHolder(props){
     const dispatch = useDispatch();
     const modalRef = useRef();
+    const {setUploadedFiles} = useContext(AppContext);
     const {showPostModal,addPostModal,editPostModal} = useSelector((state)=> state.modal)
 
     const closeModalHanlder = ()=>{
@@ -23,10 +26,12 @@ export default function ModalHolder(props){
             if(confirm){
                 dispatch(setAddPostModal({status:false}))
                 dispatch(setEditPostModal({status:false}))
+                dispatch(setCaptionValue(""));
+                dispatch(setShowPostersPreview(false));
+                setUploadedFiles([]);
             }
         }
     }
-    
 
     // useEffect(()=>{
     //     const listener = document.addEventListener("mouseup",(e)=>{

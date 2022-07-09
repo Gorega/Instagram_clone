@@ -12,12 +12,12 @@ export default function Lists(){
     const list = [{
         title:"Posts",
         icon:faBars,
-        content:<Content content={userPosts} />,
+        content:<Content content={userPosts.filter(post=> post.posters[0].contentType.includes("image"))} />,
         url:`/${profile_id}`
     },{
         title:"Videos",
         icon:faCirclePlay,
-        content:<Content content={[]} />,
+        content:<Content content={userPosts.filter(post=> post.posters[0].contentType.includes("video"))} />,
         url:`/${profile_id}/channel`
     
     },{

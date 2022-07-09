@@ -17,11 +17,12 @@ import UnfollowModal from '../components/sideInterface/UnfollowModal';
 export default function Home() {
   const [page,setPage] = useState(1);
   const [firstRender,setFirstRender] = useState(true);
-  const {posts,setPosts,postId} = useContext(AppContext);
+  const {posts,setPosts,postId,uploadedFiles} = useContext(AppContext);
   const {peopleModal} = useSelector((state)=> state.messenger);
   const {unfollowModal} = useSelector((state)=>state.modal);
   const {showPostOptionsModal,editPostModal,customPostOptions,showPostModal} = useSelector((state)=>state.modal);
   const observer = useRef();
+  const {currentFile} = useSelector((state)=> state.addPost)
 
   const lastPostElementRef = useCallback(node =>{
     if(observer.current){
@@ -70,7 +71,7 @@ export default function Home() {
         <UserSide />
       </div>
     </div>
-    {editPostModal.status && <EditPostModal editPost={true} backdrop={editPostModal.content?.poster.backdrop} caption={editPostModal.content?.caption} />}
+    {editPostModal.status && <EditPostModal editPost={true} backdrop={uploadedFiles[currentFile]?.backdrop} />}
     {showPostModal && <PostModal onClose={"/"} />}
     {peopleModal && <PeopleModal type="share" postId={postId} />}
     {showPostOptionsModal && customPostOptions.content}

@@ -35,7 +35,8 @@ export default function MorePostsComponent({post}){
     },[])
 
     return <div className={styles.post} onClick={()=> openPostModalHnadler(post._id)}>
-        <img src={post?.posters[0].backdrop} alt="" />
+        {post.posters[0].contentType.includes("image") && <img src={post?.posters[0].backdrop} alt="" />}
+        {post.posters[0].contentType.includes("video") && <video src={post?.posters[0].backdrop} alt="" />}
         <div className={styles.patch}>
             <ul>
                 <li><FontAwesomeIcon icon={faHeart} /> <span>{postLikes}</span></li>

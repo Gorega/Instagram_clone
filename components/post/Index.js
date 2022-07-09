@@ -7,7 +7,7 @@ import {server} from "../../lib/server";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
-import { setDoneUpload } from "../../features/addPostSlice";
+import { setCaptionValue, setDoneUpload } from "../../features/addPostSlice";
 import {setAddPostModal, setEditPostModal} from "../../features/modalSlice";
 import { useState } from "react";
 import { setUpdatePosts } from "../../features/post";
@@ -19,9 +19,8 @@ export default function Index(props){
     const {uploadedFiles,setUploadedFiles} = useContext(AppContext);
     const [loading,setLoading] = useState(false);
     const [location,setLocation] = useState("");
-    const [captionValue,setCaptionValue] = useState("");
     const {editPostModal} = useSelector((state)=> state.modal);
-    const {doneUpload} = useSelector((state)=> state.addPost)
+    const {doneUpload,captionValue} = useSelector((state)=> state.addPost)
 
     const sharePostHandler = ()=>{
         setLoading(true)
@@ -58,7 +57,7 @@ export default function Index(props){
     return <>
         {loading && <div className={styles.spinner}> <FontAwesomeIcon className="fa-spin" icon={faSpinner} /> </div>}
         <ModalHolder showCloseButton={true}>
-                 <div className={styles.header} style={{justifyContent:!doneUpload && "center"}}>
+                <div className={styles.header} style={{justifyContent:!doneUpload && "center"}}>
                     {doneUpload && <div className={styles.return} onClick={()=> dispatch(setDoneUpload(false))}>
                         <FontAwesomeIcon icon={faArrowLeft} />
                     </div>}
@@ -74,8 +73,8 @@ export default function Index(props){
                         <Upload editPost={props.editPost} createPost={props.createPost} backdrop={props.backdrop} />
                     </div>
                     <div className={styles.sec}>
-                        <Caption caption={props.caption}
-                                setCaption={(e)=>setCaptionValue(e.target.value)}
+                        <Caption caption={captionValue}
+                                setCaption={(e)=>dispatch(setCaptionValue(e.target.value))}
                                 location={location}
                                 setLocation={(e)=>setLocation(e.target.value)}   
                                 />

@@ -24,10 +24,10 @@ export default function Data(props){
 
     return <>
         <div className={styles.post} onClick={()=> openPostModalHnadler(props.post_id || props._id)}>
-            <img src={(props.post && props.post[0].posters[0].backdrop) || props.posters[0].backdrop} alt="" />
+            {(props.posters && props.posters[0].contentType.includes("image") || props.post && props.post[0].posters[0].contentType.includes("image")) && <img src={(props.post && props.post[0].posters[0].backdrop) || props.posters[0].backdrop} alt="" />}
+            {(props.posters && props.posters[0].contentType.includes("video") || props.post && props.post[0].posters[0].contentType.includes("video")) && <video src={(props.post && props.post[0].posters[0].backdrop) || props.posters[0].backdrop} alt="" />}
             <div className={styles.patch}>
                 <ul>
-                    {props.video && <li><FontAwesomeIcon icon={faPlay} /> 22</li>}
                     <li><FontAwesomeIcon icon={faHeart} /> {postLikes}</li>
                     <li><FontAwesomeIcon icon={faComment} /> {postComments}</li>
                 </ul>

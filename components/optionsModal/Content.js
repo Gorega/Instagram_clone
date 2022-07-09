@@ -14,7 +14,7 @@ import {useRouter} from "next/router";
 import {server} from "../../lib/server";
 import axios from "axios";
 import LikesPeople from "./LikesPeople";
-import { setDoneUpload } from "../../features/addPostSlice";
+import { setCaptionValue, setDoneUpload, setShowPostersPreview } from "../../features/addPostSlice";
 
 export default function Content(props){
     const dispatch = useDispatch();
@@ -23,7 +23,6 @@ export default function Content(props){
     const {data:user,status} = useSession();
     const [followersPeople,setFollowersPeople] = useState([]);
     const [followingPeople,setFollowingPeople] = useState([]);
-    const [posters,setPosters] = useState([]);
     const {follow:followStatus,unfollow:unfollowStatus} = useSelector((state)=> state.userFollowers);
     const {customPostOptions} = useSelector((state)=> state.modal);
 
@@ -108,14 +107,15 @@ export default function Content(props){
                     {user.userId === props.postCreatorId && <li onClick={()=>{
                         axios.get(`${server}/api/post/${props.post_id}`)
                         .then(res=>{
-                            setUploadedFiles([])
+                            dispatch(setShowPostersPreview(false));
                             res.data[0].posters?.map((poster)=>{
                                 setUploadedFiles(prevState => [...prevState,{backdrop:poster.backdrop,contentType:poster.contentType,name:poster.name}])
-                            })
-                            dispatch(setEditPostModal({status:true,postId:props.post_id,content:{poster:{backdrop:res.data[0].posters[0]?.backdrop,type:res.data[0].posters[0]?.contentType},caption:res.data[0]?.caption}}));
+                            });
+                            dispatch(setCaptionValue(res.data[0]?.caption));
+                            dispatch(setEditPostModal({status:true,postId:props.post_id,content:{poster:{backdrop:res.data[0].posters[0]?.backdrop,type:res.data[0].posters[0]?.contentType}}}));
                         })
-                        dispatch(setCustomPostOptions({type:null}))
-                        dispatch(setDoneUpload(true))
+                        dispatch(setCustomPostOptions({type:null}));
+                        dispatch(setDoneUpload(true));
                     }}>Edit</li>}
                     {user.userId === props.postCreatorId || <li style={{color:"red"}}>Report</li>}
                     {props.followed && <li style={{color:"red"}} onClick={()=>{
@@ -128,6 +128,7 @@ export default function Content(props){
                         dispatch(setCustomPostOptions({type:null}))
                     }}>Go to post</li>
                     <li onClick={()=> {
+                        dispatch(setCustomPostOptions({type:null}));
                         setPostId(props.post_id)
                         dispatch(setPeopleModal(true))
                     }}>Share to...</li>

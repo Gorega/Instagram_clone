@@ -13,12 +13,12 @@ import { AppContext } from "../../contextApi";
 import { useRouter } from "next/router";
 import AddPostModal from "../../components/post/Index";
 import { setNewMessageNotification } from "../../features/messengerSlice";
-import { setDoneUpload, setUploadedFile } from "../../features/addPostSlice";
+import { setCaptionValue, setDoneUpload, setShowPostersPreview } from "../../features/addPostSlice";
 
 export default function Main(){
     const dispatch = useDispatch();
     const {uploadedFiles,setUploadedFiles} = useContext(AppContext);
-    const {currentFile,captionValue} = useSelector((state)=> state.addPost)
+    const {currentFile} = useSelector((state)=> state.addPost)
     const {data:user,status} = useSession();
     const router = useRouter();
     const {searchBarSpinner} = useContext(AppContext);
@@ -107,7 +107,6 @@ export default function Main(){
                         <Link href="/direct/inbox"><li className={newMessageNotification && styles.patch}>{messengerIcon}</li></Link>
                         <li onClick={()=> {
                             dispatch(setDoneUpload(false));
-                            setUploadedFiles([]);
                             dispatch(setAddPostModal({status:true,content:null}))
                         }}>
                             {newPostIcon}
@@ -122,7 +121,7 @@ export default function Main(){
             </div>
         </div>
     </div>
-    {addPostModal.status && <AddPostModal createPost={true} backdrop={uploadedFiles[currentFile]?.backdrop} caption={captionValue} />}
+    {addPostModal.status && <AddPostModal createPost={true} backdrop={uploadedFiles[currentFile]?.backdrop} />}
     </>
 
 }
