@@ -1,20 +1,19 @@
 import styles from "../../styles/components/messenger/PeopleSec.module.css";
-import { useContext, useEffect, useState } from "react";
-import { setConversation, members, setShowConversationChat, setSocketConversation, setNewMessageNotification, setShowConversationDetails } from "../../features/messengerSlice";
+import { useEffect, useState } from "react";
+import { setConversation, members, setShowConversationChat, setShowConversationDetails,setRecieverData } from "../../features/messengerSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {format} from "timeago.js";
 import axios from "axios";
 import { server } from "../../lib/server";
-import { AppContext } from "../../contextApi";
+import { useSession } from "next-auth/react";
 
 export default function Conversation({conversation,senderId}){
-
+        const {data:user} = useSession();
         const dispatch = useDispatch();
         const [person,setPerson] = useState([]); 
         const [chat,setChat] = useState([]);
-        const {socket} = useContext(AppContext);
-        const [activeConversation,setActiveConversation] = useState(false);
-        const {socketConversation} = useSelector((state)=> state.messenger);
+        const {conversation:conversationState} = useSelector((state)=> state.messenger);
+        const [historyState,setHistoryState] = useState(null);
         
         const fetchConversationMessages = async ()=>{
             const response = await axios.get(`${server}/api/messenger/${conversation._id}`,{withCredentials:true});
@@ -28,6 +27,12 @@ export default function Conversation({conversation,senderId}){
             });
         }
 
+        const fetchRecieverData = async ()=>{
+            dispatch(members({senderId:conversation?.members.find(member => member !== user.userId)})).then(res => {
+                dispatch(setRecieverData(res.payload[0]))
+            });
+        }
+
         useEffect(()=>{
             fetchConversationMessages();
         },[conversation])
@@ -35,25 +40,12 @@ export default function Conversation({conversation,senderId}){
         useEffect(()=>{
             fetchUserData();
         },[conversation])
+        
 
-        useEffect(()=>{
-            socket?.current.on("getConversation",(data)=>{
-                dispatch(setSocketConversation({
-                    sender:data.sender,
-                    receiverId:data.receiverId
-                }))
-            })
-        },[])
-
-        useEffect(()=>{
-            if(socketConversation && conversation.members.every((member)=> member.includes(members))){
-                setChat(prev=> [...prev,socketConversation])
-            }
-        },[socketConversation])
-
-    return <div className={`${styles.person} ${activeConversation && styles.active}`}
+    return <div className={`${styles.person} ${conversationState?.id === historyState && styles.active}`}
                 onClick={()=> {
                 history.pushState(`${[...conversation.members].join("")}`,null,`/direct/${[...conversation.members].join("")}`)
+                setHistoryState([...conversation.members].join(""));
                 dispatch(setShowConversationDetails(false));
                 dispatch(setShowConversationChat(true));
                 dispatch(setConversation({
@@ -61,6 +53,7 @@ export default function Conversation({conversation,senderId}){
                     data:conversation,
                     sender:person
                 }))
+                fetchRecieverData();
                 }}>
             <img src={person.image} alt="" />
             <div className={styles.info}>

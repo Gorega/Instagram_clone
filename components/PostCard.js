@@ -12,28 +12,31 @@ import { useRouter } from "next/router";
 import { format } from "timeago.js";
 import { AppContext } from "../contextApi";
 import { useSession } from "next-auth/react";
-import dynamic from "next/dynamic";
-const Picker = dynamic(() => import("emoji-picker-react"), {
-  ssr: false,
-});
 import axios from "axios";
 import {server} from "../lib/server";
+const Picker = dynamic(() => import("emoji-picker-react"), {
+    ssr: false,
+});
+import dynamic from "next/dynamic";
+import { setScoketComments } from "../features/post/commentSlice";
+import { setSocketLikes } from "../features/post/likeSlice";
 
 export default function PostCard(props){
     const dispatch = useDispatch();
     const router = useRouter();
-    const {data:user} = useSession();
+    const {socket} = useContext(AppContext);
+    const {data:user,status} = useSession();
     const likeButtonRef = useRef();
     const emojiPickerBoxRef = useRef();
     const commentBoxRef = useRef();
     const {updatePosts} = useSelector((state)=> state.post)
-    const {addLike,removeLike} = useSelector((state)=>state.postLikes);
-    const {addComment:addCommentStatus} = useSelector((state)=>state.postComments);
+    const {addLike,removeLike,socketLikes} = useSelector((state)=>state.postLikes);
+    const {addComment:addCommentStatus,socketComments} = useSelector((state)=>state.postComments);
     const {unfollow:unfollowStatus,follow:followStatus} = useSelector((state)=> state.userFollowers);
     const [commentValue,setCommentValue] = useState("");
     const [followed,setFollowed] = useState(null);
     const {setPostId} = useContext(AppContext);
-    const {fetchPostLikes,fetchPostComments,postLikes,liked,postComments,likesHandler,bookmarkHandler,addComment,savedPosts} = usePostData(props);
+    const {fetchPostLikes,fetchPostComments,postLikes,setPostLikes,liked,postComments,likesHandler,bookmarkHandler,addComment,savedPosts} = usePostData(props);
     const [currentLiked,setCurrentLiked] = useState(null);
     const [currentSaved,setCurrentSaved] = useState(null);
     const [currentPoster,setCurrentPoster] = useState(0);
@@ -86,7 +89,7 @@ export default function PostCard(props){
 
     useEffect(()=>{
         fetchPostLikes();
-    },[addLike,removeLike,updatePosts])
+    },[addLike,removeLike,updatePosts,socketLikes])
 
     useEffect(()=>{
         fetchPostComments(100);
@@ -99,6 +102,30 @@ export default function PostCard(props){
     useEffect(()=>{
         setCurrentSaved(savedPosts)
     },[savedPosts])
+
+    useEffect(()=>{
+        socket?.current.on("getLikes",(data)=>{
+            dispatch(setSocketLikes({
+                postId:data.postId,
+                createdBy:data.userId
+            }))
+        })
+
+        socket?.current.on("getComments",(data)=>{
+            dispatch(setScoketComments({
+                postId:data.postId,
+                createdBy:data.userId
+            }))
+        })
+    },[])
+
+    useEffect(()=>{
+        if(socketLikes && (props._id === socketLikes.postId)) fetchPostLikes();
+    },[socketLikes])
+
+    useEffect(()=>{
+        if(socketComments && (props._id === socketComments.postId)) fetchPostComments(100);
+    },[socketComments])
 
     return <CardHolder style={{padding:0,width:500}}>
         <div className={styles.head}>
@@ -181,7 +208,12 @@ export default function PostCard(props){
             <form onSubmit={(e)=> {
                 e.preventDefault();
                 setCommentValue("")
-                dispatch(addComment({post_id:props._id,content:commentValue}))
+                dispatch(addComment({post_id:props._id,content:commentValue})).then(res =>{
+                    socket?.current.emit("comments",{
+                        postId:props._id,
+                        userId:props.createdBy,
+                    })
+                })
             }}>
                 <input type="text" placeholder="Add a comment..." value={commentValue} onChange={(e)=> setCommentValue(e.target.value)} ref={commentBoxRef} />
                 <button type="submit" className={commentValue <= 0 && styles.disabled}>Post</button>

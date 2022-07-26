@@ -5,6 +5,7 @@ const initialState = {
   profileListUrl:null,
   activeProfileList:0,
   activeSettingsList:0,
+  spinner:true,
 }
 
 export const navigatorListSlice = createSlice({
@@ -22,11 +23,14 @@ export const navigatorListSlice = createSlice({
     },
     setProfileListUrl:(state,action)=>{
       state.profileListUrl = action.payload
+    },
+    setSpinner:(state,action)=>{
+      state.spinner = action.payload
     }
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { setList,setActiveProfileList,setActiveSettingsList,setProfileListUrl } = navigatorListSlice.actions
+export const { setList,setActiveProfileList,setActiveSettingsList,setProfileListUrl,setSpinner } = navigatorListSlice.actions
 
 export default navigatorListSlice.reducer

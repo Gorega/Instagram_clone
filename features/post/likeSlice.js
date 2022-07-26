@@ -7,6 +7,7 @@ const initialState = {
     getPostLikes:()=>{},
     addLike:()=>{},
     removeLike:()=>{},
+    socketLikes:null
 }
 
 export const getTotalLikes = createAsyncThunk(
@@ -48,6 +49,11 @@ export const addLike = createAsyncThunk(
 export const likeSlice = createSlice({
   name: 'likes',
   initialState,
+  reducers:{
+    setSocketLikes:(state,action)=>{
+      state.socketLikes = action.payload;
+    }
+  },
   extraReducers:{
       [getPostLikes.pending]:(state)=>{
         state.getPostLikes = "pending"
@@ -78,5 +84,7 @@ export const likeSlice = createSlice({
       }
   }
 })
+
+export const { setSocketLikes} = likeSlice.actions
 
 export default likeSlice.reducer

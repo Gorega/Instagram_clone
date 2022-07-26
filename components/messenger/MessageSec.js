@@ -6,7 +6,7 @@ import { server } from "../../lib/server";
 import { useSession } from "next-auth/react";
 import {setPending, setPeopleModal, setShowConversationChat, setShowConversationDetails} from "../../features/messengerSlice";
 import ConversationDetails from "./ConversationDetails";
-import SignleMessage from "./SingleMessage";
+import SingleMessage from "./SingleMessage";
 import dynamic from "next/dynamic";
 const Picker = dynamic(() => import("emoji-picker-react"), {
   ssr: false,
@@ -15,7 +15,7 @@ import { AppContext } from "../../contextApi";
 
 export default function MessageSec(){
     const dispatch = useDispatch();
-    const {data:user,status} = useSession();
+    const {data:user} = useSession();
     const {showConversationDetails,showConversationChat,conversation} = useSelector((state)=> state.messenger);
     const {socket} = useContext(AppContext);
     const [socketMessage,setSocketMessage] = useState("");
@@ -24,6 +24,7 @@ export default function MessageSec(){
     const [chat,setChat] = useState([]);
     const messageBoxInputRef = useRef();
     const emojiPickerBoxRef = useRef();
+    const [errorMsg,setErrorMsg] = useState({status:false});
     const [showEmojiPicker,setShowEmojiPicker] = useState(false);
     const [chosenEmoji, setChosenEmoji] = useState(null);
     
@@ -41,10 +42,11 @@ export default function MessageSec(){
             sender:user.userId,
             receiverId:receiverId,
         })
-        // send message notification to next_user
-        socket?.current.emit("addMessageNotification",{
-            receiverId:receiverId,
-        })
+        // // send message notification to next_user
+        // socket?.current.emit("addMessageNotification",{
+        //     receiverId:receiverId,
+        // })
+
         // send userId to socket server (emit)
         socket?.current.emit("addUser",user.userId);
         // get connected users from socket server (on)
@@ -52,13 +54,21 @@ export default function MessageSec(){
         })
 
         try{
-            const response = await axios.post(`${server}/api/messenger/${conversation.data._id}`,{sender:user.userId,text:messageText,members:conversation.data.members},{withCredentials:true});
+            setErrorMsg({status:false})
+            setMessageText("");
+            const response = await axios.post(`${server}/api/messenger/${conversation.data._id}`,{sender:user.userId,text:messageText,members:conversation.data.members});
             const data = await response.data;
             setChat([...chat,data])
-            // update conversation date after sending a message
-            axios.patch(`${server}/api/user/${user.userId}/conversation/updateTime/${conversation.data._id}`,{updatedAt:Date.now()},{withCredentials:true})
+
+            // show message to next_user
+            axios.patch(`${server}/api/user/${user.userId}/conversation/update/${conversation.data._id}`,{next_user_id:receiverId})
             .then(res => {
-                setMessageText("");
+                dispatch(setPending(false))
+            })
+
+            // update conversation date after sending a message
+            axios.patch(`${server}/api/user/${user.userId}/conversation/update/sequence/${conversation.data._id}`,{updatedAt:Date.now()})
+            .then(res => {
                 dispatch(setPending(false))
             })
         }catch(err){
@@ -73,7 +83,6 @@ export default function MessageSec(){
     }
 
     const onEmojiClick = (event, emojiObject) => {
-        console.log(emojiObject)
         messageBoxInputRef.current.focus();
         setMessageText(messageText => messageText.concat(emojiObject.emoji))
         setChosenEmoji(emojiObject);
@@ -85,25 +94,24 @@ export default function MessageSec(){
 
     useEffect(()=>{
         if(conversation){
+            messageBoxInputRef?.current?.focus();
             fetchConversationMessages();
             setMessageText("");
             dispatch(setShowConversationDetails(false))
             setBlockedAlert(false)
-            messageBoxInputRef?.current.focus();
+            setErrorMsg({status:false});
         }
     },[conversation])
 
     useEffect(()=>{
-        if(status === "authenticated"){
-            socket.current.on("getMessage",(data)=>{
-                setSocketMessage({
-                    sender:data.sender,
-                    text:data.text,
-                    createdAt:Date.now()
-                })
+        socket?.current.on("getMessage",(data)=>{
+            setSocketMessage({
+                sender:data.sender,
+                text:data.text,
+                createdAt:Date.now()
             })
-        }
-    },[user])
+        })
+    },[])
 
     useEffect(()=>{
         if(socketMessage && conversation?.data.members.includes(socketMessage.sender)){
@@ -147,7 +155,7 @@ export default function MessageSec(){
 
                 <div className={styles.body}>
                     {chat.map((message,index)=>{
-                        return <SignleMessage key={index} message={message} chat={chat} />
+                        return <SingleMessage key={index} message={message} chat={chat} />
                     })}
 
                 </div>

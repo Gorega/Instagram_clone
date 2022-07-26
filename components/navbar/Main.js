@@ -78,15 +78,15 @@ export default function Main(){
         }
     },[showSearchSugg,showUserMenu])
 
-    useEffect(()=>{
-       if(status === "authenticated"){
-            socket?.current.on("getMessageNotification",(data)=>{
-                if(data.receiverId === user.userId){
-                    dispatch(setNewMessageNotification(true))
-                }
-            })
-       } 
-    },[user])
+    // useEffect(()=>{
+    //    if(status === "authenticated"){
+    //         socket?.current.on("getMessageNotification",(data)=>{
+    //             if(data.receiverId === user.userId){
+    //                 dispatch(setNewMessageNotification(true))
+    //             }
+    //         })
+    //    } 
+    // },[user])
 
     return <>
         <div className={styles.main} ref={navbarRef}>

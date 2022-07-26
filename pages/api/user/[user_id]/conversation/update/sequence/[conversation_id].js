@@ -1,5 +1,5 @@
 import { getSession } from "next-auth/react";
-import Conversation from "../../../../../../lib/models/messengerModel/conversation";
+import Conversation from "../../../../../../../lib/models/messengerModel/conversation";
 
 export default async function handler(req,res){
     if(req.method === "PATCH"){
@@ -12,6 +12,6 @@ export default async function handler(req,res){
         if(updatedAt){
             await Conversation.findOneAndUpdate({_id:conversation_id},{updatedAt});
         }
-        return res.status(200).json({msg:"Time updated"});
+        return res.status(200).json({msg:"Secuence updated successfuly"});
     }
 }

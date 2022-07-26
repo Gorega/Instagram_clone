@@ -16,9 +16,9 @@ export default function Main(){
 
     return <div className="container">
         <div className={styles.main}>
-        <PeopleSec />
-        <MessageSec />
-        {showPostModal && <PostModal />}
+            <PeopleSec />
+            <MessageSec />
+            {showPostModal && <PostModal />}
         </div>
     </div>
 }

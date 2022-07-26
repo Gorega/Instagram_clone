@@ -11,6 +11,8 @@ const initialState = {
   conversation:null,
   peopleModal:false,
   newMessageNotification:false,
+  errorMsg:false,
+  recieverData:null
 }
 
 export const members = createAsyncThunk(
@@ -46,12 +48,18 @@ export const messengerSlice = createSlice({
       state.socketConversation = action.payload;
     },
     setShowConversationDetails:(state,action)=>{
-      state.showConversationDetails = action.payload
+      state.showConversationDetails = action.payload;
+    },
+    setErrorMsg:(state,action)=>{
+      state.errorMsg = action.payload;
+    },
+    setRecieverData:(state,action)=>{
+      state.recieverData = action.payload;
     }
   }
 })
 
 // Action creators are generated for each case reducer function
-export const { setShowConversationDetails,setSocketConversation,setShowConversationChat,setConversation,setPeopleModal,setPending,setNewMessageNotification } = messengerSlice.actions
+export const { setErrorMsg,setShowConversationDetails,setSocketConversation,setShowConversationChat,setConversation,setPeopleModal,setPending,setNewMessageNotification,setRecieverData } = messengerSlice.actions
 
 export default messengerSlice.reducer

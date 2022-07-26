@@ -62,13 +62,19 @@ const AppProvider = (props)=>{
 
     // socket connection
     const initSocket = async ()=>{
-        await axios.get(`${server}/api/socket`,{withCredentials:true});
-        socket.current = io();
+        axios.get(`${server}/api/socket`).then((res)=>{
+            console.log(res)
+            socket.current = io();
+        }).catch(err=>{
+            console.log(err)
+        })
     }
 
     useEffect(()=>{
-        initSocket();
-    },[])
+        if(status === "authenticated"){
+            initSocket();
+        }
+    },[user])
 
     return <AppContext.Provider value={{
         saved,
@@ -79,7 +85,7 @@ const AppProvider = (props)=>{
         searchBarSpinner,setSearchBarSpinner,
         postId,setPostId,
         socket,
-        uploadedFiles,setUploadedFiles
+        uploadedFiles,setUploadedFiles,
     }}>
         {props.children}
     </AppContext.Provider>

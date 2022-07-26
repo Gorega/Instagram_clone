@@ -18,9 +18,9 @@ import { setCaptionValue, setDoneUpload, setShowPostersPreview } from "../../fea
 
 export default function Content(props){
     const dispatch = useDispatch();
-    const {setPostId,setUploadedFiles} = useContext(AppContext);
-    const router = useRouter();
     const {data:user,status} = useSession();
+    const router = useRouter();
+    const {socket,setPostId,setUploadedFiles} = useContext(AppContext);
     const [followersPeople,setFollowersPeople] = useState([]);
     const [followingPeople,setFollowingPeople] = useState([]);
     const {follow:followStatus,unfollow:unfollowStatus} = useSelector((state)=> state.userFollowers);
@@ -28,14 +28,18 @@ export default function Content(props){
 
     useEffect(()=>{
         if(status === "authenticated"){
-            dispatch(getFollowing({user_id:props.profile_id})).then(res=> {
-                setFollowingPeople(res.payload)
-            })
-            dispatch(getFollowers({user_id:props.profile_id})).then(res => {
-                setFollowersPeople(res.payload)
-            })
+            if(customPostOptions.type === "followingPeople"){
+                dispatch(getFollowing({user_id:props.profile_id})).then(res=> {
+                    setFollowingPeople(res.payload)
+                })
+            }
+            if(customPostOptions.type === "followersPeople"){
+                dispatch(getFollowers({user_id:props.profile_id})).then(res => {
+                    setFollowersPeople(res.payload)
+                })
+            }
         }
-    },[user,followStatus,unfollowStatus])
+    },[user,followStatus,unfollowStatus,customPostOptions])
 
     if(customPostOptions.type === "followersPeople"){
         return <div className={styles.people}>
@@ -86,7 +90,7 @@ export default function Content(props){
                 <FontAwesomeIcon icon={faTimes} onClick={()=> dispatch(setShowPostOptionsModal(false))} />
             </div>
             <div className={styles.content}>
-                {props.likesPeople.map((person,index)=>{
+                {props.likesPeople?.map((person,index)=>{
                     return <LikesPeople key={index} person={person} />
                 })}
             </div>   
@@ -147,8 +151,13 @@ export default function Content(props){
             <ul>
                     {user.userId === props.commentCreatorId || <li style={{color:"red"}}>Report</li>}
                     {user.userId === props.commentCreatorId && <li style={{color:"red"}} onClick={()=> {
-                        dispatch(removeComment({post_id:props.post_id,comment_id:props.comment_id}))
-                        dispatch(setShowPostOptionsModal(false));
+                        dispatch(removeComment({post_id:props.post_id,comment_id:props.comment_id})).then(res=>{
+                            socket?.current.emit("comments",{
+                                postId:props.post_id,
+                                userId:props.createdBy,
+                            })
+                            dispatch(setShowPostOptionsModal(false));
+                        })
                     }
                     }>Delete</li>}
                     <li onClick={()=> dispatch(setShowPostOptionsModal(false))}>Cancel</li>

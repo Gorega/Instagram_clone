@@ -4,16 +4,14 @@ import axios from "axios";
 import { server } from "../../lib/server";
 import { useSession } from "next-auth/react";
 import {setPending,setPeopleModal} from "../../features/messengerSlice";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import ModalHolder from "../ModalHolder";
-import { AppContext } from "../../contextApi";
 
 export default function PeopleModal({type,postId}){
     const dispatch = useDispatch();
     const {data:user} = useSession();
-    const {socket} = useContext(AppContext);
     const {pending} = useSelector((state)=> state.messenger)
     const [username,setUsername] = useState(null);
     const [suggestedUsers,setSuggestedUsers] = useState([]);
@@ -41,18 +39,18 @@ export default function PeopleModal({type,postId}){
     const addConversationHandler = async (senderId)=>{
         try{
             dispatch(setPending(true))
-            await axios.post(`${server}/api/user/${user.userId}/conversation`,{userId:user.userId,senderId},{withCredentials:true});
+            await axios.post(`${server}/api/user/${user.userId}/conversation`,{userId:user.userId,senderId});
             dispatch(setPending(false))
             dispatch(setPeopleModal(false))
         }catch(err){
-            if(err.response.data.msg === "Already Exist"){
-                dispatch(setPeopleModal(false))
-            }
+            // if(err.response.data.msg === "Already Exist"){
+            //     dispatch(setPeopleModal(false))
+            // }
         }
     }
 
     const share = async (conversationId,personId)=>{
-        await axios.post(`${server}/api/messenger/${conversationId}`,{sender:personId,text:shareText,members:[user.userId,personId],postId},{withCredentials:true});
+        await axios.post(`${server}/api/messenger/${conversationId}`,{sender:personId,text:shareText,members:[user.userId,personId],postId});
         dispatch(setPeopleModal(false))
     }
 
@@ -62,7 +60,7 @@ export default function PeopleModal({type,postId}){
             const conversationsData = await conversationsReposnse.data;
             const conversation = conversationsData.find((conversation)=> conversation.members.includes(person.userId));
             if(!conversation){
-                const newConversationResponse = await axios.post(`${server}/api/user/${user.userId}/conversation`,{userId:user.userId,senderId:person.userId},{withCredentials:true});
+                const newConversationResponse = await axios.post(`${server}/api/user/${user.userId}/conversation`,{userId:user.userId,senderId:person.userId});
                 const newConversationData = await newConversationResponse.data;
                 share(newConversationData._id,person.userId)
             }else{

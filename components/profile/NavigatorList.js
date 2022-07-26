@@ -7,11 +7,11 @@ import { useSession } from "next-auth/react";
 
 export default function NavigatorList(){
     const dispatch = useDispatch();
-    const {data:user,status} = useSession();
+    const {data:user} = useSession();
     const {list} = Lists()
-    const {activeProfileList} = useSelector((state)=>state.navigatorList);
+    const {activeProfileList,spinner} = useSelector((state)=>state.navigatorList);
 
-    if(status === "authenticated"){
+    if(!spinner){
         return <div className={styles.list}>
         <ul>
           {location.pathname.includes(user.userId) ?

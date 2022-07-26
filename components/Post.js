@@ -1,5 +1,5 @@
 import styles from "../styles/components/Post.module.css";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Comment from "./Comment";
 import { setShowPostOptionsModal,setCustomPostOptions } from "../features/modalSlice";
@@ -19,22 +19,24 @@ const Picker = dynamic(() => import("emoji-picker-react"), {
 });
 import axios from "axios";
 import { server } from "../lib/server";
+import { AppContext } from "../contextApi";
 
 export default function Post({post,customStyle}){
     const dispatch = useDispatch();
-    const likeButtonRef = useRef();
     const {data:user,status} = useSession();
-    const {fetchPostLikes,fetchPostComments,postComments,postLikes,spinner,liked,likesHandler,bookmarkHandler,addComment,removeComment,savedPosts} = usePostData(post);
+    const {socket} = useContext(AppContext);
     const observer = useRef();
-    const {addLike,removeLike} = useSelector((state)=> state.postLikes)
+    const likeButtonRef = useRef();
+    const commentInput = useRef();
+    const emojiPickerBoxRef = useRef();
+    const {fetchPostLikes,fetchPostComments,postComments,postLikes,spinner,liked,likesHandler,bookmarkHandler,addComment,savedPosts} = usePostData(post);
+    const {addLike,removeLike,socketLikes} = useSelector((state)=> state.postLikes)
     const {peopleModal} = useSelector((state)=> state.messenger)
     const {unfollow:unfollowStatus,follow:followStatus} = useSelector((state)=> state.userFollowers);
-    const {addComment:addCommentStatus,removeComment:removeCommentStatus} = useSelector((state)=> state.postComments);
+    const {addComment:addCommentStatus,removeComment:removeCommentStatus,socketComments} = useSelector((state)=> state.postComments);
     const [commentsLimit,setCommentsLimit] = useState(4);
     const {unfollowModal,editPostModal} = useSelector((state)=>state.modal);
     const [commentValue,setCommentValue] = useState("");
-    const commentInput = useRef();
-    const emojiPickerBoxRef = useRef();
     const [followed,setFollowed] = useState(null);
     const {showPostOptionsModal,customPostOptions} = useSelector((state)=> state.modal);
     const [currentLiked,setCurrentLiked] = useState(null);
@@ -119,6 +121,14 @@ export default function Post({post,customStyle}){
     useEffect(()=>{
         setCurrentSaved(savedPosts)
     },[savedPosts])
+
+    useEffect(()=>{
+        if(socketLikes && (post._id === socketLikes.postId)) fetchPostLikes();
+    },[socketLikes])
+
+    useEffect(()=>{
+        if(socketComments && (post._id === socketComments.postId)) fetchPostComments(commentsLimit);
+    },[socketComments])
 
     return <div className={styles.post}>
             {spinner ?
@@ -234,7 +244,12 @@ export default function Post({post,customStyle}){
                                     <form onSubmit={(e)=>{
                                         e.preventDefault();
                                         setCommentValue("")
-                                        dispatch(addComment({post_id:post._id,content:commentValue}))
+                                        dispatch(addComment({post_id:post._id,content:commentValue})).then(res =>{
+                                            socket?.current.emit("comments",{
+                                                postId:post._id,
+                                                userId:post.createdBy,
+                                            })
+                                        })
                                     }}>
                                     <input type="text" placeholder="Add a comment..." value={commentValue} onChange={(e)=> setCommentValue(e.target.value)} ref={commentInput} />
                                     <button type="submit" className={commentValue <= 0 && styles.disabled}>Post</button>

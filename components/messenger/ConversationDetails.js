@@ -6,24 +6,29 @@ import ModalHolder from "../ModalHolder";
 import { setPending, setShowConversationChat, setShowConversationDetails } from "../../features/messengerSlice";
 import { server } from "../../lib/server";
 import styles from "../../styles/components/messenger/ConversationDetails.module.css";
+import { useRouter } from "next/router";
 
 export default function ConversationDetails({conversation,member}){
     const {data:user} = useSession();
     const dispatch = useDispatch();
+    const router = useRouter();
     const [showAlert,setShowAlert] = useState({status:false,type:null});
     
     const deleteConversationHandler = async ()=>{
         dispatch(setPending(true))
-        const response = await axios.patch(`${server}/api/user/${user.userId}/conversation/${conversation.data._id}`);
+        const response = await axios.delete(`${server}/api/user/${user.userId}/conversation/update/${conversation.data._id}`);
         dispatch(setShowConversationChat(false));
         dispatch(setPending(false))
         setShowAlert({status:false})
     }
 
-    // const blockConversationHandler = async ()=>{
-    //     const response = await axios.patch(`${server}/api/user/${user.userId}/conversation/block/${conversation.data._id}`);
-    //     const data = await response.data;
-    // }
+    const blockConversationHandler = async ()=>{
+        dispatch(setPending(true))
+        const response = await axios.patch(`${server}/api/user/${user.userId}/conversation/block/${conversation.data._id}`);
+        const data = await response.data;
+        dispatch(setPending(false))
+        setShowAlert({status:false})
+    }
 
     return <>
         <div className={styles.details}>
@@ -40,7 +45,7 @@ export default function ConversationDetails({conversation,member}){
             </div>
             <div className={`${styles.members} ${styles.sec}`}>
                 <h2>Members</h2>
-                <div className={styles.person}>
+                <div className={styles.person} onClick={()=> router.push(`/${member._id}`)}>
                     <img src={member.image} alt="" />
                     <div className={styles.info}>
                         <h2>{member.name}</h2>
@@ -69,7 +74,7 @@ export default function ConversationDetails({conversation,member}){
             </p>
             <ul>
                 {showAlert.type === "delete" && <li onClick={deleteConversationHandler}>Delete</li>}
-                {showAlert.type === "block" && <li>Block</li>}
+                {showAlert.type === "block" && <li onClick={blockConversationHandler}>Block</li>}
                 <li onClick={()=> setShowAlert({status:false})}>Cancel</li>
             </ul>
         </div>

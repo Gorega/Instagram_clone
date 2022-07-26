@@ -17,14 +17,14 @@ export default function usePostData(props){
     const liked = postLikes?.find((like)=> user && (like.createdBy === user.userId));
 
     const likesHandler = ()=>{
+        socket?.current.emit("likes",{
+            postId:props._id,
+            userId:props.createdBy,
+        })
         if(liked){
             dispatch(removeLike({post_id:props._id,like_id:liked._id}))
             
         }else{
-            socket?.current.emit("addLike",{
-                postId:props._id,
-                userId:user.userId,
-            })
             dispatch(addLike({post_id:props._id}))
         }
     }

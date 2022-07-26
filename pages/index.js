@@ -21,8 +21,8 @@ export default function Home() {
   const {peopleModal} = useSelector((state)=> state.messenger);
   const {unfollowModal} = useSelector((state)=>state.modal);
   const {showPostOptionsModal,editPostModal,customPostOptions,showPostModal} = useSelector((state)=>state.modal);
+  const {currentFile} = useSelector((state)=> state.addPost);
   const observer = useRef();
-  const {currentFile} = useSelector((state)=> state.addPost)
 
   const lastPostElementRef = useCallback(node =>{
     if(observer.current){
@@ -64,9 +64,7 @@ export default function Home() {
             <PostCard key={index} {...post} name={name} image={image} post_likes={post.post_likes} />
           </div>
         }
-        return <>
-         <PostCard key={index} {...post} name={name} image={image} post_likes={post.post_likes} />
-        </>
+        return <PostCard key={index} {...post} name={name} image={image} post_likes={post.post_likes} />
       })}
         <UserSide />
       </div>

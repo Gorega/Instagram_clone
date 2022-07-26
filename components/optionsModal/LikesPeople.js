@@ -16,13 +16,14 @@ export default function LikesPeople({person}){
     const [spinner,setSpinner] = useState(false);
     const followed = followingPeople.find((follower)=> follower.user_id === person.createdBy);
 
+
     const FollowerHandler = async (next_user_id)=>{
         setSpinner(true)
         if(followed){
-            await axios.delete(`${server}/api/user/${user.userId}/follower/${next_user_id}`,{withCredentials:true});
+            await axios.delete(`${server}/api/user/${user.userId}/follower/${next_user_id}`);
             setSpinner(false)
         }else{
-            await axios.post(`${server}/api/user/${user.userId}/follower`,{user_id:next_user_id},{withCredentials:true});
+            await axios.post(`${server}/api/user/${user.userId}/follower`,{user_id:next_user_id});
             setSpinner(false)
         }
     }
@@ -34,10 +35,10 @@ export default function LikesPeople({person}){
     },[spinner])
 
     return <div className={styles.person}>
-        <img src={person.creator[0].image} alt="" />
-        <h3>{person.creator[0].username}</h3>
-        <button style={{backgroundColor:followed && "#B2DFFB"}} onClick={()=> FollowerHandler(person.createdBy)}>
-            {spinner ? <FontAwesomeIcon className="fa-spin" icon={faSpinner} /> : followed ? "Unfollow" : "Follow"}
-        </button>
-    </div>
+                <img src={person.creator[0].image} alt="" />
+                <h3>{person.creator[0].username}</h3>
+                <button style={{backgroundColor:followed && "#B2DFFB"}} onClick={()=> FollowerHandler(person.createdBy)}>
+                    {spinner ? <FontAwesomeIcon className="fa-spin" icon={faSpinner} /> : followed ? "Unfollow" : "Follow"}
+                </button>
+            </div>
 }

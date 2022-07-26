@@ -36,6 +36,10 @@
     right: 20px;
 }
 
+.message .text > p.error{
+    color:red;
+}
+
 .own .text > p{
     background-color: transparent;
     left:20px;

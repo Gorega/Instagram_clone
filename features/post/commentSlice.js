@@ -6,6 +6,7 @@ const initialState = {
     getPostComments:()=>{},
     addComment:()=>{},
     removeComment:()=>{},
+    socketComments:null
 }
 
 export const getPostComments = createAsyncThunk(
@@ -37,6 +38,11 @@ export const addComment = createAsyncThunk(
 export const commentSlice = createSlice({
   name: 'comments',
   initialState,
+  reducers:{
+    setScoketComments:(state,action)=>{
+      state.socketComments = action.payload;
+    }
+  },
   extraReducers:{
       [getPostComments.pending]:(state)=>{
           state.getPostComments = "pending"
@@ -67,5 +73,7 @@ export const commentSlice = createSlice({
         }
   }
 })
+
+export const { setScoketComments} = commentSlice.actions
 
 export default commentSlice.reducer

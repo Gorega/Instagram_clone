@@ -1,19 +1,21 @@
 import styles from "../../styles/components/messenger/PeopleSec.module.css";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { server } from "../../lib/server";
 import { useSession } from "next-auth/react";
 import Conversation from "./Conversation";
 import { useSelector,useDispatch } from "react-redux";
-import { setPeopleModal } from "../../features/messengerSlice";
+import { setPeopleModal, setSocketConversation } from "../../features/messengerSlice";
 import PeopleModal from "./PeopleModal";
+import { AppContext } from "../../contextApi";
 
 export default function People(){
     const {data:user,status} = useSession();
     const dispatch = useDispatch();
+    const {socket} = useContext(AppContext);
     const {socketConversation,peopleModal,pending} = useSelector((state)=> state.messenger)
     const [conversations,setConversations] = useState([]);
-    const peopleSpinner = [...new Array(8)]
+    const peopleSpinner = [...new Array(8)];
 
     const fetchConversations = async ()=>{
             const response = await axios.get(`${server}/api/user/${user.userId}/conversation`,{withCredentials:true});
@@ -26,6 +28,15 @@ export default function People(){
             fetchConversations();
         }
     },[user,socketConversation,pending])
+
+    useEffect(()=>{
+        socket?.current.on("getConversation",(data)=>{
+            dispatch(setSocketConversation({
+                sender:data.sender,
+                receiverId:data.receiverId
+            }))
+        })
+    },[])
 
     return <>
         <div className={styles.peopleSec}>

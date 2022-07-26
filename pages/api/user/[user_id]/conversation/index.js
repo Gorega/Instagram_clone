@@ -14,9 +14,9 @@ export default async function handler(req,res){
     
     if(req.method === "POST"){
         const {userId,senderId} = req.body;
-        const existConversation = await Conversation.findOne({members:{$all:[userId,senderId]},seenBy:{$in:[userId]}})
+        const existConversation = await Conversation.findOne({members:{$all:[userId,senderId]}})
         if(existConversation){
-            await Conversation.findOneAndUpdate({members:{$all:[userId,senderId]}},{$push:{seenBy:senderId}});
+            await Conversation.findOneAndUpdate({members:{$all:[userId,senderId]}},{$addToSet:{seenBy:userId}});
             return res.status(200).json({msg:"updated ..."})
         }
         

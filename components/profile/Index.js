@@ -3,7 +3,7 @@ import Foot from "./Foot";
 import Head from "./Head";
 import NavigatorList from "./NavigatorList";
 import Lists from "./Lists";
-import { useContext, useEffect } from "react";
+import React,{ useContext, useEffect } from "react";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { AppContext } from "../../contextApi";
