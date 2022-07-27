@@ -30,7 +30,7 @@ export default function People(){
     },[user,socketConversation,pending])
 
     useEffect(()=>{
-        socket?.current.on("getConversation",(data)=>{
+        socket?.current?.on("getConversation",(data)=>{
             dispatch(setSocketConversation({
                 sender:data.sender,
                 receiverId:data.receiverId

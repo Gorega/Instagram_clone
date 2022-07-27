@@ -49,6 +49,13 @@ export default function handler(req,res){
                     //         receiverId
                     //     })
                     // })
+
+                    // socket converesations blocks
+                    socket.on("UnblockConversation",({blockedBy})=>{
+                        io.emit("getUnblockedConversation",{
+                            blockedBy
+                        })
+                    })
     
                     // socket likes
                     socket.on("likes",({postId,userId})=>{

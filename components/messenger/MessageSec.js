@@ -16,22 +16,21 @@ import { AppContext } from "../../contextApi";
 export default function MessageSec(){
     const dispatch = useDispatch();
     const {data:user} = useSession();
-    const {showConversationDetails,showConversationChat,conversation} = useSelector((state)=> state.messenger);
+    const {showConversationDetails,showConversationChat,conversation,recieverData} = useSelector((state)=> state.messenger);
     const {socket} = useContext(AppContext);
     const [socketMessage,setSocketMessage] = useState("");
     const [messageText,setMessageText] = useState("");
-    const [blockedAlert,setBlockedAlert] = useState(false);
     const [chat,setChat] = useState([]);
     const messageBoxInputRef = useRef();
     const emojiPickerBoxRef = useRef();
-    const [errorMsg,setErrorMsg] = useState({status:false});
     const [showEmojiPicker,setShowEmojiPicker] = useState(false);
     const [chosenEmoji, setChosenEmoji] = useState(null);
+    const receiverId = conversation?.data.members.find((member)=> member !== user.userId);
+    const [isUserBlocked,setIsUserBlocked] = useState(conversation?.data.blockedBy.includes(receiverId));
     
     const postNewMessageHandler = async (e)=>{
         e.preventDefault();
         dispatch(setPending(true))
-        const receiverId = conversation?.data.members.find((member)=> member !== user.userId);
         socket?.current.emit("sendMessage",{
             sender:user.userId,
             receiverId:receiverId,
@@ -54,7 +53,6 @@ export default function MessageSec(){
         })
 
         try{
-            setErrorMsg({status:false})
             setMessageText("");
             const response = await axios.post(`${server}/api/messenger/${conversation.data._id}`,{sender:user.userId,text:messageText,members:conversation.data.members});
             const data = await response.data;
@@ -72,7 +70,7 @@ export default function MessageSec(){
                 dispatch(setPending(false))
             })
         }catch(err){
-
+            setIsUserBlocked(true);
         }
     }
 
@@ -98,13 +96,11 @@ export default function MessageSec(){
             fetchConversationMessages();
             setMessageText("");
             dispatch(setShowConversationDetails(false))
-            setBlockedAlert(false)
-            setErrorMsg({status:false});
         }
     },[conversation])
 
     useEffect(()=>{
-        socket?.current.on("getMessage",(data)=>{
+        socket?.current?.on("getMessage",(data)=>{
             setSocketMessage({
                 sender:data.sender,
                 text:data.text,
@@ -112,6 +108,12 @@ export default function MessageSec(){
             })
         })
     },[])
+
+    useEffect(()=>{
+        socket?.current?.on("getUnblockedConversation",(data)=>{
+            setIsUserBlocked(false)
+        })
+    },[isUserBlocked])
 
     useEffect(()=>{
         if(socketMessage && conversation?.data.members.includes(socketMessage.sender)){
@@ -160,11 +162,11 @@ export default function MessageSec(){
 
                 </div>
 
-                <form className={`${styles.sendBox} ${blockedAlert && styles.disabledBox}`} onSubmit={postNewMessageHandler}>
+                <form className={`${styles.sendBox} ${isUserBlocked && styles.disabledBox}`} onSubmit={postNewMessageHandler}>
                     <div className={styles.face} onClick={()=> setShowEmojiPicker(!showEmojiPicker)}>
                         <svg ariaLabel="Emoji" color="#262626" fill="#262626" height="24" role="img" viewBox="0 0 24 24" width="24"><path d="M15.83 10.997a1.167 1.167 0 101.167 1.167 1.167 1.167 0 00-1.167-1.167zm-6.5 1.167a1.167 1.167 0 10-1.166 1.167 1.167 1.167 0 001.166-1.167zm5.163 3.24a3.406 3.406 0 01-4.982.007 1 1 0 10-1.557 1.256 5.397 5.397 0 008.09 0 1 1 0 00-1.55-1.263zM12 .503a11.5 11.5 0 1011.5 11.5A11.513 11.513 0 0012 .503zm0 21a9.5 9.5 0 119.5-9.5 9.51 9.51 0 01-9.5 9.5z"></path></svg>
                     </div>
-                    <input type="text" disabled={blockedAlert && true} placeholder="Message..." value={messageText} onChange={(e)=> setMessageText(e.target.value)} ref={messageBoxInputRef} />
+                    <input type="text" disabled={isUserBlocked && true} placeholder={isUserBlocked ? `You can't send messages to ${recieverData?.name} anymore :)` : "Message..."} value={messageText} onChange={(e)=> setMessageText(e.target.value)} ref={messageBoxInputRef} />
                     <div className={styles.upload}>
                         <svg ariaLabel="Add Photo or Video" color="#262626" fill="#262626" height="24" role="img" viewBox="0 0 24 24" width="24"><path d="M6.549 5.013A1.557 1.557 0 108.106 6.57a1.557 1.557 0 00-1.557-1.557z" fillRule="evenodd"></path><path d="M2 18.605l3.901-3.9a.908.908 0 011.284 0l2.807 2.806a.908.908 0 001.283 0l5.534-5.534a.908.908 0 011.283 0l3.905 3.905" fill="none" stroke="currentColor" strokeLinejoin="round" strokeWidth="2"></path><path d="M18.44 2.004A3.56 3.56 0 0122 5.564h0v12.873a3.56 3.56 0 01-3.56 3.56H5.568a3.56 3.56 0 01-3.56-3.56V5.563a3.56 3.56 0 013.56-3.56z" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"></path></svg>
                     </div>

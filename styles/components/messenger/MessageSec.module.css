@@ -97,24 +97,8 @@
     background-color: white;
 }
 
-/* .messageSec .messageHolder .disabledBox{
-    bottom:-40px;
-    position: relative;
-    background-color: #eaeaea;
-    cursor:none;
+.messageSec .messageHolder .sendBox.disabledBox{
     pointer-events: none;
-} */
-
-.messageSec .messageHolder .disabledBox::before{
-    content:"(: You can't send messages for this user anymore.";
-    position: absolute;
-    top:-40px;
-    left:50%;
-    transform: translateX(-50%);
-    color:red;
-    font-size:14px;
-    font-weight: bold;
-    text-align: center;
 }
 
 .messageSec .messageHolder .sendBox .face{
@@ -128,6 +112,10 @@
     font-weight: 300;
     width: 90%;
     border:none;
+}
+
+.messageSec .messageHolder .sendBox input:disabled{
+    background: none;
 }
 
 .messageSec .messageHolder .sendBox input:focus{

@@ -33,6 +33,12 @@ export default function Conversation({conversation,senderId}){
             });
         }
 
+        const updateConversationWatchers = async ()=>{
+            const response = await axios.patch(`${server}/api/user/${user.userId}/conversation/update/watcher/${conversation._id}`);
+            const data = await response.data;
+            console.log(data);
+        }
+
         useEffect(()=>{
             fetchConversationMessages();
         },[conversation])
@@ -54,6 +60,7 @@ export default function Conversation({conversation,senderId}){
                     sender:person
                 }))
                 fetchRecieverData();
+                updateConversationWatchers();
                 }}>
             <img src={person.image} alt="" />
             <div className={styles.info}>

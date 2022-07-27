@@ -12,7 +12,6 @@ export default function SignleMessage({message,chat}){
     const dispatch = useDispatch();
     const lastMessage = useRef();
     const {data:user} = useSession();
-    // const {errorMsg} = useSelector((state)=> state.messenger);
     const router = useRouter();
     const [sahredPost,setSharedPost] = useState();
     const {recieverData} = useSelector((state)=> state.messenger);
@@ -56,7 +55,7 @@ export default function SignleMessage({message,chat}){
                 {message.text && <p><span>{message.text}</span></p>}
             </div>
             :
-            <p className={message.blockedBy?.includes(user.userId) && styles.error}>{message.text}</p>}
+            <p>{message.text}</p>}
         </div>
     </div>
 }

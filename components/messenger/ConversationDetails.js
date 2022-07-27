@@ -1,18 +1,21 @@
 import axios from "axios";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useDispatch } from "react-redux";
 import ModalHolder from "../ModalHolder";
 import { setPending, setShowConversationChat, setShowConversationDetails } from "../../features/messengerSlice";
 import { server } from "../../lib/server";
 import styles from "../../styles/components/messenger/ConversationDetails.module.css";
 import { useRouter } from "next/router";
+import { AppContext } from "../../contextApi";
 
 export default function ConversationDetails({conversation,member}){
     const {data:user} = useSession();
     const dispatch = useDispatch();
     const router = useRouter();
+    const {socket} = useContext(AppContext);
     const [showAlert,setShowAlert] = useState({status:false,type:null});
+    const [isUserBlocked,setIsUserBlocked] = useState(conversation.data.blockedBy.includes(user.userId)); 
     
     const deleteConversationHandler = async ()=>{
         dispatch(setPending(true))
@@ -25,9 +28,19 @@ export default function ConversationDetails({conversation,member}){
     const blockConversationHandler = async ()=>{
         dispatch(setPending(true))
         const response = await axios.patch(`${server}/api/user/${user.userId}/conversation/block/${conversation.data._id}`);
-        const data = await response.data;
         dispatch(setPending(false))
+        setIsUserBlocked(true)
         setShowAlert({status:false})
+    }
+
+    const UnblockConversationHandler = async ()=>{
+        dispatch(setPending(true))
+        const response = await axios.delete(`${server}/api/user/${user.userId}/conversation/block/${conversation.data._id}`);
+        dispatch(setPending(false))
+        setIsUserBlocked(false);
+        socket?.current.emit("UnblockConversation",{
+            blockedBy:[]
+        })
     }
 
     return <>
@@ -56,7 +69,13 @@ export default function ConversationDetails({conversation,member}){
             <div className={`${styles.control} ${styles.sec}`}>
                 <ul>
                     <li onClick={()=> setShowAlert({status:true,type:"delete"})}>Delete Chat</li>
-                    <li onClick={()=> setShowAlert({status:true,type:"block"})}>Block</li>
+                    <li onClick={()=> {
+                        if(isUserBlocked){
+                            UnblockConversationHandler();
+                        }else{
+                            setShowAlert({status:true,type:"block"})
+                        }
+                    }}>{isUserBlocked ? "Unblock" : "Block"}</li>
                     <li>Report</li>
                 </ul>
             </div>
