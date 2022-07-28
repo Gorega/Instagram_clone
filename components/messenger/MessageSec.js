@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { server } from "../../lib/server";
 import { useSession } from "next-auth/react";
-import {setPending, setPeopleModal, setShowConversationChat, setShowConversationDetails} from "../../features/messengerSlice";
+import {setPending, setPeopleModal, setShowConversationChat, setIsConversationViewed,setShowConversationDetails} from "../../features/messengerSlice";
 import ConversationDetails from "./ConversationDetails";
 import SingleMessage from "./SingleMessage";
 import dynamic from "next/dynamic";
@@ -57,6 +57,14 @@ export default function MessageSec(){
             const response = await axios.post(`${server}/api/messenger/${conversation.data._id}`,{sender:user.userId,text:messageText,members:conversation.data.members});
             const data = await response.data;
             setChat([...chat,data])
+
+            // update converesation wathcers
+            axios.delete(`${server}/api/user/${user.userId}/conversation/update/watcher/${conversation.data._id}`,{next_user_id:receiverId})
+            .then(res => {
+                console.log(res)
+                // dispatch(setPending(false))
+            })
+            // dispatch(setIsConversationViewed(false))
 
             // show message to next_user
             axios.patch(`${server}/api/user/${user.userId}/conversation/update/${conversation.data._id}`,{next_user_id:receiverId})

@@ -15,7 +15,7 @@ export default function ConversationDetails({conversation,member}){
     const router = useRouter();
     const {socket} = useContext(AppContext);
     const [showAlert,setShowAlert] = useState({status:false,type:null});
-    const [isUserBlocked,setIsUserBlocked] = useState(conversation.data.blockedBy.includes(user.userId)); 
+    const [isUserBlocked,setIsUserBlocked] = useState(conversation?.data.blockedBy.includes(user.userId)); 
     
     const deleteConversationHandler = async ()=>{
         dispatch(setPending(true))

@@ -22,7 +22,8 @@ export default async function handler(req,res){
         
         const newConversation = await Conversation.create({
             members:[userId,senderId],
-            seenBy:[userId,senderId],
+            seenBy:[userId,senderId]
+        
         })
         return res.status(201).json(newConversation);
     }
