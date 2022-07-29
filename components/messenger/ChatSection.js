@@ -114,8 +114,7 @@ export default function ChatSection(){
                 createdAt:Date.now()
             })
         })
-    },[])
-
+    },[socket.current])
 
     // get socket blocking status
     useEffect(()=>{
