@@ -1,4 +1,4 @@
-import styles from "../../styles/components/messenger/PeopleSec.module.css";
+import styles from "../../styles/components/messenger/ConversationsSection.module.css";
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { server } from "../../lib/server";
@@ -9,7 +9,7 @@ import { setPeopleModal, setSocketConversation } from "../../features/messengerS
 import PeopleModal from "./PeopleModal";
 import { AppContext } from "../../contextApi";
 
-export default function People(){
+export default function ConversationsSection(){
     const {data:user,status} = useSession();
     const dispatch = useDispatch();
     const {socket} = useContext(AppContext);
@@ -36,7 +36,7 @@ export default function People(){
                 receiverId:data.receiverId
             }))
         })
-    },[])
+    },[socket.current])
 
     return <>
         <div className={styles.peopleSec}>

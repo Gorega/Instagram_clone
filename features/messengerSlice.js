@@ -25,6 +25,14 @@ export const members = createAsyncThunk(
   }
 )
 
+export const deleteConversation = createAsyncThunk(
+  "messenger/deleteConversation",
+  async(payload)=>{
+    const {userId,conversationId} = payload;
+    const response = await axios.delete(`${server}/api/user/${userId}/conversation/update/${conversationId}`);
+  }
+)
+
 export const messengerSlice = createSlice({
   name: 'messenger',
   initialState,
@@ -54,7 +62,7 @@ export const messengerSlice = createSlice({
       state.recieverData = action.payload;
     },
     setIsConversationViewed:(state,action)=>{
-      state.isConversationViewed = action.payload
+      state.isConversationViewed = action.payload;
     }
   }
 })

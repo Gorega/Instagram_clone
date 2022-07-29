@@ -3,7 +3,7 @@ import { useSession } from "next-auth/react";
 import { useContext, useState } from "react";
 import { useDispatch } from "react-redux";
 import ModalHolder from "../ModalHolder";
-import { setPending, setShowConversationChat, setShowConversationDetails } from "../../features/messengerSlice";
+import { deleteConversation, setPending, setShowConversationChat, setShowConversationDetails } from "../../features/messengerSlice";
 import { server } from "../../lib/server";
 import styles from "../../styles/components/messenger/ConversationDetails.module.css";
 import { useRouter } from "next/router";
@@ -19,28 +19,32 @@ export default function ConversationDetails({conversation,member}){
     
     const deleteConversationHandler = async ()=>{
         dispatch(setPending(true))
-        const response = await axios.delete(`${server}/api/user/${user.userId}/conversation/update/${conversation.data._id}`);
-        dispatch(setShowConversationChat(false));
-        dispatch(setPending(false))
-        setShowAlert({status:false})
+        dispatch(deleteConversation({userId:user.userId,conversationId:conversation.data._id})).then(res=>{
+            dispatch(setShowConversationChat(false));
+            setShowAlert({status:false})
+            dispatch(setPending(false))
+        })
     }
 
     const blockConversationHandler = async ()=>{
         dispatch(setPending(true))
         const response = await axios.patch(`${server}/api/user/${user.userId}/conversation/block/${conversation.data._id}`);
-        dispatch(setPending(false))
         setIsUserBlocked(true)
         setShowAlert({status:false})
+        socket?.current.emit("blockConversation",{
+            blockedBy:[user.userId]
+        })
+        dispatch(setPending(false))
     }
 
     const UnblockConversationHandler = async ()=>{
         dispatch(setPending(true))
         const response = await axios.delete(`${server}/api/user/${user.userId}/conversation/block/${conversation.data._id}`);
-        dispatch(setPending(false))
         setIsUserBlocked(false);
         socket?.current.emit("UnblockConversation",{
             blockedBy:[]
         })
+        dispatch(setPending(false))
     }
 
     return <>

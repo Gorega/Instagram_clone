@@ -81,6 +81,30 @@
     padding:10px;
 }
 
+.messageSec .messageHolder .body svg{
+    font-size:22px;
+    position: relative;
+    left:50%;
+    transform: translateX(-50%);
+}
+
+.messageSec .messageHolder .band{
+    position: absolute;
+    bottom:0;
+    background-color: #FAFAFA;
+    width: 100%;
+    height:50px;
+    padding:20px 10px;
+    cursor: default;
+    font-size:13px;
+    text-align: center;
+}
+
+.messageSec .messageHolder .band span{
+    color:#0295F6;
+    cursor: pointer;
+}
+
 .messageSec .messageHolder .sendBox{
     position: absolute;
     bottom:25px;

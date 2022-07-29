@@ -1,10 +1,10 @@
-import styles from "../../styles/components/messenger/MessageSec.module.css";
+import styles from "../../styles/components/messenger/ChatSection.module.css";
 import { useEffect, useState, useContext, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { server } from "../../lib/server";
 import { useSession } from "next-auth/react";
-import {setPending, setPeopleModal, setShowConversationChat, setIsConversationViewed,setShowConversationDetails} from "../../features/messengerSlice";
+import {deleteConversation,setPending, setPeopleModal, setShowConversationChat, setIsConversationViewed,setShowConversationDetails} from "../../features/messengerSlice";
 import ConversationDetails from "./ConversationDetails";
 import SingleMessage from "./SingleMessage";
 import dynamic from "next/dynamic";
@@ -12,8 +12,10 @@ const Picker = dynamic(() => import("emoji-picker-react"), {
   ssr: false,
 });
 import { AppContext } from "../../contextApi";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
-export default function MessageSec(){
+export default function ChatSection(){
     const dispatch = useDispatch();
     const {data:user} = useSession();
     const {showConversationDetails,showConversationChat,conversation,recieverData} = useSelector((state)=> state.messenger);
@@ -25,15 +27,15 @@ export default function MessageSec(){
     const emojiPickerBoxRef = useRef();
     const [showEmojiPicker,setShowEmojiPicker] = useState(false);
     const [chosenEmoji, setChosenEmoji] = useState(null);
+    const [chatSpinner,setChatSpinner] = useState(null);
     const receiverId = conversation?.data.members.find((member)=> member !== user.userId);
     const [isUserBlocked,setIsUserBlocked] = useState(conversation?.data.blockedBy.includes(receiverId));
     
     const postNewMessageHandler = async (e)=>{
         e.preventDefault();
-        dispatch(setPending(true))
         socket?.current.emit("sendMessage",{
+            conversationId:conversation.data._id,
             sender:user.userId,
-            receiverId:receiverId,
             text:messageText
         })
         // show conversation to next_user when sending message for the first time
@@ -58,34 +60,30 @@ export default function MessageSec(){
             const data = await response.data;
             setChat([...chat,data])
 
-            // update converesation wathcers
-            axios.delete(`${server}/api/user/${user.userId}/conversation/update/watcher/${conversation.data._id}`,{next_user_id:receiverId})
-            .then(res => {
-                console.log(res)
-                // dispatch(setPending(false))
-            })
+            // // update converesation wathcers
+            // axios.delete(`${server}/api/user/${user.userId}/conversation/update/watcher/${conversation.data._id}`,{next_user_id:receiverId})
+            // .then(res => {
+            //     console.log(res)
+            //     // dispatch(setPending(false))
+            // })
             // dispatch(setIsConversationViewed(false))
 
             // show message to next_user
             axios.patch(`${server}/api/user/${user.userId}/conversation/update/${conversation.data._id}`,{next_user_id:receiverId})
-            .then(res => {
-                dispatch(setPending(false))
-            })
 
             // update conversation date after sending a message
             axios.patch(`${server}/api/user/${user.userId}/conversation/update/sequence/${conversation.data._id}`,{updatedAt:Date.now()})
-            .then(res => {
-                dispatch(setPending(false))
-            })
         }catch(err){
             setIsUserBlocked(true);
         }
     }
 
     const fetchConversationMessages = async ()=>{
+        setChatSpinner("pending")
         const response = await axios.get(`${server}/api/messenger/${conversation.data._id}`,{withCredentials:true});
         const data = await response.data;
         setChat(data)
+        setChatSpinner("fulfilled")
     }
 
     const onEmojiClick = (event, emojiObject) => {
@@ -103,13 +101,14 @@ export default function MessageSec(){
             messageBoxInputRef?.current?.focus();
             fetchConversationMessages();
             setMessageText("");
-            dispatch(setShowConversationDetails(false))
+            setIsUserBlocked(conversation?.data.blockedBy.includes(receiverId))
         }
     },[conversation])
 
     useEffect(()=>{
         socket?.current?.on("getMessage",(data)=>{
             setSocketMessage({
+                conversationId:data.conversationId,
                 sender:data.sender,
                 text:data.text,
                 createdAt:Date.now()
@@ -117,14 +116,19 @@ export default function MessageSec(){
         })
     },[])
 
+
+    // get socket blocking status
     useEffect(()=>{
         socket?.current?.on("getUnblockedConversation",(data)=>{
             setIsUserBlocked(false)
         })
-    },[isUserBlocked])
+        socket?.current?.on("getBlockedConversation",(data)=>{
+            setIsUserBlocked(true)
+        })
+    },[isUserBlocked,socket.current])
 
     useEffect(()=>{
-        if(socketMessage && conversation?.data.members.includes(socketMessage.sender)){
+        if(socketMessage && conversation.data._id === socketMessage.conversationId && conversation.data.members.includes(socketMessage.sender)){
             setChat(prev=> [...prev,socketMessage])
         }
     },[socketMessage])
@@ -164,12 +168,20 @@ export default function MessageSec(){
                 </div>
 
                 <div className={styles.body}>
-                    {chat.map((message,index)=>{
+                    {chatSpinner === "pending" ? <FontAwesomeIcon icon={faSpinner} className="fa-spin" /> : chat.map((message,index)=>{
                         return <SingleMessage key={index} message={message} chat={chat} />
                     })}
-
                 </div>
 
+                {conversation?.data.blockedBy.includes(user.userId) ?
+                <div className={styles.band}>You blocked {recieverData?.name}. <span onClick={()=> {
+                    dispatch(setPending(true))
+                    dispatch(deleteConversation({userId:user.userId,conversationId:conversation.data._id})).then(res=>{
+                        dispatch(setPending(false))
+                        dispatch(setShowConversationChat(false));
+                    })
+                }}>Delete chat</span></div>
+                :
                 <form className={`${styles.sendBox} ${isUserBlocked && styles.disabledBox}`} onSubmit={postNewMessageHandler}>
                     <div className={styles.face} onClick={()=> setShowEmojiPicker(!showEmojiPicker)}>
                         <svg ariaLabel="Emoji" color="#262626" fill="#262626" height="24" role="img" viewBox="0 0 24 24" width="24"><path d="M15.83 10.997a1.167 1.167 0 101.167 1.167 1.167 1.167 0 00-1.167-1.167zm-6.5 1.167a1.167 1.167 0 10-1.166 1.167 1.167 1.167 0 001.166-1.167zm5.163 3.24a3.406 3.406 0 01-4.982.007 1 1 0 10-1.557 1.256 5.397 5.397 0 008.09 0 1 1 0 00-1.55-1.263zM12 .503a11.5 11.5 0 1011.5 11.5A11.513 11.513 0 0012 .503zm0 21a9.5 9.5 0 119.5-9.5 9.51 9.51 0 01-9.5 9.5z"></path></svg>
@@ -182,6 +194,7 @@ export default function MessageSec(){
                         {showEmojiPicker && <Picker onEmojiClick={onEmojiClick} />}
                     </div>
                 </form>
+                }
             </>
         </div>
         : 

@@ -1,4 +1,4 @@
-import styles from "../../styles/components/messenger/PeopleSec.module.css";
+import styles from "../../styles/components/messenger/ConversationsSection.module.css";
 import { useEffect, useState } from "react";
 import { setConversation, members, setShowConversationChat,setIsConversationViewed, setShowConversationDetails,setRecieverData } from "../../features/messengerSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -39,7 +39,7 @@ export default function Conversation({conversation,senderId}){
 
         useEffect(()=>{
             fetchConversationMessages();
-            dispatch(setIsConversationViewed(conversation?.readBy.includes(user.userId)))
+            // dispatch(setIsConversationViewed(conversation?.readBy.includes(user.userId)))
         },[conversation])
         
         useEffect(()=>{
@@ -59,14 +59,14 @@ export default function Conversation({conversation,senderId}){
                     sender:person
                 }))
                 fetchRecieverData();
-                updateConversationWatchers();
-                dispatch(setIsConversationViewed(true))
+                // updateConversationWatchers();
+                // dispatch(setIsConversationViewed(true))
                 }}>
             <img src={person.image} alt="" />
             <div className={styles.info}>
             <h2>{person.name}</h2>
             <p>
-                {chat[chat.length - 1]?.hasOwnProperty("postId") ? "Sent you a message" : chat[chat.length - 1]?.text} - {format(chat[chat.length -1]?.createdAt).includes("seconds") ? "Now" : format(chat[chat.length -1]?.createdAt)}
+                {chat[chat.length - 1]?.hasOwnProperty("postId") ? "Sent you a message" : chat[chat.length - 1]?.text.substring(0,20)} - {format(chat[chat.length -1]?.createdAt).includes("seconds") ? "Now" : format(chat[chat.length -1]?.createdAt)}
             </p>
             </div>
             {isConversationViewed || <div className={styles.patch}></div>}

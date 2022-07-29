@@ -1,6 +1,6 @@
 import styles from "../../styles/components/messenger/Index.module.css";
-import PeopleSec from "./PeopleSec";
-import MessageSec from "./MessageSec";
+import ConversationsSection from "./ConversationsSection";
+import ChatSection from "./ChatSection";
 import PostModal from "../PostModal";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
@@ -16,8 +16,8 @@ export default function Main(){
 
     return <div className="container">
         <div className={styles.main}>
-            <PeopleSec />
-            <MessageSec />
+            <ConversationsSection />
+            <ChatSection />
             {showPostModal && <PostModal />}
         </div>
     </div>

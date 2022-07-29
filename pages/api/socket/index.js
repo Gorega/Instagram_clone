@@ -35,9 +35,10 @@ export default function handler(req,res){
                     })
     
                     //send and get message
-                    socket.on("sendMessage",({sender,receiverId,text})=>{
+                    socket.on("sendMessage",({conversationId,sender,text})=>{
                     // const user = getUser(receiverId);
                     io.emit("getMessage",{
+                        conversationId,
                         sender,
                         text
                     })
@@ -56,6 +57,12 @@ export default function handler(req,res){
                             blockedBy
                         })
                     })
+
+                    socket.on("blockConversation",({blockedBy})=>{
+                        io.emit("getBlockedConversation",{
+                            blockedBy
+                        })
+                    })
     
                     // socket likes
                     socket.on("likes",({postId,userId})=>{
@@ -65,7 +72,7 @@ export default function handler(req,res){
                         })
                     })
 
-                    // socket likes
+                    // socket comments
                     socket.on("comments",({postId,userId})=>{
                         io.emit("getComments",{
                             postId,
