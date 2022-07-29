@@ -1,6 +1,6 @@
 import styles from "../../styles/components/messenger/ConversationsSection.module.css";
 import { useEffect, useState } from "react";
-import { setConversation, members, setShowConversationChat,setIsConversationViewed, setShowConversationDetails,setRecieverData } from "../../features/messengerSlice";
+import { setConversation, members, setShowConversationChat, setShowConversationDetails,setRecieverData, setMessengerPatch } from "../../features/messengerSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {format} from "timeago.js";
 import axios from "axios";
@@ -12,7 +12,8 @@ export default function Conversation({conversation,senderId}){
         const dispatch = useDispatch();
         const [person,setPerson] = useState([]); 
         const [chat,setChat] = useState([]);
-        const {conversation:conversationState,isConversationViewed} = useSelector((state)=> state.messenger);
+        const {conversation:conversationState} = useSelector((state)=> state.messenger);
+        const [isConversationViewed,setIsConversationViewed] = useState(null);
         const [historyState,setHistoryState] = useState(null);
         
         const fetchConversationMessages = async ()=>{
@@ -34,12 +35,13 @@ export default function Conversation({conversation,senderId}){
         }
 
         const updateConversationWatchers = async ()=>{
-            const response = await axios.patch(`${server}/api/user/${user.userId}/conversation/update/watcher/${conversation._id}`);
+            const repsonse = await axios.patch(`${server}/api/user/${user.userId}/conversation/update/watcher/${conversation._id}`);
+            dispatch(setMessengerPatch(false));
         }
 
         useEffect(()=>{
             fetchConversationMessages();
-            // dispatch(setIsConversationViewed(conversation?.readBy.includes(user.userId)))
+            setIsConversationViewed(conversation.readBy.includes(senderId));
         },[conversation])
         
         useEffect(()=>{
@@ -59,8 +61,8 @@ export default function Conversation({conversation,senderId}){
                     sender:person
                 }))
                 fetchRecieverData();
-                // updateConversationWatchers();
-                // dispatch(setIsConversationViewed(true))
+                setIsConversationViewed(false);
+                updateConversationWatchers();
                 }}>
             <img src={person.image} alt="" />
             <div className={styles.info}>
@@ -69,6 +71,6 @@ export default function Conversation({conversation,senderId}){
                 {chat[chat.length - 1]?.hasOwnProperty("postId") ? "Sent you a message" : chat[chat.length - 1]?.text.substring(0,20)} - {format(chat[chat.length -1]?.createdAt).includes("seconds") ? "Now" : format(chat[chat.length -1]?.createdAt)}
             </p>
             </div>
-            {isConversationViewed || <div className={styles.patch}></div>}
+            {isConversationViewed && <div className={styles.patch}></div>}
         </div>
 }

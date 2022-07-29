@@ -44,12 +44,12 @@ export default function handler(req,res){
                     })
                     })
     
-                    // // send and get message notifcation
-                    // socket.on("addMessageNotification",({receiverId})=>{
-                    //     io.emit("getMessageNotification",{
-                    //         receiverId
-                    //     })
-                    // })
+                    // socket messenger patch
+                    socket.on("addMessengerPatch",({receiverId})=>{
+                        io.emit("getMessengerPatch",{
+                            receiverId
+                        })
+                    })
 
                     // socket converesations blocks
                     socket.on("UnblockConversation",({blockedBy})=>{

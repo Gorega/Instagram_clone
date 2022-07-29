@@ -4,14 +4,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {useSession} from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { setCustomPostOptions, setShowPostOptionsModal } from "../../features/modalSlice";
-import PostOptionsModal from "../optionsModal/Index";
 import { useDispatch,useSelector } from "react-redux";
+import { setCustomPostOptions, setShowPostOptionsModal } from "../../features/modalSlice";
+import { getTotalUserPosts } from "../../features/user/posts";
+import { setSpinner } from "../../features/navigatorListSlice";
+import {follow, getTotalFollowers, getTotalFollowing, unfollow } from "../../features/user/follower";
+import PostOptionsModal from "../optionsModal/Index";
 import axios from "axios";
 import { server } from "../../lib/server";
-import { getTotalUserPosts } from "../../features/user/posts";
-import {follow, getTotalFollowers, getTotalFollowing, unfollow } from "../../features/user/follower";
-import { setSpinner } from "../../features/navigatorListSlice";
 
 export default function Head(){
     const dispatch = useDispatch();

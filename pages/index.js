@@ -13,6 +13,7 @@ import EditPostModal from "../components/post/Index";
 import PostModal from '../components/PostModal';
 import PeopleModal from '../components/messenger/PeopleModal';
 import UnfollowModal from '../components/sideInterface/UnfollowModal';
+import instagramSpinner from "../public/instagram.png"
 
 export default function Home() {
   const [page,setPage] = useState(1);
@@ -52,7 +53,12 @@ export default function Home() {
     }
   },[page])
 
-  return <>
+  return posts.length <= 0 ?
+  <div className={styles.spinner}>
+    <img src={instagramSpinner.src} alt="" />
+  </div>
+  :
+  <>
     <Navbar />
     <div className='container'>
     <PeopleCard />

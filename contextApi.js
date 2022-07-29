@@ -11,7 +11,8 @@ import io from 'socket.io-client';
 export const AppContext = React.createContext();
 
 const AppProvider = (props)=>{
-
+    
+    const socket = useRef();
     const dispatch = useDispatch();
     const {data:user,status} = useSession();
     const {saveToList,removeFromSaved} = useSelector((state)=> state.saved);
@@ -25,7 +26,6 @@ const AppProvider = (props)=>{
     const [searchBarSpinner,setSearchBarSpinner] = useState(false);
     const [postId,setPostId] = useState(null);
     const [uploadedFiles,setUploadedFiles] = useState([]);
-    const socket = useRef();
 
     const fetchPosts = async ()=>{
         const response = await axios.get(`${server}/api/post`,{withCredentials:true});
@@ -63,10 +63,7 @@ const AppProvider = (props)=>{
     // socket connection
     const initSocket = async ()=>{
         axios.get(`${server}/api/socket`).then((res)=>{
-            console.log(res)
             socket.current = io();
-        }).catch(err=>{
-            console.log(err)
         })
     }
 
@@ -77,6 +74,7 @@ const AppProvider = (props)=>{
     },[user])
 
     return <AppContext.Provider value={{
+        socket,
         saved,
         followersTotal,activeUserFollowersTotal,
         FollowerHandler,
@@ -84,7 +82,6 @@ const AppProvider = (props)=>{
         userPosts,setUserPosts,
         searchBarSpinner,setSearchBarSpinner,
         postId,setPostId,
-        socket,
         uploadedFiles,setUploadedFiles,
     }}>
         {props.children}

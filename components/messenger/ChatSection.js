@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { server } from "../../lib/server";
 import { useSession } from "next-auth/react";
-import {deleteConversation,setPending, setPeopleModal, setShowConversationChat, setIsConversationViewed,setShowConversationDetails} from "../../features/messengerSlice";
+import {deleteConversation,setPending, setPeopleModal, setShowConversationChat, setIsConversationViewed,setShowConversationDetails, setMessengerPatch} from "../../features/messengerSlice";
 import ConversationDetails from "./ConversationDetails";
 import SingleMessage from "./SingleMessage";
 import dynamic from "next/dynamic";
@@ -32,47 +32,46 @@ export default function ChatSection(){
     const [isUserBlocked,setIsUserBlocked] = useState(conversation?.data.blockedBy.includes(receiverId));
     
     const postNewMessageHandler = async (e)=>{
-        e.preventDefault();
-        socket?.current.emit("sendMessage",{
-            conversationId:conversation.data._id,
-            sender:user.userId,
-            text:messageText
-        })
-        // show conversation to next_user when sending message for the first time
-        socket?.current.emit("addConversation",{
-            sender:user.userId,
-            receiverId:receiverId,
-        })
-        // // send message notification to next_user
-        // socket?.current.emit("addMessageNotification",{
-        //     receiverId:receiverId,
-        // })
+            e.preventDefault();
+            socket?.current.emit("sendMessage",{
+                conversationId:conversation.data._id,
+                sender:user.userId,
+                text:messageText
+            })
 
-        // send userId to socket server (emit)
-        socket?.current.emit("addUser",user.userId);
-        // get connected users from socket server (on)
-        socket?.current.on("getUsers",(users)=>{
-        })
+            // show conversation to next_user when sending message for the first time
+            socket?.current.emit("addConversation",{
+                sender:user.userId,
+                receiverId:receiverId,
+            })
+            // update conversation wathcers
+            axios.put(`${server}/api/user/${user.userId}/conversation/update/watcher/${conversation.data._id}`,{next_user_id:receiverId})
+            axios.patch(`${server}/api/user/${user.userId}/conversation/update/watcher/${conversation.data._id}`);
+            
+            // update conversation sequence after sending a message
+            axios.patch(`${server}/api/user/${user.userId}/conversation/update/sequence/${conversation.data._id}`,{updatedAt:Date.now()})
+
+            // show message to next_user
+            axios.patch(`${server}/api/user/${user.userId}/conversation/update/${conversation.data._id}`,{next_user_id:receiverId})
+
+            // show messsenger patch on Navbar
+            socket?.current.emit("addMessengerPatch",{
+                receiverId:receiverId,
+            })
+            dispatch(setMessengerPatch(false))
+
+            // send userId to socket server (emit)
+            socket?.current.emit("addUser",user.userId);
+            // get connected users from socket server (on)
+            socket?.current.on("getUsers",(users)=>{
+            })
 
         try{
             setMessageText("");
             const response = await axios.post(`${server}/api/messenger/${conversation.data._id}`,{sender:user.userId,text:messageText,members:conversation.data.members});
             const data = await response.data;
-            setChat([...chat,data])
+            setChat([...chat,data]);
 
-            // // update converesation wathcers
-            // axios.delete(`${server}/api/user/${user.userId}/conversation/update/watcher/${conversation.data._id}`,{next_user_id:receiverId})
-            // .then(res => {
-            //     console.log(res)
-            //     // dispatch(setPending(false))
-            // })
-            // dispatch(setIsConversationViewed(false))
-
-            // show message to next_user
-            axios.patch(`${server}/api/user/${user.userId}/conversation/update/${conversation.data._id}`,{next_user_id:receiverId})
-
-            // update conversation date after sending a message
-            axios.patch(`${server}/api/user/${user.userId}/conversation/update/sequence/${conversation.data._id}`,{updatedAt:Date.now()})
         }catch(err){
             setIsUserBlocked(true);
         }
@@ -127,7 +126,7 @@ export default function ChatSection(){
     },[isUserBlocked,socket.current])
 
     useEffect(()=>{
-        if(socketMessage && conversation.data._id === socketMessage.conversationId && conversation.data.members.includes(socketMessage.sender)){
+        if(socketMessage && conversation?.data._id === socketMessage.conversationId && conversation.data.members.includes(socketMessage.sender)){
             setChat(prev=> [...prev,socketMessage])
         }
     },[socketMessage])

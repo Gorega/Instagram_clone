@@ -12,8 +12,10 @@ import logo from "../../public/logo.png";
 import { AppContext } from "../../contextApi";
 import { useRouter } from "next/router";
 import AddPostModal from "../../components/post/Index";
-import { setNewMessageNotification } from "../../features/messengerSlice";
-import { setCaptionValue, setDoneUpload, setShowPostersPreview } from "../../features/addPostSlice";
+import { setMessengerPatch } from "../../features/messengerSlice";
+import { setDoneUpload } from "../../features/addPostSlice";
+import axios from "axios";
+import {server} from "../../lib/server";
 
 export default function Main(){
     const dispatch = useDispatch();
@@ -27,7 +29,7 @@ export default function Main(){
     const {addPostModal} = useSelector((state)=> state.modal)
     const [searchValue,setSearchValue] = useState(null);
     const {socket} = useContext(AppContext);
-    const {newMessageNotification} = useSelector((state)=> state.messenger);
+    const {messengerPatch} = useSelector((state)=> state.messenger)
     const userRef = useRef();
     const navbarRef = useRef();
     const searchBarRef = useRef();
@@ -78,15 +80,29 @@ export default function Main(){
         }
     },[showSearchSugg,showUserMenu])
 
-    // useEffect(()=>{
-    //    if(status === "authenticated"){
-    //         socket?.current.on("getMessageNotification",(data)=>{
-    //             if(data.receiverId === user.userId){
-    //                 dispatch(setNewMessageNotification(true))
-    //             }
-    //         })
-    //    } 
-    // },[user])
+    useEffect(()=>{
+        socket?.current?.on("getMessengerPatch",(data)=>{
+            if(data.receiverId === user.userId){
+                dispatch(setMessengerPatch(true))
+            }
+        })
+    },[socket.current])
+
+    const isUnviewedConversationExist = async ()=>{
+        if(status === "authenticated"){
+            const response = await axios.get(`${server}/api/user/${user.userId}/conversation/viewed`,{withCredentials:true});
+            const data = await response.data;
+            if(data){
+                dispatch(setMessengerPatch(true))
+            }else{
+                dispatch(setMessengerPatch(false))
+            }
+        }
+    }
+
+    useEffect(()=>{
+        isUnviewedConversationExist();
+    },[user])
 
     return <>
         <div className={styles.main} ref={navbarRef}>
@@ -104,7 +120,7 @@ export default function Main(){
                 <div className={styles.list}>
                     <ul>
                         <Link href="/"><li>{homeIcon}</li></Link>
-                        <Link href="/direct/inbox"><li className={newMessageNotification && styles.patch}>{messengerIcon}</li></Link>
+                        <Link href="/direct/inbox"><li className={messengerPatch && styles.patch}>{messengerIcon}</li></Link>
                         <li onClick={()=> {
                             dispatch(setDoneUpload(false));
                             dispatch(setAddPostModal({status:true,content:null}))

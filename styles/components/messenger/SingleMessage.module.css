@@ -46,6 +46,15 @@
     border:1px solid #d9d9d9
 }
 
+.text > p span{
+    position: absolute;
+    top:50px;
+    font-size:10px;
+    left:50%;
+    transform: translateX(-50%);
+    font-weight:400;
+}
+
 .message .text .postPlaceholder{
     display: block;
     background-color: transparent;

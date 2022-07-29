@@ -104,20 +104,20 @@ export default function PostCard(props){
     },[savedPosts])
 
     useEffect(()=>{
-        socket?.current.on("getLikes",(data)=>{
+        socket?.current?.on("getLikes",(data)=>{
             dispatch(setSocketLikes({
                 postId:data.postId,
                 createdBy:data.userId
             }))
         })
 
-        socket?.current.on("getComments",(data)=>{
+        socket?.current?.on("getComments",(data)=>{
             dispatch(setScoketComments({
                 postId:data.postId,
                 createdBy:data.userId
             }))
         })
-    },[])
+    },[socket.current])
 
     useEffect(()=>{
         if(socketLikes && (props._id === socketLikes.postId)) fetchPostLikes();

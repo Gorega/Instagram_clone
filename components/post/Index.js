@@ -5,7 +5,7 @@ import Caption from "./Caption";
 import axios from "axios";
 import {server} from "../../lib/server";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft, faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { setCaptionValue, setDoneUpload } from "../../features/addPostSlice";
 import {setAddPostModal, setEditPostModal} from "../../features/modalSlice";
@@ -22,10 +22,10 @@ export default function Index(props){
     const {editPostModal} = useSelector((state)=> state.modal);
     const {doneUpload,captionValue} = useSelector((state)=> state.addPost)
 
-    const sharePostHandler = ()=>{
+    const sharePostHandler = async ()=>{
         setLoading(true)
         dispatch(setUpdatePosts("pending"));
-        axios.post(`${server}/api/post/add`,{poster:[...uploadedFiles],caption:captionValue,location:location},{withCredentials:true})
+        await axios.post(`${server}/api/post/add`,{poster:[...uploadedFiles],caption:captionValue,location:location},{withCredentials:true})
         .then(res => {
             dispatch(setAddPostModal({status:false}))
             dispatch(setDoneUpload(false));
@@ -38,10 +38,10 @@ export default function Index(props){
         });
     }
 
-    const editPostHandler = ()=>{
+    const editPostHandler = async ()=>{
         setLoading(true)
         dispatch(setUpdatePosts("pending"));
-        axios.patch(`${server}/api/post/${editPostModal.postId}`,{poster:[...uploadedFiles],caption:captionValue,location:location},{withCredentials:true})
+        await axios.patch(`${server}/api/post/${editPostModal.postId}`,{poster:[...uploadedFiles],caption:captionValue,location:location},{withCredentials:true})
         .then(res => {
             dispatch(setEditPostModal({status:false}))
             dispatch(setDoneUpload(false));
@@ -55,31 +55,30 @@ export default function Index(props){
     }
 
     return <>
-        {loading && <div className={styles.spinner}> <FontAwesomeIcon className="fa-spin" icon={faSpinner} /> </div>}
         <ModalHolder showCloseButton={true}>
-                <div className={styles.header} style={{justifyContent:!doneUpload && "center"}}>
-                    {doneUpload && <div className={styles.return} onClick={()=> dispatch(setDoneUpload(false))}>
-                        <FontAwesomeIcon icon={faArrowLeft} />
-                    </div>}
-                    <h2>Create new post</h2>
-                    {(doneUpload && props.createPost && <span onClick={sharePostHandler}>Share</span>)}
-                    {(doneUpload && props.editPost && <span onClick={editPostHandler}>Edit</span>)}
+            <div className={styles.header} style={{justifyContent:!doneUpload && "center"}}>
+                {doneUpload && <div className={styles.return} onClick={()=> dispatch(setDoneUpload(false))}>
+                    <FontAwesomeIcon icon={faArrowLeft} />
+                </div>}
+                <h2>Create new post</h2>
+                {(doneUpload && props.createPost && <span onClick={sharePostHandler}>Share</span>)}
+                {(doneUpload && props.editPost && <span onClick={editPostHandler}>Edit</span>)}
+            </div>
+            {!doneUpload && <div className={styles.content}>
+                <Upload />
+            </div>}
+            {doneUpload && <div className={styles.content}>
+                <div className={styles.sec}>
+                    <Upload editPost={props.editPost} createPost={props.createPost} backdrop={props.backdrop} />
                 </div>
-                {!doneUpload && <div className={styles.content}>
-                    <Upload />
-                </div>}
-                {doneUpload && <div className={styles.content}>
-                    <div className={styles.sec}>
-                        <Upload editPost={props.editPost} createPost={props.createPost} backdrop={props.backdrop} />
-                    </div>
-                    <div className={styles.sec}>
-                        <Caption caption={captionValue}
-                                setCaption={(e)=>dispatch(setCaptionValue(e.target.value))}
-                                location={location}
-                                setLocation={(e)=>setLocation(e.target.value)}   
-                                />
-                    </div>
-                </div>}
-    </ModalHolder>
+                <div className={styles.sec}>
+                    <Caption caption={captionValue}
+                            setCaption={(e)=>dispatch(setCaptionValue(e.target.value))}
+                            location={location}
+                            setLocation={(e)=>setLocation(e.target.value)}   
+                            />
+                </div>
+            </div>}
+        </ModalHolder>
     </>
 }

@@ -14,7 +14,7 @@ export default async function handler(req,res){
         return res.status(200).json({msg:"Watchers updated successfully"});
     }
 
-    if(req.mehtod === "DELETE"){
+    if(req.method === "PUT"){
         const {next_user_id} = req.body;
         await Conversation.findOneAndUpdate({_id:conversation_id},{$pull:{readBy:next_user_id}});
         return res.status(200).json({msg:"Watchers updated successfully"});

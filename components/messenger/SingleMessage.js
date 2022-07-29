@@ -14,7 +14,7 @@ export default function SignleMessage({message,chat}){
     const {data:user} = useSession();
     const router = useRouter();
     const [sahredPost,setSharedPost] = useState();
-    const {recieverData} = useSelector((state)=> state.messenger);
+    const {recieverData,conversation} = useSelector((state)=> state.messenger);
 
     const fetchSharedPostData = async ()=>{
         const response = await axios.get(`${server}/api/post/${message.postId}`,{withCredentials:true})
@@ -55,7 +55,8 @@ export default function SignleMessage({message,chat}){
                 {message.text && <p><span>{message.text}</span></p>}
             </div>
             :
-            <p>{message.text}</p>}
+            <p>{message.text}</p>
+            }
         </div>
     </div>
 }

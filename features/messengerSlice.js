@@ -2,7 +2,6 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
 import { server } from '../lib/server'
 
-
 const initialState = {
   pending:false,
   socketConversation:null,
@@ -10,7 +9,7 @@ const initialState = {
   showConversationDetails:false,
   conversation:null,
   peopleModal:false,
-  newMessageNotification:false,
+  messengerPatch:null,
   recieverData:null,
   isConversationViewed:false,
 }
@@ -49,8 +48,8 @@ export const messengerSlice = createSlice({
     setPending:(state,action)=>{
       state.pending = action.payload
     },
-    setNewMessageNotification:(state,action)=>{
-      state.newMessageNotification = action.payload;
+    setMessengerPatch:(state,action)=>{
+      state.messengerPatch = action.payload;
     },
     setSocketConversation:(state,action)=>{
       state.socketConversation = action.payload;
@@ -68,6 +67,6 @@ export const messengerSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { setShowConversationDetails,setSocketConversation,setShowConversationChat,setConversation,setPeopleModal,setPending,setNewMessageNotification,setIsConversationViewed,setRecieverData } = messengerSlice.actions
+export const { setShowConversationDetails,setSocketConversation,setShowConversationChat,setConversation,setPeopleModal,setPending,setMessengerPatch,setIsConversationViewed,setRecieverData } = messengerSlice.actions
 
 export default messengerSlice.reducer

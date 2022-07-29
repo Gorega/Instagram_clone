@@ -11,7 +11,7 @@ import { AppContext } from "../contextApi";
 export default function ModalHolder(props){
     const dispatch = useDispatch();
     const modalRef = useRef();
-    const {setUploadedFiles} = useContext(AppContext);
+    const {uploadedFiles,setUploadedFiles} = useContext(AppContext);
     const {showPostModal,addPostModal,editPostModal} = useSelector((state)=> state.modal)
 
     const closeModalHanlder = ()=>{
@@ -22,13 +22,18 @@ export default function ModalHolder(props){
         }
         if(addPostModal.status || editPostModal.status){
             dispatch(setShowPostModal(false));
-            const confirm = window.confirm("Changes you made will not be saved.");
-            if(confirm){
+            if(uploadedFiles.length > 0){
+                const confirm = window.confirm("Changes you made will not be saved.");
+                if(confirm){
+                    dispatch(setAddPostModal({status:false}))
+                    dispatch(setEditPostModal({status:false}))
+                    dispatch(setCaptionValue(""));
+                    dispatch(setShowPostersPreview(false));
+                    setUploadedFiles([]);
+                }
+            }else{
                 dispatch(setAddPostModal({status:false}))
                 dispatch(setEditPostModal({status:false}))
-                dispatch(setCaptionValue(""));
-                dispatch(setShowPostersPreview(false));
-                setUploadedFiles([]);
             }
         }
     }
