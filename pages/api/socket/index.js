@@ -52,15 +52,15 @@ export default function handler(req,res){
                     })
 
                     // socket converesations blocks
-                    socket.on("UnblockConversation",({blockedBy})=>{
+                    socket.on("UnblockConversation",({conversationId})=>{
                         io.emit("getUnblockedConversation",{
-                            blockedBy
+                            conversationId
                         })
                     })
 
-                    socket.on("blockConversation",({blockedBy})=>{
+                    socket.on("blockConversation",({conversationId})=>{
                         io.emit("getBlockedConversation",{
-                            blockedBy
+                            conversationId
                         })
                     })
     

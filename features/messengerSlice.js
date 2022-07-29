@@ -9,7 +9,7 @@ const initialState = {
   showConversationDetails:false,
   conversation:null,
   peopleModal:false,
-  messengerPatch:null,
+  messengerPatch:false,
   recieverData:null,
   isConversationViewed:false,
 }

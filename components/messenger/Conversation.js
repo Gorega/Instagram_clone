@@ -13,7 +13,7 @@ export default function Conversation({conversation,senderId}){
         const [person,setPerson] = useState([]); 
         const [chat,setChat] = useState([]);
         const {conversation:conversationState} = useSelector((state)=> state.messenger);
-        const [isConversationViewed,setIsConversationViewed] = useState(null);
+        const [isConversationViewed,setIsConversationViewed] = useState(conversation?.readBy.includes(user.userId));
         const [historyState,setHistoryState] = useState(null);
         
         const fetchConversationMessages = async ()=>{
@@ -35,13 +35,14 @@ export default function Conversation({conversation,senderId}){
         }
 
         const updateConversationWatchers = async ()=>{
-            const repsonse = await axios.patch(`${server}/api/user/${user.userId}/conversation/update/watcher/${conversation._id}`);
+            await axios.patch(`${server}/api/user/${user.userId}/conversation/update/watcher/${conversation._id}`);
+            setIsConversationViewed(true);
             dispatch(setMessengerPatch(false));
         }
 
         useEffect(()=>{
             fetchConversationMessages();
-            setIsConversationViewed(conversation.readBy.includes(senderId));
+            setIsConversationViewed(conversation?.readBy.includes(user.userId));
         },[conversation])
         
         useEffect(()=>{
@@ -61,7 +62,6 @@ export default function Conversation({conversation,senderId}){
                     sender:person
                 }))
                 fetchRecieverData();
-                setIsConversationViewed(false);
                 updateConversationWatchers();
                 }}>
             <img src={person.image} alt="" />
@@ -71,6 +71,6 @@ export default function Conversation({conversation,senderId}){
                 {chat[chat.length - 1]?.hasOwnProperty("postId") ? "Sent you a message" : chat[chat.length - 1]?.text.substring(0,20)} - {format(chat[chat.length -1]?.createdAt).includes("seconds") ? "Now" : format(chat[chat.length -1]?.createdAt)}
             </p>
             </div>
-            {isConversationViewed && <div className={styles.patch}></div>}
+            {isConversationViewed || <div className={styles.patch}></div>}
         </div>
 }

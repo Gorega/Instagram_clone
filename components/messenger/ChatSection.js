@@ -58,7 +58,6 @@ export default function ChatSection(){
             socket?.current.emit("addMessengerPatch",{
                 receiverId:receiverId,
             })
-            dispatch(setMessengerPatch(false))
 
             // send userId to socket server (emit)
             socket?.current.emit("addUser",user.userId);
@@ -118,10 +117,14 @@ export default function ChatSection(){
     // get socket blocking status
     useEffect(()=>{
         socket?.current?.on("getUnblockedConversation",(data)=>{
-            setIsUserBlocked(false)
+            if(data.conversationId === conversation?.data._id){
+                setIsUserBlocked(false)
+            }
         })
         socket?.current?.on("getBlockedConversation",(data)=>{
-            setIsUserBlocked(true)
+            if(data.conversationId === conversation?.data._id){
+                setIsUserBlocked(true)
+            }
         })
     },[isUserBlocked,socket.current])
 

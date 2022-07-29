@@ -32,7 +32,7 @@ export default function ConversationDetails({conversation,member}){
         setIsUserBlocked(true)
         setShowAlert({status:false})
         socket?.current.emit("blockConversation",{
-            blockedBy:[user.userId]
+            conversationId:conversation.data._id
         })
         dispatch(setPending(false))
     }
@@ -42,7 +42,7 @@ export default function ConversationDetails({conversation,member}){
         const response = await axios.delete(`${server}/api/user/${user.userId}/conversation/block/${conversation.data._id}`);
         setIsUserBlocked(false);
         socket?.current.emit("UnblockConversation",{
-            blockedBy:[]
+            conversationId:conversation.data._id
         })
         dispatch(setPending(false))
     }

@@ -19,7 +19,7 @@ import {server} from "../../lib/server";
 
 export default function Main(){
     const dispatch = useDispatch();
-    const {uploadedFiles,setUploadedFiles} = useContext(AppContext);
+    const {uploadedFiles} = useContext(AppContext);
     const {currentFile} = useSelector((state)=> state.addPost)
     const {data:user,status} = useSession();
     const router = useRouter();
@@ -93,9 +93,9 @@ export default function Main(){
             const response = await axios.get(`${server}/api/user/${user.userId}/conversation/viewed`,{withCredentials:true});
             const data = await response.data;
             if(data){
-                dispatch(setMessengerPatch(true))
-            }else{
                 dispatch(setMessengerPatch(false))
+            }else{
+                dispatch(setMessengerPatch(true));
             }
         }
     }
@@ -123,7 +123,7 @@ export default function Main(){
                         <Link href="/direct/inbox"><li className={messengerPatch && styles.patch}>{messengerIcon}</li></Link>
                         <li onClick={()=> {
                             dispatch(setDoneUpload(false));
-                            dispatch(setAddPostModal({status:true,content:null}))
+                            dispatch(setAddPostModal({status:true,content:null}));
                         }}>
                             {newPostIcon}
                         </li>

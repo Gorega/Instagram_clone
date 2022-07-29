@@ -8,7 +8,7 @@ export default async function handler(req,res){
         }
     if(req.method === "GET"){
         const {user_id} = req.query;
-        const viewedConversation = await Conversation.findOne({seenBy:{$in:[user_id]},readBy:{$ne:[user_id]}});
+        const viewedConversation = await Conversation.findOne({seenBy:{$in:[user_id]},readBy:{$in:[user_id]}});
         return res.status(200).json(viewedConversation);
     }
     
