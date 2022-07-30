@@ -124,7 +124,7 @@ export default function ChatSection(){
                 setIsUserBlocked(true)
             }
         })
-    },[socket.current])
+    },[socket.current,isUserBlocked])
 
     useEffect(()=>{
         if(socketMessage && conversation?.data._id === socketMessage.conversationId && conversation.data.members.includes(socketMessage.sender)){
