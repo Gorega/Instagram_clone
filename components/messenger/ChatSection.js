@@ -4,16 +4,16 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { server } from "../../lib/server";
 import { useSession } from "next-auth/react";
-import {deleteConversation,setPending, setPeopleModal, setShowConversationChat, setIsConversationViewed,setShowConversationDetails, setMessengerPatch} from "../../features/messengerSlice";
+import {deleteConversation,setPending, setPeopleModal, setShowConversationChat,setShowConversationDetails, setMessengerPatch} from "../../features/messengerSlice";
 import ConversationDetails from "./ConversationDetails";
 import SingleMessage from "./SingleMessage";
+import { AppContext } from "../../contextApi";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import dynamic from "next/dynamic";
 const Picker = dynamic(() => import("emoji-picker-react"), {
   ssr: false,
 });
-import { AppContext } from "../../contextApi";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 export default function ChatSection(){
     const dispatch = useDispatch();
@@ -44,12 +44,10 @@ export default function ChatSection(){
                 sender:user.userId,
                 receiverId:receiverId,
             })
+
             // update conversation wathcers
             axios.put(`${server}/api/user/${user.userId}/conversation/update/watcher/${conversation.data._id}`,{next_user_id:receiverId})
             axios.patch(`${server}/api/user/${user.userId}/conversation/update/watcher/${conversation.data._id}`);
-            
-            // update conversation sequence after sending a message
-            axios.patch(`${server}/api/user/${user.userId}/conversation/update/sequence/${conversation.data._id}`,{updatedAt:Date.now()})
 
             // show message to next_user
             axios.patch(`${server}/api/user/${user.userId}/conversation/update/${conversation.data._id}`,{next_user_id:receiverId})
@@ -72,7 +70,7 @@ export default function ChatSection(){
             setChat([...chat,data]);
 
         }catch(err){
-            setIsUserBlocked(true);
+            setIsUserBlocked(true)
         }
     }
 
@@ -99,7 +97,7 @@ export default function ChatSection(){
             messageBoxInputRef?.current?.focus();
             fetchConversationMessages();
             setMessageText("");
-            setIsUserBlocked(conversation?.data.blockedBy.includes(receiverId))
+            setIsUserBlocked(conversation?.data.blockedBy.includes(receiverId));
         }
     },[conversation])
 
@@ -126,7 +124,7 @@ export default function ChatSection(){
                 setIsUserBlocked(true)
             }
         })
-    },[isUserBlocked,socket.current])
+    },[socket.current])
 
     useEffect(()=>{
         if(socketMessage && conversation?.data._id === socketMessage.conversationId && conversation.data.members.includes(socketMessage.sender)){

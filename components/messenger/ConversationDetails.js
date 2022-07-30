@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useSession } from "next-auth/react";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import ModalHolder from "../ModalHolder";
 import { deleteConversation, setPending, setShowConversationChat, setShowConversationDetails } from "../../features/messengerSlice";

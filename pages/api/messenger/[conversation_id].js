@@ -20,7 +20,7 @@ export default async function handler(req,res){
         const {conversation_id} = req.query;
         const {sender,text,members,postId} = req.body;
 
-        const conversation = await Conversation.findOne({conversationId:conversation_id});
+        const conversation = await Conversation.findOne({_id:conversation_id});
         const next_user_id = conversation.members.find((member)=> member !== session.userId)
         if(conversation.blockedBy.includes(next_user_id)){
             return res.status(422).json({})

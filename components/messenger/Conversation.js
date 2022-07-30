@@ -14,7 +14,7 @@ export default function Conversation({conversation,senderId}){
         const [chat,setChat] = useState([]);
         const {conversation:conversationState} = useSelector((state)=> state.messenger);
         const [isConversationViewed,setIsConversationViewed] = useState(conversation?.readBy.includes(user.userId));
-        const [historyState,setHistoryState] = useState(null);
+        const [historyState,setHistoryState] = useState(history.state);
         
         const fetchConversationMessages = async ()=>{
             const response = await axios.get(`${server}/api/messenger/${conversation._id}`,{withCredentials:true});
@@ -43,6 +43,7 @@ export default function Conversation({conversation,senderId}){
         useEffect(()=>{
             fetchConversationMessages();
             setIsConversationViewed(conversation?.readBy.includes(user.userId));
+            setHistoryState([...conversation.members].join(""))
         },[conversation])
         
         useEffect(()=>{
