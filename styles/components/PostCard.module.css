@@ -1,0 +1,259 @@
+.head{
+    width:100%;
+    display: inline-flex;
+    align-items:center;
+    position: relative;
+    padding:15px 10px 10px 10px;   
+}
+
+.head img{
+    width:33px;
+    height:33px;
+    border-radius: 50%;
+    cursor: pointer;
+    object-fit: cover;
+
+}
+
+.head h2{
+    font-size:14px;
+    font-weight: 500;
+    cursor: pointer;
+    margin-left:10px;
+}
+
+.head .options{
+    position:absolute;
+    right:15px;
+    font-weight: bold;
+    font-size:20px;
+    cursor: pointer;
+}
+
+.body{
+    display: block;
+    position: relative;
+}
+
+.body .share,.body .info,.body .footer{
+    padding:0 10px;
+}
+
+.body .info{
+    padding-bottom:12px;
+}
+
+.body::after{
+    position:absolute;
+    content:"";
+    bottom:0;
+    left:0;
+    width:100%;
+    height:1px;
+    background-color:#d9d9d9;
+}
+
+.body .posters{
+    position:relative;
+    width:100%;
+    background-color:239, 239, 239;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin:12px auto;
+}
+
+.body .posters .controls{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: absolute;
+    width: 100%;
+}
+
+.body .posters .controls div{
+    background-color: white;
+    border-radius: 50%;
+    width:33px;
+    height:33px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.body .posters .controls div.disabled{
+    opacity: 0;
+    pointer-events: none;
+}
+
+.body .posters .controls .right{
+    position: relative;
+    right:10px;
+}
+
+.body .posters .controls .left{
+    position: relative;
+    left:10px;
+}
+
+.body .posters img,.body video{
+    width:100%;
+    height:550px;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+    background-color: black;
+}
+
+.body .paginations{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.body .paginations ul li{
+    display: inline-flex;
+    cursor: default;
+    margin-right:5px;
+    background-color: #d9d9d9;
+    width:7px;
+    height:7px;
+    border-radius: 50%;
+}
+
+.body .paginations ul li.active{
+    background-color: #0295F6;
+}
+
+.body .share{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+
+.body .share ul li{
+    display: inline-flex;
+    margin-right: 10px;
+    font-size:22px;
+    color:black;
+    cursor: pointer;
+}
+
+.body .share ul li svg{
+    color:black
+}
+
+.body .share ul li svg:hover{
+    color:rgb(142, 142, 142);
+}
+
+.body .share .right{
+    position: absolute;
+    right: 0;
+}
+
+
+.body .info{
+    margin-top:10px;
+}
+
+.body .info h4{
+    font-size:14px;
+    font-weight: 500;
+    cursor: pointer;
+    width: fit-content;
+}
+
+.body .info p > span{
+    font-size:14px;
+    font-weight:500;
+    cursor: pointer;
+    color:black;
+    display: inline;
+    padding-right: 5px;
+}
+
+.body .info p > span:hover{
+    text-decoration: underline;
+}
+
+.body .info p{
+    margin-top:5px;
+    font-size:13px;
+    line-height:1.4;
+    font-weight:300;
+}
+
+.body .info span{
+    display: block;
+    margin-top:5px;
+    cursor: pointer;
+    color:#4D4D4D;
+    width: fit-content;
+    font-size:14px;
+    font-weight:500;
+}
+
+.body .info .date{
+    margin-top:10px;
+    text-transform: capitalize;
+    font-size:12px;
+    font-weight:13px;
+    cursor: default;
+}
+
+.footer{
+    padding:15px 10px;
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+    width: 100%;
+}
+
+.footer form{
+    display: inline-flex;
+    align-items: center;
+    width: 100%;
+}
+
+.footer .face{
+    font-size:20px;
+    cursor: pointer;
+}
+
+.footer input{
+    width:90%;
+    height:25px;
+    border:none;
+    background-color: transparent;
+    padding-left:15px;
+}
+
+.footer input:focus{
+    outline:none;
+}
+
+.footer button{
+    justify-self: flex-end;
+    background-color: transparent;
+    cursor: pointer;
+    color:#0295F6;
+    font-weight: bold;
+    border:none;
+    position: absolute;
+    right: 15px;
+}
+
+.footer button.disabled{
+    pointer-events: none;
+    opacity: .3;
+}
+
+.emojiPickerBox{
+    position: absolute;
+    bottom:60px;
+    left:0;
+}

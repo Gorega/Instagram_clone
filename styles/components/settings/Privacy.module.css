@@ -1,0 +1,68 @@
+.main{
+    width:75%;
+    margin-left:70px;
+    margin-top:30px;
+    margin-bottom:30px;
+}
+
+.main .field{
+    margin-bottom:25px;
+    width: 90%;
+    padding:15px 0;
+    border-bottom: 1px solid #d9d9d9;
+}
+
+.main .field:last-of-type{
+    border:none;
+}
+
+.main .field h2{
+    font-size:17px;
+    color:black;
+    font-weight: 500;
+    margin-bottom:10px; 
+}
+
+.main .field .check{
+    display: inline-flex;
+    align-items: center;
+    margin-top:7px;
+}
+
+.main .field .check input{
+    border:1px solid #d9d9d9;
+}
+
+.main .field .check label{
+    margin-left:10px;
+    font-size:13px;
+    color:black;
+    font-weight:500;
+}
+
+.main .field .select{
+    margin-top:10px;
+}
+
+.main .field .select .radio{
+    margin-bottom:10px;
+    margin-top:10px;
+    font-size:14px;
+    display: flex;
+    align-items: center;
+}
+
+.main .field .select .radio input{
+    width:22px;
+    height:22px;
+    margin-right:10px;
+}
+
+.main .field p{
+    font-size:13px;
+    color:#4d4d4d;
+    line-height:1.4;
+    margin-top:7px;
+    width: 90%;
+}
+

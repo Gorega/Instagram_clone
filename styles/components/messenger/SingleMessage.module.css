@@ -1,0 +1,131 @@
+.message{
+    display: block;
+    margin-bottom:100px;
+}
+
+.message .date{
+    font-size:13px;
+    font-weight: 300;
+    text-transform: capitalize;
+    margin-bottom:25px;
+    text-align: center;
+}
+
+.message .text{
+    max-width: 350px;
+    display: inline-flex;
+}
+
+.message .text > img{
+    width:22px;
+    height:22px;
+    border-radius: 50%;
+    align-items: flex-end;
+}
+
+.message .text > p{
+    position: absolute;
+    background-color: #EFEFEF;
+    font-size:14px;
+    font-weight: 300;
+    line-height: 1.4;
+    width: fit-content;
+    padding:15px;
+    border-radius: 15px;
+    margin-left:15px;
+    right: 20px;
+}
+
+.message .text > p.error{
+    color:red;
+}
+
+.own .text > p{
+    background-color: transparent;
+    left:20px;
+    border:1px solid #d9d9d9
+}
+
+.text > p span{
+    position: absolute;
+    top:50px;
+    font-size:10px;
+    left:50%;
+    transform: translateX(-50%);
+    font-weight:400;
+}
+
+.message .text .postPlaceholder{
+    display: block;
+    background-color: transparent;
+    border:1px solid #d9d9d9;
+    border-radius: 15px;
+    height:max-content;
+    width: 250px;
+    padding:15px 0;
+    margin-left:10px;
+}
+
+.message .text .postPlaceholder head{
+    display: inline-flex;
+    align-items: center;
+    margin-bottom:10px;
+    padding-left:7px;
+    cursor: pointer;
+}
+
+.message .text .postPlaceholder head img{
+    width:22px;
+    height:22px;
+    border-radius: 50%;
+}
+
+.message .text .postPlaceholder head h2{
+    font-size:13px;
+    font-weight: 400;
+    margin-left:10px;
+}
+
+.message .text .postPlaceholder img{
+    width: 100%;
+    height:200px;
+    cursor: pointer;
+}
+
+.message .text .postPlaceholder .info{
+    margin-top:10px;
+    font-size:13px;
+    font-weight: 300;
+    color:#4d4d4d;
+    display: inline-block;
+    border:none;
+    width: 90%;
+    padding-left:7px;
+}
+
+.message .text .postPlaceholder .info span{
+    font-weight: 500;
+    color:black;
+    font-size:14px;
+    width: max-content;
+    display: inline;
+    margin-right:7px;
+}
+
+.message .text .postPlaceholder p{
+    margin-top:10px;
+    font-size:14px;
+    font-weight: 300;
+    line-height: 1.4;
+    border-top:1px solid #d9d9d9;
+    padding-top:5px;
+    width:90%;
+    padding-left:8px;
+}
+
+.message .text .postPlaceholder p span{
+    margin-left:7px;    
+    width:250px;
+    font-size:13px;
+    font-weight: 300;
+}

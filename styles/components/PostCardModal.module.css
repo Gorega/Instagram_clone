@@ -1,0 +1,504 @@
+.post{
+    width: 100%;
+    height:100%;
+}
+
+@keyframes spinner{
+    from{background-color: #e5e4e4;}
+    to{background-color: white;}
+}
+
+.spinner{
+    display: flex;
+    width: 100%;
+    height:100%;
+}
+
+.spinner .poster{
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    animation: spinner 4s linear infinite alternate;
+    height:100%;
+    width: 100%;
+}
+
+.spinner .content{
+    margin-left:25px;
+}
+
+.spinner .content .head{
+    width: 100%;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    height:10%;
+}
+
+.spinner .content .head .profileImg{
+    width:37px;
+    height:37px;
+    border-radius: 50%;
+    animation: spinner 5s linear infinite alternate;
+}
+
+.spinner .content .head h2{
+    margin-left:15px;
+    width:50%;
+    height:37px;
+    animation: spinner 5s linear infinite alternate;
+    border-radius: 10px;
+}
+
+.post .grid{
+    width: 100%;
+    height:100%;
+    display: inline-flex;
+}
+
+.post .grid .posters{
+    position:relative;
+    width:100%;
+    max-height: 100%;
+    height:auto;
+    background-color:transparent;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.post .grid .posters .controls{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: absolute;
+    width: 100%;
+}
+
+.post .grid .posters .controls div{
+    background-color: white;
+    border-radius: 50%;
+    width:33px;
+    height:33px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.post .grid .posters .controls div.disabled{
+    opacity: 0;
+    pointer-events: none;
+}
+
+.post .grid .posters .controls .right{
+    position: relative;
+    right:10px;
+}
+
+.post .grid .posters .controls .left{
+    position: relative;
+    left:10px;
+}
+
+.post .grid .posters img,.post .grid .posters video{
+    width:100%;
+    height:100%;
+    max-width: 100%;
+    object-fit: cover;
+    background-color: black;
+}
+
+.post .grid .paginations{
+    position: absolute;
+    bottom:5px;
+    left:50%;
+    transform: translateX(-50%);
+}
+
+.post .grid .paginations ul li{
+    width:7px;
+    height:7px;
+    border-radius: 50%;
+    display: inline-flex;
+    margin-right:7px;
+    background-color: #d9d9d9;
+}
+
+.post .grid .paginations ul li.active{
+    background-color: #0295F6;
+}
+
+
+.post .grid .content,.spinner .content{
+    width: 70%;
+    padding:15px;
+}
+
+.post .grid .content{
+    display: flex;
+    flex-direction: column;
+    height:100%;
+}
+
+.post .grid .head{
+    width:100%;
+    height:7%;
+    display: inline-flex;
+    align-items:center;
+    position: relative;
+    padding-bottom:15px;
+    justify-self: flex-start;
+}
+
+.post .grid .head::after{
+    position: absolute;
+    content:"";
+    bottom:0;
+    width:100%;
+    height:1px;
+    background-color:#d9d9d9;
+}
+
+.post .grid .head img,.post .grid .body .caption img{
+    width:33px;
+    height:33px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.post .grid .head h2,.post .grid .body .caption h2{
+    font-size:14px;
+    font-weight: 500;
+    cursor: pointer;
+    margin-left:10px;
+}
+
+.post .grid .head .options{
+    position:absolute;
+    right:0;
+    font-weight: bold;
+    font-size:20px;
+    cursor: pointer;
+}
+
+.post .grid .body{
+    margin-top:7px;
+    display: flex;
+    flex-direction: column;
+    height: 93%;
+    justify-self: flex-end;
+}
+
+.post .grid .body .in{
+    height:90%;
+}
+.post .grid .body .share{
+    height:10%
+}
+
+.post .grid .body .footer{
+    height: max-content;
+}
+
+.post .grid .body .in{
+    min-height:50vh;
+    position: relative;
+    overflow-y: auto;
+}
+
+.post .grid .body .in::-webkit-scrollbar{
+    display: none;
+}
+
+.post .grid .body .caption{
+    position: relative;
+    top:15px;
+    display: inline-flex;
+    margin-bottom:70px;
+}
+
+.post .grid .body .caption .info{
+    margin-left:10px;
+    display: inline-flex;
+}
+
+.post .grid .body .caption .info h2{
+    display: inline-block;
+    align-self: flex-start;
+}
+
+.post .grid .body .caption .info p{
+    display: inline-block;
+    margin-left:10px;
+    font-size:13px;
+    font-weight: 400;
+    width: 80%;
+    line-height: 1.3;
+}
+
+.post .grid .body .caption .date{
+    position: absolute;
+    bottom:-40px;
+    left:0;
+    font-size:11px;
+    font-weight: 300;
+    left:55px;
+    width: max-content;
+}
+
+
+.post .grid .body .comments{
+    position:relative;
+    top:15px;
+    margin-bottom:50px;
+}
+
+.post .grid .body .in .comments .comment{
+    margin-bottom:30px;
+}
+
+.post .grid .body .in .comments .box{
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+    left:25px;
+}
+
+.post .grid .body .in .comments img{
+    width:20px;
+    height:20px;
+    border-radius: 50%;
+}
+
+.post .grid .body .in .comments p > h3{
+    font-size:13px;
+    font-weight: 500;
+    display: inline-flex;
+}
+
+.post .grid .body .in .comments p{
+    margin-left:7px;
+    font-size:12px;
+    line-height: 1.3;
+    display: inline;
+    padding-right:25px;
+}
+
+.post .grid .body .in .comments .more{
+   position: relative;
+   top:7px;
+   left:50px;
+}
+
+.post .grid .body .in .comments .more ul li{
+    display: inline-flex;
+    align-items: center;
+    margin-right:12px;
+    color:#4d4d4d;
+    cursor: pointer;
+    font-size:12px;
+}
+
+.post .grid .body .in .comments span{
+    position: absolute;
+    right:10px;
+    font-size:11px;
+    color:#4d4d4d;
+    cursor: pointer;
+    opacity: 0;
+    pointer-events: none;
+    transition: .3s all ease-in-out;
+}
+
+.post .grid .body .in .comments span.active{
+    color:#ED4956;
+}
+
+.post .grid .body .in .comments .more ul li:last-of-type{
+    opacity: 0;
+    pointer-events: none;
+    transition: .3s all ease-in-out;
+}
+
+.post .grid .body .in .comments .comment:hover span,.post .grid .body .in .comments .comment:hover .more ul li:last-of-type{
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.post .grid .body .comments .emptyComments{
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    height:100%;
+}
+
+.post .grid .body .comments .emptyComments h2{
+    font-size:20px;
+    font-weight: 500;
+    color:black;
+    text-align: center;
+    width: max-content;
+}
+
+.post .grid .body .comments .emptyComments h2 pre{
+    margin-top:10px;
+    font-size:12px;
+    font-family:sans-serif;
+    font-weight: 300;
+    color:#d4d4d4;
+    text-align: center;
+}
+
+.post .grid .body .share{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    padding-top:10px;
+    background-color: white;
+}
+
+.post .grid .body .share::before{
+    position: absolute;
+    content:"";
+    top:0px;
+    left:0;
+    width:100%;
+    height:1px;
+    background-color: #d9d9d9;
+}
+
+.post .grid .body .share ul li{
+    display: inline-flex;
+    margin-right: 10px;
+    font-size:20px;
+    cursor: pointer;
+}
+
+.post .grid .body .share ul li svg{
+    color:black
+}
+
+.post .grid .body .share ul li svg:hover{
+    color:rgb(142, 142, 142);
+}
+
+.post .grid .body .share .right{
+    position: absolute;
+    right: 0;
+}
+
+.post .grid .body .info{
+    margin-top:10px;
+}
+
+.post .grid .body .info h4{
+    font-size:14px;
+    font-weight: 500;
+    cursor: pointer;
+    width: fit-content;
+}
+
+.post .grid .body .info .date{
+    margin-top:10px;
+    text-transform: capitalize;
+    font-size:12px;
+    font-weight:13px;
+    cursor: default;
+}
+
+.post .grid .content .footer{
+    padding:10px 0 0 0;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    width: 100%;
+    align-self: flex-end;
+    border-top:1px solid #d9d9d9;
+    margin-top:15px;
+}
+
+.grid .content .footer form{
+    display: inline-flex;
+    align-items: center;
+    width: 100%;
+}
+
+.post .grid .content .footer .face{
+    font-size:20px;
+    cursor: pointer;
+}
+
+.post .grid .content .footer form input{
+    width:90%;
+    height:25px;
+    border:none;
+    background-color: transparent;
+    padding-left:15px;
+}
+
+.post .grid .content .footer form input:focus{
+    outline:none;
+}
+
+.post .grid .content .footer form button{
+    justify-self: flex-end;
+    background-color: transparent;
+    cursor: pointer;
+    color:#0295F6;
+    font-weight: bold;
+    border:none;
+    position: absolute;
+    right: 0;
+}
+
+.post .grid .content .footer form button.disabled{
+    pointer-events: none;
+    opacity: .3;
+}
+
+.emojiPickerBox{
+    position: absolute;
+    bottom:45px;
+    left:0;
+    z-index: 50;
+}
+
+@media(max-width:992px){
+    .grid,.spinner{
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .post .grid .content,.spinner .content{
+        padding:25px;
+    }
+
+    .post .grid .content{
+        width: 100%;
+        overflow-y: auto;
+        padding:40px 25px;
+    }
+
+    .spinner .content .head{
+        top:25px;
+        width:100%
+    }
+
+    .post .grid .head{
+        padding-bottom:25px;
+    }
+
+    .spinner .content .head h2{
+        width:80%;
+    }
+
+    .post .grid .content .footer{
+        padding:20px 0;
+    }
+
+    .post .grid .posters,.spinner .posters{
+        height:50%;
+    }
+}

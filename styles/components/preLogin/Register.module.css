@@ -1,0 +1,113 @@
+.register{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin-bottom:25px;
+}
+
+.register{
+    margin-bottom:25px;
+}
+
+.register p{
+    font-size:13px;
+    color:#4d4d4d;
+    margin-top:7px;
+    font-weight: 500;
+}
+
+.register .facebookRegister{
+    margin:15px 0;
+    background-color: #0295F6;
+    color:White;
+    padding:7px 20px;
+    font-size:13px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+
+.register .facebookRegister span{
+    margin-left:7px;
+}
+
+.register img{
+    width:50%;
+    height:50%;
+}
+
+.register form{
+    margin-bottom:15px;
+}
+
+.register form input{
+    display: block;
+    margin-bottom:7px;
+    background-color: #FAFAFA;
+    border:1px solid #d9d9d9;
+    font-size:12px;
+    padding-left:5px;
+    color:#4d4d4d;
+    width:100%;
+    height:35px;
+}
+
+.register form input:focus{
+    outline:none;
+}
+
+.register form button{
+    background-color: #0295F6;
+    border:none;
+    color:white;
+    width:100%;
+    padding:7px 20px;
+    font-size:14px;
+    font-weight:500;
+    cursor: pointer;
+    margin-top:20px;
+    opacity: .3;
+    pointer-events: none;
+}
+
+.register form button.active{
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.register form span{
+    font-size:13px;
+    font-weight: 300;
+}
+
+.register h3{
+    font-size:14px;
+    color:#4d4d4d;
+    font-weight: 300;
+}
+
+.register h3 span{
+    color:#0295F6;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.register .errorMsg{
+    color:red;
+    font-size:14px;
+    font-weight:500;
+    position: relative;
+    top:15px;
+    line-height: 1.4;
+}
+
+@media(max-width:992px){
+    .formCard{
+        width:70% !important;
+    }
+    .logo img{
+        width:35%;
+        height:35%;
+    }
+}

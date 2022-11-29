@@ -1,0 +1,125 @@
+.peopleSec{
+    width: 50%;
+    border-right:1px solid #d9d9d9;
+}
+
+.peopleSec .head{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    padding:30px;
+    border-bottom:1px solid #d9d9d9;
+    max-height:50px;
+}
+
+.peopleSec .head h2{
+    font-size:15px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.peopleSec .head .send{
+    position: absolute;
+    top:50%;
+    transform: translateY(-50%);
+    right:5px;
+    font-size:15px;
+    cursor: pointer;
+}
+
+.peopleSec .people{
+    padding-top:15px;
+    overflow: auto;
+    height: 100%;
+}
+
+.peopleSec .people .person{
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    width: 100%;
+    padding:15px;
+    position: relative;
+}
+
+.peopleSec .people .person:hover{
+    background-color: #f6f5f5;
+}
+
+
+.peopleSec .people .person img{
+    width:44px;
+    height:44px;
+    border-radius: 50%;
+}
+
+.peopleSec .people .person .info{
+    margin-left:7px;
+}
+
+
+.peopleSec .people .person .info h2{
+    font-size:14px;
+    font-weight: 400;
+    color:#4d4d4d;
+}
+
+.peopleSec .people .person .info p{
+    margin-top:5px;
+    font-size:13px;
+    font-weight: 300;
+}
+
+.peopleSec .people .person .patch{
+    position: absolute;
+    right:20px;
+}
+
+.peopleSec .people .person .patch::after{
+    position: absolute;
+    content:"";
+    top:0;
+    left:0;
+    width:7px;
+    height:7px;
+    border-radius: 50%;
+    background-color: #0295F6;
+}
+
+.peopleSec .people .spinner{
+    display: inline-flex;
+    align-items: center;
+    margin-bottom:15px;
+    padding:0 15px;
+}
+
+.peopleSec .people .spinner .img{
+    width:55px;
+    height:55px;
+    border-radius: 50%;
+    background-color: #e5e4e4;
+}
+
+.peopleSec .people .spinner .info{
+    margin-left:15px;
+}
+
+.peopleSec .people .spinner .info h2{
+    width:200px;
+    height:15px;
+    border-radius: 15px;
+    background-color: #e5e4e4;
+}
+
+.peopleSec .people .spinner .info p{
+    width:140px;
+    height:15px;
+    margin-top:7px;
+    border-radius: 15px;
+    background-color: #e5e4e4;
+}
+
+.active{
+    background-color: #EFEFEF;
+}

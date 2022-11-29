@@ -1,0 +1,83 @@
+.head{
+    padding-top:100px;
+    display: inline-flex;
+    align-items: center;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.head img{
+    width:120px;
+    height:120px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.head .info{
+    margin-left:100px;
+}
+
+.head .info .user{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.head .info .user h2{
+    font-size:20px;
+    font-weight: 400;
+    color:#4d4d4d;
+}
+
+.head .info .user button{
+    border:1px solid #d9d9d9;
+    background-color: transparent;
+    cursor: pointer;
+    padding:7px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    color:black;
+    border:none
+}
+
+.head .info .user svg{
+    font-size:22px;
+    color:black;
+    cursor: pointer;
+    transition: .3s all ease-in-out;
+}
+
+.head .info .user svg:hover{
+    transform: rotate(180deg);
+}
+
+.head .more{
+    margin-top:25px;
+}
+
+.head .more ul{
+    list-style: none;
+}
+
+.head .more ul li{
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #4d4d4d;
+    font-size:15px;
+    font-weight: 400;
+    margin-right:35px;
+    cursor: pointer;
+}
+
+.head .more ul li:first-of-type{
+    cursor: text;
+}
+
+.head h3{
+    margin-top:25px;
+    font-size:15px;
+    text-transform: capitalize;
+    color:black;
+}

@@ -1,0 +1,14 @@
+.cardHolder{
+    background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    padding:25px;
+    position: relative;
+    top:100px;
+    margin-bottom:30px;
+}
+
+@media(max-width:992px){
+    .cardHolder{
+        width: 100% !important;
+    }
+}

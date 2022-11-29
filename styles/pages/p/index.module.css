@@ -1,0 +1,88 @@
+.posts{
+    display: block;
+    position: relative;
+    top:170px;
+    border-top:1px solid #d9d9d9;
+    padding-top:40px;
+}
+
+.posts h2{
+    font-size:17px;
+    color:#4d4d4d;
+}
+
+.posts h2 span{
+    text-transform: capitalize;
+    font-size:18px;
+    cursor: pointer;
+}
+
+.posts .grid{
+    display: grid;
+    grid-template-columns: repeat(3,30.33333%);
+    gap:30px;
+    margin:25px 0;
+}
+
+.posts .grid .post{
+    position: relative;
+}
+
+.posts .grid .post:hover{
+    cursor: pointer;
+}
+
+.posts .grid .post::after{
+    display: none;
+    position: absolute;
+    top:0;
+    left:0;
+    content:"";
+    width:100%;
+    height:100%;
+    background-color:rgba(0,0,0,.5);
+}
+
+.posts .grid .post:hover .patch,.posts .grid .post:hover::after{
+    display: block;
+}
+
+.posts .grid .post img,.posts .grid .post video{
+    width: 100%;
+    height:300px;
+    background-color: black;
+}
+
+.posts .grid .post .patch{
+    display: none;
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    z-index: 20;
+}
+
+.posts .grid .post .patch ul{
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.posts .grid .post .patch ul li{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right:15px;
+    color:white;
+}
+
+.posts .grid .post .patch ul li span{
+    margin-left:7px;
+}
+
+
+.footer{
+    position: relative;
+    top:100px;
+}

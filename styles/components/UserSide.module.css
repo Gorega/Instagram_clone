@@ -1,0 +1,222 @@
+.main{
+    position: fixed;
+    right:25%;
+    top:120px;
+    height:100%;
+    width: 340px;
+    z-index: 4;
+}
+
+.user{
+    display: inline-flex;
+    align-items: center;
+    margin-bottom:10px;
+    width: 100%;
+}
+
+.user img{
+    width:44px;
+    height:44px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.user .info{
+    margin-left:15px;
+}
+
+.user .info h3{
+    font-size:13px;
+    color:black;
+    font-weight:500;
+    cursor: pointer;
+    width: fit-content;
+}
+
+.user .info p{
+    font-size:13px;
+    font-weight: 300;
+    color:#4d4d4d;
+    margin-top:2px;
+}
+
+.user span{
+    position: absolute;
+    right:0;
+    color:#0295F6;
+    font-weight: bold;
+    font-size:13px;
+    font-weight: 400;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.people span{
+    background-color: #0295F6;
+    color:white;
+    cursor: pointer;
+    font-size:14px;
+    font-weight: 500;
+    padding:5px 10px;
+    border:none;
+    margin-right:20px;
+}
+
+.user span.inactive{
+    color:black
+}
+
+.people span.inactive{
+    background-color:transparent;
+    color:black;
+    border:1px solid #d9d9d9;
+    cursor: pointer;
+    font-size:14px;
+    font-weight: 500;
+    padding:5px 10px;
+    margin-right:20px;
+}
+
+.main .more{
+    margin-top:20px;
+}
+
+.main .more .head{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom:25px;
+}
+
+.main .more .head h3{
+    color:#4d4d4d;
+    font-size:14px;
+    font-weight: 400;
+}
+
+.main .more .head span{
+    font-size:14px;
+    font-weight: 500;
+    color:black;
+    cursor: pointer;
+}
+
+.main .more .users{
+    display:block;
+}
+
+.main .more .users .user{
+    display: inline-flex;
+    width: 100%;
+    margin-bottom:15px;
+}
+
+.main .footer{
+    margin-top:25px;
+    color:#4d4d4d;
+}
+
+.main .footer ul{
+    margin-bottom:10px;
+}
+
+.main .footer ul li{
+    display: inline-flex;
+    margin-right: 10px;
+    cursor: pointer;
+    font-size:12px;
+}
+
+.main .footer span{
+    font-size:12px;
+    text-transform: capitalize;
+}
+
+
+.main .more .users .spinner{
+    margin-bottom:15px;
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+    width: 100%;
+}
+
+
+.main .more .users .spinner .info{
+    margin-left:10px;
+}
+
+
+.main .more .users .spinner .image{
+    width:26px;
+    height:26px;
+    border-radius:50%;
+    cursor: pointer;
+    background-color: #e5e4e4;
+}
+
+.main .more .users .spinner .info h2{
+    background-color: #e5e4e4;
+    width:150px;
+    height:15px;
+    font-size:15px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.main .more .users .spinner .info p{
+    background-color: #e5e4e4;
+    width: 120px;
+    height:15px;
+    margin-top:5px;
+    font-size:13px;
+    color:#4d4d4d;
+    font-weight: 300;
+}
+
+.unfollowmodal{
+    overflow: hidden;
+    text-align: center;
+}
+
+.unfollowmodal img{
+    width:140px;
+    height:140px;
+    border-radius: 50%;
+}
+
+.unfollowmodal h2{
+    margin-top:25px;
+    font-size:14px;
+    font-weight: 400;
+}
+
+.unfollowmodal ul{
+    margin-top:25px;
+    list-style: none;
+    border-top:1px solid #d9d9d9;
+}
+
+.unfollowmodal ul li{
+    padding:15px 0;
+    border-bottom:1px solid #d9d9d9;
+    width: 100%;
+    font-size:14px;
+    font-weight: 400;
+    cursor: pointer;
+}
+
+.unfollowmodal ul li:first-of-type{
+    color:red;
+}
+
+.unfollowmodal ul li:last-of-type{
+    border-bottom:none;
+    padding:15px 0 0px 0;
+}
+
+@media(max-width:1520px){
+    .main{
+        display: none;
+    }
+}

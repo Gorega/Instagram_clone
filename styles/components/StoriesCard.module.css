@@ -1,0 +1,40 @@
+.list{
+    display: inline-flex;
+    align-items: center;
+    width:100%;
+    overflow: auto;
+}
+
+.list::-webkit-scrollbar{
+    display: none;
+}
+
+.list .person{
+    margin-right:15px;
+    cursor: pointer;
+}
+
+.list .person img,.list .person .img{
+    width:44px;
+    height:44px;
+    border-radius: 50%;
+    border:1px solid red;
+    margin:auto;
+    position: relative;
+    left:50%;
+    transform: translateX(-50%);
+}
+
+.list .person h3{
+    font-size:13px;
+    font-weight:400;
+    color:#4d4d4d;
+    width: max-content;
+}
+
+.list .person .img{
+    background-color: #e5e4e4;
+    border: none;
+    width:55px;
+    height:55px;
+}

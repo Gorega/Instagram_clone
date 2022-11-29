@@ -1,0 +1,91 @@
+.head{
+    position: relative;
+    padding:8px 5px;
+    border-bottom:1px solid #d9d9d9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.head h2{
+    font-size:14px;
+    color:#4d4d4d;
+    font-weight: bold;
+}
+
+.head > svg{
+    position: absolute;
+    right:10px;
+    top:10;
+    color:#4d4d4d;
+    font-size:20px;
+    cursor: pointer;
+}
+
+.people{
+    padding:10px 7px;
+    overflow: auto;
+}
+
+.people .content{
+    padding-top:15px;
+    position: relative;
+}
+
+.people .content > svg{
+    position: absolute;
+    top:50%;
+    left:50%;
+    padding-top:25px;
+}
+
+.people .person{
+    width: 100%;
+    display: flex !important;
+    align-items: center;
+    position: relative;
+    display: block;
+    margin-bottom:15px;
+}
+
+.people .person img{
+    width:33px;
+    height:33px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.people .person h3{
+    margin-left:7px;
+    font-size:14px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.people .person button{
+    position: absolute;
+    right:0;
+    top:5px;
+    background-color: #0295F6;
+    padding:5px 10px;
+    cursor: pointer;
+    border:none;
+    color:white;
+    font-size:14px;
+    font-weight: 500;
+}
+
+.list ul li{
+    display: block;
+    padding:15px;
+    border-bottom: 1px solid #d9d9d9;
+    font-size:14px;
+    font-weight:400;
+    color:#4d4d4d;
+    cursor: pointer;
+    text-align: center;
+}
+
+.list ul li:last-of-type{
+    border:none;
+}
