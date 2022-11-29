@@ -142,11 +142,11 @@
 
 .post .grid .head{
     width:100%;
-    height:7%;
+    height:5%;
     display: inline-flex;
     align-items:center;
     position: relative;
-    padding-bottom:15px;
+    padding-bottom:10px;
     justify-self: flex-start;
 }
 
@@ -323,6 +323,13 @@
 .post .grid .body .in .comments .comment:hover span,.post .grid .body .in .comments .comment:hover .more ul li:last-of-type{
     opacity: 1;
     pointer-events: auto;
+}
+
+.post .grid .body .in .comments svg{
+    position: absolute;
+    left:50%;
+    transform: translateY(-50%);
+    font-size:10px;
 }
 
 .post .grid .body .comments .emptyComments{

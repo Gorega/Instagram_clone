@@ -1,7 +1,7 @@
 import styles from "../../../styles/components/CustomModal.module.css";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { follow, getFollowing, unfollow } from "../../../features/user/follower";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
@@ -11,16 +11,17 @@ export default function Person({person,type}){
     const dispatch = useDispatch();
     const {data:user} = useSession();
     const [spinner,setSpinner] = useState(false);
-    const [followingPeople,setFollowingPeople] = useState([]);
-    const isFollowed = followingPeople.find((follower)=> follower.user_id === person.createdBy);
+    const [isFollowed,setIsFollowed] = useState(false);
 
     const FollowerHandler = async (next_user_id)=>{
         setSpinner(true)
         if(isFollowed){
+            setIsFollowed(false)
             dispatch(unfollow({user_id:user.userId,next_user_id})).then(_=> {
                 setSpinner(false)
             });
         }else{
+            setIsFollowed(true)
             dispatch(follow({user_id:user.userId,next_user_id})).then(_=> {
                 setSpinner(false)
             })
@@ -29,7 +30,7 @@ export default function Person({person,type}){
 
     useEffect(()=>{
         dispatch(getFollowing({user_id:user.userId})).then(res=> {
-            setFollowingPeople(res.payload)
+            setIsFollowed(res.payload.find((follower)=> follower.user_id === person.createdBy))
         })
     },[spinner])
 

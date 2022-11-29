@@ -3,11 +3,13 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import usePostData from "../../../lib/usePostData";
 import Comment from "./Comment";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 export default function Comments({post}){
     const observer = useRef();
     const {addComment:addCommentStatus,removeComment:removeCommentStatus,socketComments} = useSelector((state)=> state.postComments);
-    const {postComments,fetchPostComments} = usePostData(post);
+    const {postComments,fetchPostComments,spinner} = usePostData(post);
     const [commentsLimit,setCommentsLimit] = useState(4);
 
     const lastCommentElement = useCallback((node)=>{
@@ -36,18 +38,23 @@ export default function Comments({post}){
 
     return <>
         <div className={styles.comments}>
-            {postComments.length > 0 ? postComments.map((comment,index)=>{
+            {spinner ? 
+            <FontAwesomeIcon icon={faSpinner} className="fa-spin" />
+            :
+            postComments.length > 0 ? postComments.map((comment,index)=>{
                 if(postComments.length === index + 1){
                     return <div key={index} ref={lastCommentElement}>
                         <Comment key={index} comment={comment} post={post} />
                     </div>
                 }
                 return <Comment key={index} comment={comment} post={post} />
-            }) : <div className={styles.emptyComments}>
-                    <h2>No comments yet. <br/>
-                    <pre>Start the conversation.</pre>
-                    </h2>
-                </div>}
+            })
+            :
+            <div className={styles.emptyComments}>
+                <h2>No comments yet. <br/>
+                <pre>Start the conversation.</pre>
+                </h2>
+            </div>}
         </div>
     </>
 
