@@ -6,8 +6,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import CardHolder from "../CardHolder";
 import Foot from "../profile/Foot";
-import Link from "next/link"
+import Link from "next/link";
 import useForm from "../../lib/useForm";
+import logo from "../../public/logo.png";
 
 export default function Register(){
     const [email,setEmail] = useState(null);
@@ -28,7 +29,7 @@ export default function Register(){
         <div className={styles.body}>
             <CardHolder preLoginFormClassName={styles.formCard} style={{width:"50%",left:"50%",transform:"translateX(-50%)"}}>
                 <div className={styles.logo}>
-                    <img src="https://www.instagram.com/static/images/web/logged_out_wordmark.png/7a252de00b20.png" alt="" />
+                    <img src={logo.src} alt="" />
                 </div>
                 <p>Sign up to see photos and videos from your friends.</p>
                 <div className={styles.facebookRegister}>

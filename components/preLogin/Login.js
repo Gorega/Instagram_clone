@@ -7,6 +7,7 @@ import {signIn} from "next-auth/react"
 import CardHolder from "../CardHolder";
 import Foot from "../profile/Foot";
 import Link from "next/link";
+import logo from "../../public/logo.png";
 
 export default function Login(){
     const [username,setUsername] = useState(null)
@@ -35,7 +36,7 @@ export default function Login(){
         <div className={styles.body}>
             <CardHolder preLoginFormClassName={styles.formCard} style={{width:"50%",left:"50%",transform:"translateX(-50%)"}}>
                 <div className={styles.logo}>
-                    <img src="https://www.instagram.com/static/images/web/logged_out_wordmark.png/7a252de00b20.png" alt="" />
+                    <img src={logo.src} alt="" />
                 </div>
                 <form onSubmit={loginHandler}>
                     <input type="text" placeholder="Username or email" value={email || username} onChange={(e)=>{
