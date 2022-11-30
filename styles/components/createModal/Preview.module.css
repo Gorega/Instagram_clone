@@ -28,9 +28,11 @@
 }
 
 .postersPreview .posters .poster img,.postersPreview .posters .poster video{
+    position:absolute;
     width:100%;
     height:100%;
     object-fit: cover;
+    z-index: 1;
 }
 
 .postersPreview .posters .poster .delete{
@@ -48,6 +50,7 @@
     align-items: center;
     cursor: pointer;
     font-size:13px;
+    z-index: 2;
 }
 
 .postersPreview .add label{

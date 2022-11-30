@@ -6,8 +6,8 @@ import useUpload from "../../lib/useUpload";
 
 export default function Preview(){
     const dispatch = useDispatch();
-    const {uploadFile,downloadedURL,deleteFileFromFirebase} = useUpload();
-    const {uploadedFiles} = useSelector((state)=> state.createModal)
+    const {uploadFile,downloadedURL} = useUpload();
+    const {uploadedFiles} = useSelector((state)=> state.createModal);
 
     useEffect(()=>{
         if(downloadedURL?.image){
@@ -20,8 +20,7 @@ export default function Preview(){
             {uploadedFiles?.map((poster,index)=>{
                 return <div key={index} className={styles.poster} onClick={()=> dispatch(setCurrentIndex(index))}>
                     <div className={styles.delete} onClick={()=>{
-                        deleteFileFromFirebase('posts',poster.name)
-                        dispatch(removeFromUploadedFiles(poster.backdrop))
+                        dispatch(removeFromUploadedFiles(poster.backdrop));
                     }}>x</div>
                     {poster?.contentType?.includes("image") && <img src={poster.backdrop} alt="" />}
                     {poster?.contentType?.includes("video") && <video controls src={poster.backdrop} alt="" />} 

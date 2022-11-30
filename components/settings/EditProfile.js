@@ -5,10 +5,11 @@ import {useSession} from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faSpinner, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { setActiveSettingsList } from "../../features/navigatorListSlice";
 import ModalHolder from "../ModalHolder";
 import useUpload from "../../lib/useUpload";
+import useForm from "../../lib/useForm";
 
 export default function EditProfile(){
     const dispatch = useDispatch();
@@ -21,13 +22,19 @@ export default function EditProfile(){
     const [phone,setPhone] = useState(user?.phone);
     const [gender,setGender] = useState(user?.gender);
     const [image,setImage] = useState(user?.image);
+    const {submitHandler,error,success,spinner} = useForm();
     const {loading:imageSpinner,uploadFile,downloadedURL,deleteFileFromFirebase,deletedURL} = useUpload();
     const [showChangeProfilePhotoModal,setShowChangeProfilePhotoModal] = useState(false);
     const defaultProfileImage = "https://firebasestorage.googleapis.com/v0/b/instagram-clone-a6598.appspot.com/o/profile%2Fdefault.jpeg?alt=media&token=58a03f2d-ebc8-4194-b036-3329eaa12d0e"
 
     const UpdateUserInfo = async (e)=>{
         e.preventDefault();
-        const response = await axios.patch(`${server}/api/settings/edit`,{name,username,website,bio,email,phone,gender},{withCredentials:true});
+        submitHandler(
+            "patch",
+            `${server}/api/settings/edit`,
+            {name,username,website,bio,email,phone,gender},
+            "Updated Successfully"
+        )
     }
 
     useEffect(()=>{
@@ -129,7 +136,12 @@ export default function EditProfile(){
                     }}>
                         Temporarily disable my account 
                     </div>
-                    <button type="submit">Submit</button>
+                    <div className={styles.submitLine}>
+                        <button type="submit">Submit</button>
+                        {spinner && <span><FontAwesomeIcon icon={faSpinner} className="fa-spin" /></span>}
+                        {error.status === "fulfilled" && <span style={{color:"red"}}> <FontAwesomeIcon icon={faTimes} /> {error.msg}</span>}
+                        {success.status && <span style={{color:"green"}}> <FontAwesomeIcon icon={faCheck} /> {success.msg}</span>}
+                    </div>
                 </form>
         </div>
         {showChangeProfilePhotoModal && <ModalHolder style={{width:400,height:"fit-content",borderRadius:15,padding:0}}>

@@ -25,6 +25,7 @@ export default function PostOptionsList({creator,postCreatorId,postId,isFollowed
                     axios.delete(`${server}/api/post/${postId}`)
                     .then(_ => {
                         dispatch(removeFromSaved(postId))
+                        dispatch(setCaptionValue(""))
                         dispatch(setCustomModal({status:false,type:null}))
                         dispatch(setUpdatePosts("done"))
                     })
@@ -41,7 +42,7 @@ export default function PostOptionsList({creator,postCreatorId,postId,isFollowed
                             dispatch(setUploadedFiles({backdrop:poster.backdrop,contentType:poster.contentType,name:poster.name}))
                         });
                         dispatch(setCaptionValue(res.data[0]?.caption));
-                        dispatch(setEditPostModal({status:true,postId:postId,content:{poster:{backdrop:res.data[0].posters[0]?.backdrop,type:res.data[0].posters[0]?.contentType}}}));
+                        dispatch(setEditPostModal({status:true,postId:postId,content:{poster:{backdrop:res.data[0].posters[0]?.backdrop,type:res.data[0].posters[0]?.contentType,name:res.data[0].posters[0]?.name}}}));
                     })
                     dispatch(setCustomModal({type:null}));
                 }}>

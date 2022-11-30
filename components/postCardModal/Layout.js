@@ -81,7 +81,7 @@ export default function Layout({post,customStyle}){
     },[])
 
     useEffect(()=>{
-        if(status === "authenticated"){
+        if(customModal.type === "postOptionsList"){
             getFollowing();
         }
     },[user,followStatus,unfollowStatus,followed])

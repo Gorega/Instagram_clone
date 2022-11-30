@@ -70,7 +70,7 @@
     cursor: pointer;
 }
 
-.main button{
+.main .submitLine button{
     margin-top:15px;
     background-color: #0295F6;
     border:none;
@@ -79,4 +79,10 @@
     font-size:14px;
     font-weight: 500;
     cursor: pointer;
+}
+
+.main .submitLine span{
+    margin-left:7px;
+    font-size:13px;
+    font-weight: 400;
 }

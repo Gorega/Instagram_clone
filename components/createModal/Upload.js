@@ -4,18 +4,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 export default function Upload(props){
-    const {createPost,editPost,uploadFile,loading} = props;
+    const {uploadFile,loading} = props;
     const {uploadedFiles,currentIndex} = useSelector((state)=> state.createModal)
-    const {editPostModal} = useSelector((state)=>state.modal);
 
     return <div className={styles.upload}>
         <div className={styles.uploadHolder}>
             {uploadedFiles.length > 0 ?
                 <div className={styles.data}>
-                    {createPost && uploadedFiles[currentIndex]?.contentType.includes("image") && <img src={uploadedFiles[currentIndex].backdrop} alt="" />}
-                    {createPost && uploadedFiles[currentIndex]?.contentType.includes("video") && <video controls src={uploadedFiles[currentIndex].backdrop} alt="" />}
-                    {editPost && editPostModal.content?.poster.type.includes("image") && <img src={uploadedFiles[currentIndex].backdrop} alt="" />} 
-                    {editPost && editPostModal.content?.poster.type.includes("video") && <video controls src={uploadedFiles[currentIndex].backdrop} alt="" />}
+                    {uploadedFiles[currentIndex]?.contentType.includes("image") && <img src={uploadedFiles[currentIndex].backdrop} alt="" />}
+                    {uploadedFiles[currentIndex]?.contentType.includes("video") && <video controls src={uploadedFiles[currentIndex].backdrop} alt="" />}
                 </div>
                 :
                 loading ? <FontAwesomeIcon className="fa-spin" icon={faSpinner} /> :  <>

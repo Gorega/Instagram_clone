@@ -16,7 +16,7 @@ import useUpload from "../../lib/useUpload";
 export default function Index(props){
     const {createPost,editPost} = props;
     const dispatch = useDispatch();
-    const {uploadFile,downloadedURL} = useUpload();
+    const {uploadFile,downloadedURL,deleteFileFromFirebase} = useUpload();
     const {editPostModal} = useSelector((state)=> state.modal);
     const {uploadedFiles,captionValue} = useSelector((state)=> state.createModal)
     const [loading,setLoading] = useState(false);
@@ -52,6 +52,7 @@ export default function Index(props){
             `${server}/api/post/${editPostModal.postId}`,
             {poster:[...uploadedFiles],caption:captionValue,location:location}
         )
+        deleteFileFromFirebase("posts",editPostModal.content?.poster?.name);
     }
     
     useEffect(()=>{
@@ -80,8 +81,6 @@ export default function Index(props){
             {uploadedFiles.length > 0 && <div className={styles.content}>
                 <div className={styles.sec}>
                     <Upload
-                        editPost={editPost}
-                        createPost={createPost}
                         uploadedFiles={uploadedFiles}
                     />
                 </div>

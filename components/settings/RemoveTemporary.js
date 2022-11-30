@@ -1,12 +1,21 @@
-import { useSession } from "next-auth/react";
 import styles from "../../styles/components/settings/RemoveTemporary.module.css";
+import { useSession } from "next-auth/react";
+import { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
 export default function RemoveTemporary(){
+
     const {data:user} = useSession();
+    const [removed,setRemoved] = useState({status:false,msg:""});
+
+    const removeAccountHandler = ()=>{
+        setRemoved({status:true,msg:"This feature still under Maintenance"})
+    }
 
     return <div className={styles.main}>
         <h2>Temporarily Deactivate Your Account</h2>
-        <h4>Hi <span>{user.username}</span></h4>
+        <h4>Hi <span>{user?.username}</span></h4>
         <p>You can deactivate your account instead of deleting it. This means that your account will be hidden until you reactivate it by logging back in.<br/>
         You can only deactivate your account once a week.</p>
 
@@ -34,6 +43,9 @@ export default function RemoveTemporary(){
             </div>
         </form>
         <p>When you press the button below, your photos, comments and likes will be hidden until you reactivate your account by logging back in.</p>
-        <button>Temprarily Deactivate Account</button>
+        <div className={styles.submitLine}>
+            <button onClick={removeAccountHandler}>Temprarily Deactivate Account</button>
+            {removed.status && <span style={{color:"red"}}><FontAwesomeIcon icon={faTimes}/> {removed.msg}</span>}
+        </div>
     </div>
 }

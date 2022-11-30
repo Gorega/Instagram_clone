@@ -141,7 +141,7 @@
     width: fit-content;
 }
 
-.main form button{
+.main form .submitLine button{
     background-color: #0295F6;
     color:white;
     border:none;
@@ -149,6 +149,12 @@
     cursor: pointer;
     font-weight: bold;
     margin-top:25px;
+}
+
+.main form .submitLine span{
+    margin-left:7px;
+    font-size:13px;
+    font-weight: 400;
 }
 
 .changePhotoModal{
