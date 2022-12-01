@@ -33,7 +33,7 @@ export default function Register(){
                     <img src={logo.src} alt="" />
                 </div>
                 <p>Sign up to see photos and videos from your friends.</p>
-                <div className={styles.facebookRegister} onClick={()=> signIn("facebook",{callbackUrl:"https://instagram-clone-gorega.onrender.com/auth/callback/facebook"})}>
+                <div className={styles.facebookRegister} onClick={()=> signIn("facebook",{callbackUrl:"https://instagram-clone-gorega.onrender.com"})}>
                     <FontAwesomeIcon icon={faFacebook} />
                     <span>Log in with Facebook</span>
                 </div>
