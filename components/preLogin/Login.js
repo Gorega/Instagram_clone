@@ -47,7 +47,7 @@ export default function Login(){
                     <button className={(email && password) && styles.active} type="submit">{error.status === "pending" ? <FontAwesomeIcon className="fa-spin" icon={faSpinner} /> : "Log In"}</button>
                 </form>
                 <div className={styles.other}>
-                    <div className={styles.facebookLogin} onClick={()=> signIn("facebook",{callbackUrl:"https://instagram-clone-gorega.onrender.com"})}>
+                    <div className={styles.facebookLogin} onClick={()=> signIn("facebook")}>
                         <FontAwesomeIcon icon={faFacebook} />
                         <h4>Log in with Facebook</h4>
                     </div>
