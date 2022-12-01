@@ -4,6 +4,7 @@ import {server} from "../../lib/server";
 import { faFacebook } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import {signIn} from "next-auth/react";
 import CardHolder from "../CardHolder";
 import Foot from "../profile/Foot";
 import Link from "next/link";
@@ -32,9 +33,9 @@ export default function Register(){
                     <img src={logo.src} alt="" />
                 </div>
                 <p>Sign up to see photos and videos from your friends.</p>
-                <div className={styles.facebookRegister}>
+                <div className={styles.facebookRegister} onClick={()=> signIn("facebook",{callbackUrl:"https://instagram-clone-gorega.onrender.com/auth/callback/facebook"})}>
                     <FontAwesomeIcon icon={faFacebook} />
-                    <span>Log in with facebook</span>
+                    <span>Log in with Facebook</span>
                 </div>
                 <form onSubmit={registerHandler}>
                     <input type="email" placeholder="Email" required value={email} onChange={(e)=> setEmail(e.target.value)} />

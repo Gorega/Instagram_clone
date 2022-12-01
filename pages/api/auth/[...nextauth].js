@@ -1,5 +1,6 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import FacebookProvider from "next-auth/providers/facebook";
 import { connect } from "../../../lib/db";
 import {compare} from "bcrypt";
 import User from "../../../lib/models/userModel/user";
@@ -21,6 +22,10 @@ export default NextAuth({
                 }
                 return {name:user.name,image:user.image,email:user.email}
             }
+        }),
+        FacebookProvider({
+            clientId: process.env.FACEBOOK_CLIENT_ID,
+            clientSecret: process.env.FACEBOOK_CLIENT_SECRET
         })
     ],
     callbacks:{
