@@ -49,7 +49,7 @@ export default function Login(){
                 <div className={styles.other}>
                     <div className={styles.facebookLogin} onClick={()=> signIn("facebook")}>
                         <FontAwesomeIcon icon={faFacebook} />
-                        <h4>Log in with Facebook</h4>
+                        {/* <h4>Log in with Facebook</h4> */}
                     </div>
                     {error.status && <div className={styles.errorMsg}>
                         {error.msg}    
